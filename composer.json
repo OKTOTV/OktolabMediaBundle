@@ -1,0 +1,27 @@
+{
+    "name": "oktolab/media-bundle",
+    "type": "symfony-bundle",
+    "description": "In- and exportable media-metainformations with RESTful Api",
+    "keywords": ["media", "restful"],
+    "homepage": "https://github.com/OKTOTV/OktolabMediaBundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Robin Schmidt",
+            "email": "rs@okto.tv",
+            "role": "Developer"
+        }
+    ],
+
+    "autoload": {
+        "psr-0": { "Oktolab\\MediaBundle": "" }
+    },
+
+    "target-dir": "Oktolab/MediaBundle",
+
+    "require": {
+        "stof/doctrine-extensions-bundle": "~1.1",
+        "floriansemm/solr-bundle": "~1.2",
+        "jms/serializer-bundle": "0.13.*",
+    }
+}
