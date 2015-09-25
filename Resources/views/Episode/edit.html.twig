@@ -1,0 +1,18 @@
+{% extends "BprsStyleBundle::layout.html.twig" %}
+
+{% block nav_head%}
+    {% include 'BprsStyleBundle::menu.html.twig' with {'selected': 'delorian', 'dropdown': ''} %}
+{% endblock %}
+
+{% block body_main %}
+    <div class="page-header">
+        <h1>Episode edit</h1>
+        <p><a href="{{ path('oktolab_episode_show', {'id': edit_form.vars.value.id}) }}" class="btn btn-default">Zurück</a></p>
+    </div>
+
+    {{ form(edit_form) }}
+
+        <ul class="record_actions">
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

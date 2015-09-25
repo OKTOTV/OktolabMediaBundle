@@ -1,0 +1,51 @@
+{% extends "BprsStyleBundle::layout.html.twig" %}
+
+{% block nav_head%}
+    {% include 'BprsStyleBundle::menu.html.twig' with {'selected': 'delorian', 'dropdown': ''} %}
+{% endblock %}
+
+{% block body_main %}
+    <div class="page-header">
+        <h1>{{ episode.name }}</h1>
+        <a href="{{ path('oktolab_episode_edit', {'id': episode.id}) }}" class="btn btn-default">Bearbeiten</a>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            {% if episode.video is not empty %}
+                <div id="video">
+                </div>
+            {% elseif episode.posterframe is not empty %}
+                <img src="{{ episode.posterframe|path }}" class="img-responsive"/>
+            {% endif %}
+            {{ episode.description|default('description missing!') }}
+        </div>
+        <div class="col-md-4">
+            <p>Aktiv: {{ episode.isActive }}</p>
+            <p>Sendereihe: <a href="{{ path('oktolab_series_show', {'id': episode.series.id })}}">{{ episode.series.name }}</a></p>
+            <p>Angelegt am: {{ episode.createdAt|date("d.m.Y H:i") }}</p>
+            <p>Aktualisiert am: {{ episode.updatedAt|date("d.m.Y H:i") }}</p>
+            <p>Online von: {{ episode.onlineStart|date("d.m.Y H:i") }}</p>
+            <p>
+            {% if episode.onlineEnd is empty %}
+                Online bis: nicht beschränkt
+            {% else %}
+                Online bis: {{ episode.onlineEnd|date("d.m.Y H:i") }}</p>
+            {% endif %}
+            <p>UniqID: {{ episode.uniqID }}</p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="http://content.jwplatform.com/libraries/qecJHTsP.js"></script>
+    {% if episode.video is not empty %}
+        <script type="text/javascript">
+            var playerInstance = jwplayer("video");
+            playerInstance.setup({
+                file: "{{ episode.video|path }}",
+                image: "{{ episode.posterframe|path }}"
+            });
+        </script>
+    {% endif %}
+{% endblock %}

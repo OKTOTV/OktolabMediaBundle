@@ -1,0 +1,24 @@
+{% extends "BprsStyleBundle::layout.html.twig" %}
+
+{% block nav_head%}
+    {% include 'BprsStyleBundle::menu.html.twig' with {'selected': 'delorian', 'dropdown': ''} %}
+{% endblock %}
+
+{% block body_main -%}
+    <div class="page-header">
+        <h1>Series edit</h1>
+        <p><a href="{{ path('show_series', {'id': edit_form.vars.value.id}) }}" class="btn btn-default">Zurück</a></p>{{ form(delete_form) }}
+    </div>
+
+    {{ form_start(edit_form) }}
+        {{ form_errors(edit_form) }}
+
+        {{ form_row(edit_form.name) }}
+        {{ form_row(edit_form.webtitle) }}
+        {{ form_row(edit_form.description) }}
+        {{ form_row(edit_form.createdAt) }}
+        {{ form_row(edit_form.updatedAt) }}
+
+    {{ form_end(edit_form) }}
+
+{% endblock %}

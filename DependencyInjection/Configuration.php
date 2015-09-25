@@ -19,7 +19,11 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('oktolab_media');
-
+        $rootNode
+            ->children()
+                ->scalarNode('episode_class')->isRequired()->end()
+                ->scalarNode('series_class')->isRequired()->end()
+            ->end();
         // Here you should define the parameters that are allowed to
         // configure your bundle. See the documentation linked above for
         // more information on that topic.

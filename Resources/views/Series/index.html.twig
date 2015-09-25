@@ -1,0 +1,40 @@
+{% extends "BprsStyleBundle::layout.html.twig" %}
+
+{% block nav_head%}
+    {% include 'BprsStyleBundle::menu.html.twig' with {'selected': 'delorian', 'dropdown': ''} %}
+{% endblock %}
+
+{% block body_main -%}
+    <div class="page-header">
+        <h1>Sendereihen</h1>
+        <a href="{{ path('series_new') }}" class="btn btn-default">
+            <span class="glyphicon glyphicon-plus"></span> Neue Sendereihe anlegen
+        </a>
+        <a href="{{ path('list_series') }}" class="btn btn-default"><span class="glyphicon glyphicon-transfer"></span> Sendereihen importieren</a>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Posterframe</th>
+                <th>Name</th>
+                <th>Webtitle</th>
+                <th>Uniqid</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td>
+                    {% if entity.posterframe is not empty %}
+                        <img src="{{ entity.posterframe|thumb(80,120) }}" class="img-responsive" />
+                    {% endif %}
+                </td>
+                <td><a href="{{ path('oktolab_series_show', { 'id': entity.id }) }}">{{ entity.name }}</a></td>
+                <td>{{ entity.webtitle }}</td>
+                <td>{{ entity.uniqID }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

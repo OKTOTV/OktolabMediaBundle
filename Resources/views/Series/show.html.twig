@@ -1,0 +1,58 @@
+{% extends "BprsStyleBundle::layout.html.twig" %}
+
+{% block nav_head%}
+    {% include 'BprsStyleBundle::menu.html.twig' with {'selected': 'delorian', 'dropdown': ''} %}
+{% endblock %}
+
+{% block body_main -%}
+    <div class="page-header">
+        <h1>{{ entity.name }}</h1>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            {% if entity.posterframe is not empty %}
+                <img src="{{ entity.posterframe|path }}" class="img-responsive" />
+            {% endif %}
+            {{ entity.description }}
+        </div>
+        <div class="col-md-4">
+            <p>Angelegt am: {{ entity.createdAt|date('Y-m-d H:i:s') }}</p>
+            <p>Aktualisiert am: {{ entity.updatedAt|date('Y-m-d H:i:s') }}</p>
+            {% if entity.isActive %}
+                <p>Sendereihe ist: Aktiv</p>
+            {% else %}
+                <p>Sendereihe ist: Inaktiv</p>
+            {% endif %}
+            <p>ID: {{ entity.uniqID }}</p>
+            <p>Webtitel: {{ entity.webtitle }}</p>
+            <a href="{{ path('oktolab_series_edit', { 'id': entity.id }) }}" class="btn btn-default">
+                Edit
+            </a>
+        </div>
+    </div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <td>Posterframe</td>
+            <td>Name</td>
+            <td>Beschreibung</td>
+            <td>UniqID</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for episode in entity.episodes %}
+            <tr>
+                <td>
+                    {% if episode.posterframe is not empty %}
+                        <img src="{{ episode.posterframe|thumb(80,120)}}" />
+                    {% endif %}
+                </td>
+                <td>{{ episode.name }}</td>
+                <td>{{ episode.description }}</td>
+                <td><a href="{{ path('oktolab_episode_show', {'id': episode.id })}}">{{ episode.uniqID }}</a></td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

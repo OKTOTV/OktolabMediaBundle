@@ -3,14 +3,21 @@
 namespace Oktolab\MediaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+
+interface SeriesMergerInterface
+{
+    public function merge(Series $series);
+}
 
 /**
  * Series
  *
  * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Entity()
+ * @ORM\HasLifecycleCallbacks()
  */
-class Series
+class Series implements SeriesMergerInterface
 {
     /**
      * @var integer
@@ -27,6 +34,11 @@ class Series
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
+
+    /**
+    * @ORM\Column(name="webtitle", type="string", length=255, unique=true)
+    */
+    private $webtitle;
 
     /**
      * @var string
@@ -63,9 +75,31 @@ class Series
     private $uniqID;
 
     /**
+    *
+    * @ORM\OneToMany(targetEntity="Oktolab\MediaBundle\Entity\Episode", mappedBy="series")
+    */
+    private $episodes;
+
+    /**
+    * @ORM\OneToOne(targetEntity="Oktolab\MediaBundle\Entity\Asset")
+    * @ORM\JoinColumn(name="posterframe_id", referencedColumnName="id")
+    */
+    private $posterframe;
+
+    public function __construct() {
+        $this->uniqID = uniqid();
+        $this->isActive = true;
+        $this->episodes = new ArrayCollection();
+    }
+
+    public function __toString() {
+        return $this->name;
+    }
+
+    /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -88,7 +122,7 @@ class Series
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -111,7 +145,7 @@ class Series
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -134,7 +168,7 @@ class Series
     /**
      * Get isActive
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getIsActive()
     {
@@ -146,18 +180,18 @@ class Series
      *
      * @param \DateTime $createdAt
      * @return Series
+     * @ORM\PrePersist
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt()
     {
-        $this->createdAt = $createdAt;
-
+        $this->createdAt = new \DateTime();
         return $this;
     }
 
     /**
      * Get createdAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -169,18 +203,19 @@ class Series
      *
      * @param \DateTime $updatedAt
      * @return Series
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt()
     {
-        $this->updatedAt = $updatedAt;
-
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
     /**
      * Get updatedAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdatedAt()
     {
@@ -203,10 +238,96 @@ class Series
     /**
      * Get uniqID
      *
-     * @return string 
+     * @return string
      */
     public function getUniqID()
     {
         return $this->uniqID;
+    }
+
+    /**
+     * Set webtitle
+     *
+     * @param string $webtitle
+     * @return Series
+     */
+    public function setWebtitle($webtitle)
+    {
+        $this->webtitle = $webtitle;
+
+        return $this;
+    }
+
+    /**
+     * Get webtitle
+     *
+     * @return string
+     */
+    public function getWebtitle()
+    {
+        return $this->webtitle;
+    }
+
+    /**
+     * Add episodes
+     *
+     * @param \Oktolab\MediaBundle\Entity\Episode $episodes
+     * @return Series
+     */
+    public function addEpisode(\Oktolab\MediaBundle\Entity\Episode $episodes)
+    {
+        $this->episodes[] = $episodes;
+        return $this;
+    }
+
+    /**
+     * Remove episodes
+     *
+     * @param \Oktolab\MediaBundle\Entity\Episode $episodes
+     */
+    public function removeEpisode(\Oktolab\MediaBundle\Entity\Episode $episodes)
+    {
+        $this->episodes->removeElement($episodes);
+    }
+
+    /**
+     * Get episodes
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEpisodes()
+    {
+        return $this->episodes;
+    }
+
+    /**
+     * Set posterframe
+     *
+     * @param \Oktolab\MediaBundle\Entity\Asset $posterframe
+     * @return Episode
+     */
+    public function setPosterframe(\Oktolab\MediaBundle\Entity\Asset $posterframe = null)
+    {
+        $this->posterframe = $posterframe;
+
+        return $this;
+    }
+
+    /**
+     * Get posterframe
+     *
+     * @return \Oktolab\MediaBundle\Entity\Asset
+     */
+    public function getPosterframe()
+    {
+        return $this->posterframe;
+    }
+
+    public function merge(Series $series)
+    {
+        $this->name = $series->getName();
+        $this->description = $series->getDescription();
+        $this->webtitle = $series->webtitle();
+        $this->isActive = $series->isActive();
     }
 }
