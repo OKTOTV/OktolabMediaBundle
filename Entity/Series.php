@@ -14,7 +14,7 @@ interface SeriesMergerInterface
  * Series
  *
  * @ORM\Table()
- * @ORM\Entity()
+ * @ORM\MappedSuperclass()
  * @ORM\HasLifecycleCallbacks()
  */
 class Series implements SeriesMergerInterface

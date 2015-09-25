@@ -14,7 +14,7 @@ interface EpisodeMergerInterface
  * Episode
  *
  * @ORM\Table()
- * @ORM\Entity
+ * @ORM\MappedSuperclass()
  * @ORM\HasLifecycleCallbacks()
  */
 class Episode implements EpisodeMergerInterface

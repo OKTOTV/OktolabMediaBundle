@@ -12,8 +12,9 @@ class ImportEpisodeJob extends BprsContainerAwareJob
         if ($keychain) {
             $oktolabMediaService->importEpisode($keychain, $this->args['uniqID']);
             echo "End of episode import\n";
+        } else{
+            echo "No keychain found! Abort action\n";
         }
-        echo "No keychain found! Abort action\n";
     }
 }
 ?>
