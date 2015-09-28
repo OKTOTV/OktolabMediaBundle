@@ -23,7 +23,6 @@
         "stof/doctrine-extensions-bundle": "~1.1",
         "floriansemm/solr-bundle": "~1.2",
         "jms/serializer-bundle": "0.13.*",
-        "bprs/applink-bundle": "~1.0",
-        "bprs/commandline-bundle": "~1.0"
+        "bprs/applink-bundle": "~1.0"
     }
 }

@@ -1,0 +1,156 @@
+{# show keychain and implement typeahead search for api #}
+{% extends "BprsStyleBundle::layout.html.twig" %}
+
+{% block nav_head%}
+    {% include 'BprsStyleBundle::menu.html.twig' with {'selected': 'delorian', 'dropdown': ''} %}
+{% endblock %}
+
+{% block body_main %}
+    <div class="page-header">
+        <h1>{{ keychain.url }}</h1>
+        <p><a href="{{ path('oktolab_media_list_keychains') }}">{{ 'oktolab_media_show_keychain.back_to_keychains'|trans }}</a></p>
+    </div>
+    <div class="form-group">
+        <input class="typeahead form-control" type="text" placeholder="{{ 'oktolab_media.show_keychain.placeholder'|trans }}">
+    </div>
+    <div class="results">
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script src="{{ asset('bundles/bprsstyle/js/typeahead.js')}}"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        // import button for episode
+        $('.series_import').click(function(e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            $.ajax({
+                url: "{{ url('timetravelseries') }}",
+                data: {'id': id},
+                type: 'POST',
+                statusCode: {
+                    200: function () {
+                        $(this).addClass("disabled");
+                    }
+                }
+            });
+        });
+
+        console.log('start loading episodes');
+        $.ajax({
+            type: "GET",
+            url: "{{ keychain.url~'/api/oktolab_media/series.json'}}",
+            dataType: 'json',
+            username: '{{ keychain.user }}',
+            password: '{{ keychain.apiKey }}',
+            success: function (data){
+                var dataset = [];
+                for ( series in data) {
+                    dataset.push({name: data[series].name, id:data[series].uniq_i_d });
+                }
+                console.log('loaded series');
+                var episodes = new Bloodhound({
+                    datumTokenizer:Bloodhound.tokenizers.obj.whitespace('name'),
+                    queryTokenizer: Bloodhound.tokenizers.whitespace,
+                    local: dataset
+                });
+                $('.typeahead').typeahead({
+                  minLength: 3,
+                },
+                {
+                  name: 'dataset-episodes',
+                  display: 'name',
+                  source: episodes,
+                  templates: {
+                    empty: [
+                      '<li class="list-group-item">',
+                        '{{ 'oktolab_media.show_keychain.no_matches'|trans }}',
+                      '</li>'
+                    ].join('\n'),
+                    suggestion: function(data) { return '<li class="list-group-item">' + data.name + '</li>'; }
+                  }
+              }).bind('typeahead:select', function(ev, suggestion) {
+                  console.log(suggestion);
+                  $.ajax({
+                      type: "GET",
+                      url: "{{ keychain.url~'/api/oktolab_media/series/'}}" + suggestion.id + ".json",
+                      dataType: 'json',
+                      username: '{{ keychain.user }}',
+                      password: '{{ keychain.apiKey }}',
+                      success: function (data){
+                          var content = '<div class="results"><h2>' +
+                          data.name +
+                          '<a href="#" data-id="'+
+                          data.uniq_i_d +
+                          '" class="btn btn-default series_import pull-right"><span class="glyphicon glyphicon-transfer"></span>' +
+                          "{{ 'oktolab_media.show_series.import_episode'|trans}}"+
+                          '</a></h2><ul class="list-group">';
+                          for (episode in data.episodes) {
+                              content = content +
+                              '<li class="list-group-item"><h4>' +
+                              data.episodes[episode].name +
+                              '</h4><p>'+data.episodes[episode].description +
+                              '</p><a href="#" data-id="'+
+                              data.episodes[episode].uniq_i_d +
+                              '" class="btn btn-default episode_import"><span class="glyphicon glyphicon-transfer"></span>' +
+                              "{{ 'oktolab_media.show_series.import_episode'|trans}}"+
+                              '</a></span></li>';
+                          }
+                          content = content + '</ul></div>';
+                          $('.results').replaceWith(content);
+                      },
+                      fail: function() {
+                          console.log('failure while loading series' + suggestion.id);
+                      }
+                  });
+              });
+            },
+            fail: function() {
+                console.log('lol bro, no. failure while loading seriess');
+            }
+        });
+    });
+
+    $(document).on("click", ".episode_import", function (e) {
+        // import button for series
+        e.preventDefault();
+        var id = $(this).data('id');
+        $.ajax({
+            url: "{{ url('oktolab_media_local_import_episode') }}",
+            data: {'uniqID': id, 'user': "{{ keychain.user }}" },
+            type: 'POST',
+            statusCode: {
+                202: function () {
+                    console.log('added episode job.');
+                    $(this).addClass("disabled");
+                },
+                400: function () {
+                    console.log('bad request');
+                }
+            }
+        });
+    });
+
+    $(document).on("click", ".series_import", function (e) {
+        // import button for series
+        e.preventDefault();
+        var id = $(this).data('id');
+        $.ajax({
+            url: "{{ url('oktolab_media_local_import_series') }}",
+            data: {'uniqID': id, 'user': "{{ keychain.user }}" },
+            type: 'POST',
+            statusCode: {
+                202: function () {
+                    console.log('added series job.');
+                    $(this).addClass("disabled");
+                },
+                400: function () {
+                    console.log('bad request');
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

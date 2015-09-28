@@ -1,0 +1,16 @@
+{% extends "BprsStyleBundle::layout.html.twig" %}
+
+{% block nav_head%}
+    {% include 'BprsStyleBundle::menu.html.twig' with {'selected': 'backend', 'dropdown': 'keychains'} %}
+{% endblock %}
+
+{% block body_main %}
+    <div class="page-header">
+        <h1>{{ 'oktolab_media.list_keychains.header'|trans }}</h1>
+    </div>
+    <ul class="list-group">
+    {% for key in keys %}
+        <li class="list-group-item"><a href="{{ path('oktolab_media_show_keychain', {'keychain': key.keychain.id })}}">{{ key.keychain.url }}</a></li>
+    {% endfor %}
+    </ul>
+{% endblock %}
