@@ -84,18 +84,13 @@ class Episode implements EpisodeMergerInterface
     private $uniqID;
 
     /**
-    * @ORM\ManyToOne(targetEntity="Oktolab\MediaBundle\Entity\Series", inversedBy="episodes", cascade={"persist"})
-    */
-    private $series;
-
-    /**
-    * @ORM\OneToOne(targetEntity="Oktolab\MediaBundle\Entity\Asset")
+    * @ORM\OneToOne(targetEntity="Bprs\AssetBundle\Entity\AssetInterface")
     * @ORM\JoinColumn(name="video_id", referencedColumnName="id")
     */
     private $video;
 
     /**
-    * @ORM\OneToOne(targetEntity="Oktolab\MediaBundle\Entity\Asset")
+    * @ORM\OneToOne(targetEntity="Bprs\AssetBundle\Entity\AssetInterface")
     * @ORM\JoinColumn(name="posterframe_id", referencedColumnName="id")
     */
     private $posterframe;
@@ -303,28 +298,6 @@ class Episode implements EpisodeMergerInterface
     public function getUniqID()
     {
         return $this->uniqID;
-    }
-
-    /**
-     * Set series
-     *
-     * @param \Oktolab\MediaBundle\Entity\Series $series
-     * @return Episode
-     */
-    public function setSeries(\Oktolab\MediaBundle\Entity\Series $series = null)
-    {
-        $this->series = $series;
-        return $this;
-    }
-
-    /**
-     * Get series
-     *
-     * @return \Oktolab\MediaBundle\Entity\Series
-     */
-    public function getSeries()
-    {
-        return $this->series;
     }
 
     /**

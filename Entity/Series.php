@@ -75,13 +75,7 @@ class Series implements SeriesMergerInterface
     private $uniqID;
 
     /**
-    *
-    * @ORM\OneToMany(targetEntity="Oktolab\MediaBundle\Entity\Episode", mappedBy="series")
-    */
-    private $episodes;
-
-    /**
-    * @ORM\OneToOne(targetEntity="Oktolab\MediaBundle\Entity\Asset")
+    * @ORM\OneToOne(targetEntity="Bprs\AssetBundle\Entity\AssetInterface")
     * @ORM\JoinColumn(name="posterframe_id", referencedColumnName="id")
     */
     private $posterframe;
@@ -266,38 +260,6 @@ class Series implements SeriesMergerInterface
     public function getWebtitle()
     {
         return $this->webtitle;
-    }
-
-    /**
-     * Add episodes
-     *
-     * @param \Oktolab\MediaBundle\Entity\Episode $episodes
-     * @return Series
-     */
-    public function addEpisode(\Oktolab\MediaBundle\Entity\Episode $episodes)
-    {
-        $this->episodes[] = $episodes;
-        return $this;
-    }
-
-    /**
-     * Remove episodes
-     *
-     * @param \Oktolab\MediaBundle\Entity\Episode $episodes
-     */
-    public function removeEpisode(\Oktolab\MediaBundle\Entity\Episode $episodes)
-    {
-        $this->episodes->removeElement($episodes);
-    }
-
-    /**
-     * Get episodes
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getEpisodes()
-    {
-        return $this->episodes;
     }
 
     /**
