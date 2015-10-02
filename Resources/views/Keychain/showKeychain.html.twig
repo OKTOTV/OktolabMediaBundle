@@ -48,7 +48,7 @@
             success: function (data){
                 var dataset = [];
                 for ( series in data) {
-                    dataset.push({name: data[series].name, id:data[series].uniq_i_d });
+                    dataset.push({name: data[series].name, id:data[series].uniqID });
                 }
                 console.log('loaded series');
                 var episodes = new Bloodhound({
@@ -83,7 +83,7 @@
                           var content = '<div class="results"><h2>' +
                           data.name +
                           '<a href="#" data-id="'+
-                          data.uniq_i_d +
+                          data.uniqID +
                           '" class="btn btn-default series_import pull-right"><span class="glyphicon glyphicon-transfer"></span>' +
                           "{{ 'oktolab_media.show_series.import_episode'|trans}}"+
                           '</a></h2><ul class="list-group">';
@@ -93,7 +93,7 @@
                               data.episodes[episode].name +
                               '</h4><p>'+data.episodes[episode].description +
                               '</p><a href="#" data-id="'+
-                              data.episodes[episode].uniq_i_d +
+                              data.episodes[episode].uniqID +
                               '" class="btn btn-default episode_import"><span class="glyphicon glyphicon-transfer"></span>' +
                               "{{ 'oktolab_media.show_series.import_episode'|trans}}"+
                               '</a></span></li>';

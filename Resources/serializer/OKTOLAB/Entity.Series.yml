@@ -1,0 +1,25 @@
+Oktolab\MediaBundle\Entity\Series:
+    exclusion_policy: ALL
+    access_type: public_method
+    properties:
+        name:
+            expose: true
+            type: string
+        description:
+            expose: true
+            type: string
+        uniqID:
+            serialized_name: uniqID
+            type: string
+        createdAt:
+            expose: true
+            type: DateTime
+        updatedAt:
+            expose: true
+            type: DateTime
+        isActive:
+            expose: true
+            type: boolean
+        webtitle:
+            expose: true
+            type: string

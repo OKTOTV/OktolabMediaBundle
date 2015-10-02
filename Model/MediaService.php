@@ -97,16 +97,25 @@ class MediaService
             ['auth' => [$keychain->getUser(), $keychain->getApiKey()]]
         );
         if ($response->getStatusCode() == 200) {
-            // $episode = $this->serializer->deserialize($response->getBody(), "AppBundle\Entity\Episode", 'json');
             $episode = $this->serializer->deserialize($response->getBody(), $this->episode_class, 'json');
             $local_episode = $this->em->getRepository($this->episode_class)->findOneBy(array('uniqID' => $uniqID));
+            $local_series = $this->em->getRepository($this->series_class)->findOneBy(array('uniqID' => $episode->getSeries()->getUniqID()));
+            if (!$local_series) {
+                $local_series = new $this->series_class;
+            }
             if (!$local_episode) {
                 $local_episode = new $this->episode_class;
             }
             $local_episode->merge($episode);
+            $local_series->merge($episode->getSeries());
+            $local_episode->setSeries($local_series);
+            $local_series->addEpisode($local_episode);
             $local_episode->setVideo($this->importAsset($keychain, $episode->getVideo(), 'video'));
             $local_episode->setPosterframe($this->importAsset($keychain, $episode->getPosterframe(), 'gallery'));
+
             $this->em->persist($local_episode);
+            $this->em->persist($local_series);
+
             if ($flush) {
                 $this->em->flush();
                 $this->em->clear();

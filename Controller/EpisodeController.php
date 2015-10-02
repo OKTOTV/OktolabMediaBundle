@@ -13,7 +13,7 @@ use Oktolab\MediaBundle\Form\EpisodeType;
 /**
  * Episode controller.
  *
- * @Route("/oktolab_episode")
+ * @Route("/oktolab_media/episode")
  */
 class EpisodeController extends Controller
 {

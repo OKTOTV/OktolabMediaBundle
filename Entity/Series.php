@@ -100,7 +100,6 @@ class Series implements SeriesMergerInterface
     public function __construct() {
         $this->uniqID = uniqid();
         $this->isActive = true;
-        $this->episodes = new ArrayCollection();
     }
 
     public function __toString() {
@@ -306,7 +305,8 @@ class Series implements SeriesMergerInterface
     {
         $this->name = $series->getName();
         $this->description = $series->getDescription();
-        $this->webtitle = $series->webtitle();
-        $this->isActive = $series->isActive();
+        $this->uniqID = $series->getUniqID();
+        $this->webtitle = $series->getWebtitle();
+        $this->isActive = $series->getIsActive();
     }
 }

@@ -30,7 +30,7 @@ class MediaApiController extends Controller
      */
     public function listSeriesAction($format)
     {
-        $seriess = $this->getDoctrine()->getManager()->getRepository('OktolabMediaBundle:Series')->findAll();
+        $seriess = $this->getDoctrine()->getManager()->getRepository($this->container->getParameter('oktolab_media.series_class'))->findAll();
         $jsonContent = $this->get('jms_serializer')->serialize($seriess, $format);
         return new Response($jsonContent, 200, array('Content-Type' => 'application/json; charset=utf-8'));
     }
@@ -40,8 +40,10 @@ class MediaApiController extends Controller
      * @Security("has_role('ROLE_OKTOLAB_MEDIA_READ')")
      * @Method("GET")
      */
-    public function showSeriesAction(Series $series, $format)
+    public function showSeriesAction($uniqID, $format)
     {
+        $em = $this->getDoctrine()->getManager();
+        $series = $em->getRepository($this->container->getParameter('oktolab_media.series_class'))->findOneBy(array('uniqID' => $uniqID));
         $jsonContent = $this->get('jms_serializer')->serialize($series, $format);
         return new Response($jsonContent, 200, array('Content-Type' => 'application/json; charset=utf8'));
     }
@@ -64,7 +66,7 @@ class MediaApiController extends Controller
      * @Security("has_role('ROLE_OKTOLAB_MEDIA_READ')")
      * @Method("GET")
      */
-    public function showAsset($uniqID, $format)
+    public function showAssetAction($uniqID, $format)
     {
         $em = $this->getDoctrine()->getManager();
         $asset = $em->getRepository($this->container->getParameter('bprs_asset.class'))->findOneBy(array('key' => $uniqID));
@@ -73,17 +75,21 @@ class MediaApiController extends Controller
     }
 
     /**
-     * @Route("/import/series/{uniqID}.{format}", defaults={"format": "json"}, requirements={"format": "json|xml", "id": "\d+"})
+     * @Route("/import/series")
      * @Security("has_role('ROLE_OKTOLAB_MEDIA_WRITE')")
      * @Method("POST")
      */
-    public function importSeriesAction($uniqID)
+    public function importSeriesAction(Request $request)
     {
         //get usertoken, get url, use url + uniqid
-        $apiuser = $this->get('security.context')->getToken()->getUser();
-        $this->get('oktolab_media')->addSeriesJob($apiuser, $uniqID);
-        return new Response("", Response::HTTP_ACCEPTED);
-        //and send OktolabMediaBundle worker to import an entire series
+        $uniqID = $request->request->get('id');
+        if ($uniqID) {
+            $apiuser = $this->get('security.context')->getToken()->getUser();
+            $this->get('oktolab_media')->addSeriesJob($apiuser, $uniqID);
+            return new Response("", Response::HTTP_ACCEPTED);
+            //and send OktolabMediaBundle worker to import an entire series
+        }
+        return new Response("", Response::BAD_REQUEST);
     }
 
     /**
