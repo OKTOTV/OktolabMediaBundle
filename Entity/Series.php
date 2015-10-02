@@ -268,7 +268,7 @@ class Series implements SeriesMergerInterface
      * @param \Oktolab\MediaBundle\Entity\Asset $posterframe
      * @return Episode
      */
-    public function setPosterframe(\Oktolab\MediaBundle\Entity\Asset $posterframe = null)
+    public function setPosterframe($posterframe = null)
     {
         $this->posterframe = $posterframe;
 

@@ -51,9 +51,22 @@ class MediaApiController extends Controller
      * @Security("has_role('ROLE_OKTOLAB_MEDIA_READ')")
      * @Method("GET")
      */
-    public function showEpisodeAction(Episode $episode, $format)
+    public function showEpisodeAction($uniqID, $format)
     {
+        $em = $this->getDoctrine()->getManager();
+        $episode = $em->getRepository($this->container->getParameter('oktolab_media.episode_class'))->findOneBy(array('uniqID' => $uniqID));
         $jsonContent = $this->get('jms_serializer')->serialize($episode, $format);
+        return new Response($jsonContent, 200, array('Content-Type' => 'application/json; charset=utf8'));
+    }
+
+    /**
+     * @Route("/asset/{uniqID}.{format}", defaults={"format": "json"}, requirements={"format": "json|xml"})
+     * @Security("has_role('ROLE_OKTOLAB_MEDIA_READ')")
+     * @Method("GET")
+     */
+    public function showAsset(Asset $asset, $format)
+    {
+        $jsonContent = $this->get('jms_serializer')->serialize($asset, $format);
         return new Response($jsonContent, 200, array('Content-Type' => 'application/json; charset=utf8'));
     }
 

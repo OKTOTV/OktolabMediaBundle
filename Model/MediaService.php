@@ -20,9 +20,10 @@ class MediaService
     private $guzzle; // load json with login
     private $episode_class; // your episode class
     private $series_class; // your series class
+    private $asset_class; // the asset class
     private $adapters; // the adapter paths to save the assets to
 
-    public function __construct($jobService, $entity_manager, $serializer, $guzzle, $episode_class, $series_class, $adapters)
+    public function __construct($jobService, $entity_manager, $serializer, $guzzle, $episode_class, $series_class, $asset_class, $adapters)
     {
         $this->jobService = $jobService;
         $this->em = $entity_manager;
@@ -30,6 +31,7 @@ class MediaService
         $this->guzzle = $guzzle;
         $this->episode_class = $episode_class;
         $this->series_class = $series_class;
+        $this->asset_class= $asset_class;
         $this->adapters = $adapters;
     }
 
@@ -40,8 +42,7 @@ class MediaService
     {
         $this->jobService->addJob(
             "Oktolab\MediaBundle\Model\ImportEpisodeJob",
-            array('url' => $keychain->getUrl(), 'uniqID' => $uniqID),
-            "default"
+            array('user' => $keychain->getUser(), 'uniqID' => $uniqID)
         );
     }
 
@@ -52,8 +53,7 @@ class MediaService
     {
         $this->jobService->addJob(
             "Oktolab\MediaBundle\Model\ImportSeriesJob",
-            array('url' => $keychain->getUrl(), 'uniqID' => $uniqID),
-            "default"
+            array('url' => $keychain->getUrl(), 'uniqID' => $uniqID)
         );
     }
 
@@ -97,15 +97,16 @@ class MediaService
             ['auth' => [$keychain->getUser(), $keychain->getApiKey()]]
         );
         if ($response->getStatusCode() == 200) {
+            // $episode = $this->serializer->deserialize($response->getBody(), "AppBundle\Entity\Episode", 'json');
             $episode = $this->serializer->deserialize($response->getBody(), $this->episode_class, 'json');
-            $local_episode = $this->em->getRepository('OktolabMediaBundle:Episode')->findOneBy(array('uniqID' => $uniqID));
+            $local_episode = $this->em->getRepository($this->episode_class)->findOneBy(array('uniqID' => $uniqID));
             if (!$local_episode) {
-                $local_episode = new Episode();
+                $local_episode = new $this->episode_class;
             }
             $local_episode->merge($episode);
-            $local_episode->setVideo($this->importAsset($keychain, $episode->getVideo()));
-            $local_episode->setPosterframe($this->importAsset($keychain, $episode->getPosterframe()));
-            $this->em->persist($episode);
+            $local_episode->setVideo($this->importAsset($keychain, $episode->getVideo(), 'video'));
+            $local_episode->setPosterframe($this->importAsset($keychain, $episode->getPosterframe(), 'gallery'));
+            $this->em->persist($local_episode);
             if ($flush) {
                 $this->em->flush();
                 $this->em->clear();
@@ -119,27 +120,30 @@ class MediaService
     /**
     * imports and returns asset
     */
-    private function importAsset(Keychain $keychain, $remote_asset, $adapter = null)
+    private function importAsset(Keychain $keychain, $key, $adapter)
     {
-        $key = $remote_asset->getKey();
-        $asset = new Asset();
-        $asset->setKey($key);
-        if (!$adapter) {
-            $adapter = $remote_asset->getAdapter();
-        }
-        $asset->setAdapter($adapter);
-        $asset->setName($remote_asset->getName());
-        $asset->setMimetype($remote_asset->getMimetype());
-        shell_exec(
-            sprintf('wget --http-user=%s --http-password=%s %s --output-document=%s',
-                $keychain->getUser(),
-                $keychain->getApiKey(),
-                $keychain->getUrl().'/api/oktolab_media/asset'.$key,
-                $this->adapters[$adapter]['path'].'/'.$key
-            )
+        $url = $keychain->getUrl()."/api/oktolab_media/asset/json/".$key;
+        $response = $this->guzzle->get(
+            $url, ['auth' => [$keychain->getUser(), $keychain->getApiKey()]]
         );
-        $this->em->persist($asset);
-        return $asset;
+        if ($response->getStatusCode() == 200) {
+            $remote_asset = json_decode($response->getBody());
+            $asset = new $this->asset_class;
+            $asset->setKey($key);
+            $asset->setAdapter($adapter);
+            $asset->setName($remote_asset->name);
+            $asset->setMimetype($remote_asset->mimetype);
+            shell_exec(
+                sprintf('wget --http-user=%s --http-password=%s %s --output-document=%s',
+                    $keychain->getUser(),
+                    $keychain->getApiKey(),
+                    $keychain->getUrl().'/api/oktolab_media/download/'.$key,
+                    $this->adapters[$adapter]['path'].'/'.$key
+                )
+            );
+            $this->em->persist($asset);
+            return $asset;
+        }
     }
 
     public function importSeries(Keychain $keychain, $uniqID, $andEpisodes = false)

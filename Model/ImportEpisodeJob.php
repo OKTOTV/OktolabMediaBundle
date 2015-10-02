@@ -7,9 +7,9 @@ class ImportEpisodeJob extends BprsContainerAwareJob
 {
     public function perform() {
         echo "Start episode import\n";
-        $oktolabMediaService = $this->getContainer()->get('oktolab_media');
         $keychain = $this->getContainer()->get('doctrine.orm.entity_manager')->getRepository('BprsAppLinkBundle:Keychain')->findOneBy(array('user' => $this->args['user']));
         if ($keychain) {
+            $oktolabMediaService = $this->getContainer()->get('oktolab_media');
             $oktolabMediaService->importEpisode($keychain, $this->args['uniqID']);
             echo "End of episode import\n";
         } else{

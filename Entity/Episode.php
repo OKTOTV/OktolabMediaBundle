@@ -3,6 +3,7 @@
 namespace Oktolab\MediaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 
 interface EpisodeMergerInterface
 {
@@ -16,6 +17,8 @@ interface EpisodeMergerInterface
  * @ORM\Table()
  * @ORM\MappedSuperclass()
  * @ORM\HasLifecycleCallbacks()
+ * @JMS\ExclusionPolicy("all")
+ * @JMS\AccessType("public_method")
  */
 class Episode implements EpisodeMergerInterface
 {
@@ -25,60 +28,70 @@ class Episode implements EpisodeMergerInterface
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @JMS\ReadOnly
      */
     private $id;
 
     /**
      * @var string
-     *
+     * @JMS\Expose
+     * @JMS\Type("string")
      * @ORM\Column(name="name", type="string", length=255, nullable=true)
      */
     private $name;
 
     /**
      * @var string
-     *
+     * @JMS\Expose
+     * @JMS\Type("string")
      * @ORM\Column(name="description", type="string", length=500, nullable=true)
      */
     private $description;
 
     /**
      * @var boolean
-     *
+     * @JMS\Expose
+     * @JMS\Type("boolean")
      * @ORM\Column(name="is_active", type="boolean")
      */
     private $isActive;
 
     /**
      * @var \DateTime
-     *
+     * @JMS\Type("DateTime")
+     * @JMS\Expose
      * @ORM\Column(name="created_at", type="datetime")
      */
     private $createdAt;
 
     /**
      * @var \DateTime
-     *
+     * @JMS\Type("DateTime")
+     * @JMS\Expose
      * @ORM\Column(name="updated_at", type="datetime")
      */
     private $updatedAt;
 
     /**
      * @var \DateTime
-     *
+     * @JMS\Type("DateTime")
+     * @JMS\Expose
      * @ORM\Column(name="online_start", type="datetime", nullable=true)
      */
     private $onlineStart;
 
     /**
      * @var \DateTime
-     *
+     * @JMS\Type("DateTime")
+     * @JMS\Expose
      * @ORM\Column(name="online_end", type="datetime", nullable=true)
      */
     private $onlineEnd;
 
     /**
      * @var string
+     * @JMS\Type("string")
+     * @JMS\Expose
      * @ORM\Column(name="uniqID", type="string", length=13)
      */
     private $uniqID;
@@ -86,12 +99,15 @@ class Episode implements EpisodeMergerInterface
     /**
     * @ORM\OneToOne(targetEntity="Bprs\AssetBundle\Entity\AssetInterface")
     * @ORM\JoinColumn(name="video_id", referencedColumnName="id")
+    * @JMS\ReadOnly
     */
     private $video;
 
     /**
     * @ORM\OneToOne(targetEntity="Bprs\AssetBundle\Entity\AssetInterface")
     * @ORM\JoinColumn(name="posterframe_id", referencedColumnName="id")
+    * @JMS\Type("string")
+    * @JMS\Expose
     */
     private $posterframe;
 
@@ -306,7 +322,7 @@ class Episode implements EpisodeMergerInterface
      * @param \Oktolab\MediaBundle\Entity\Asset $video
      * @return Episode
      */
-    public function setVideo(\Oktolab\MediaBundle\Entity\Asset $video = null)
+    public function setVideo($video = null)
     {
         $this->video = $video;
 
@@ -326,10 +342,9 @@ class Episode implements EpisodeMergerInterface
     /**
      * Set posterframe
      *
-     * @param \Oktolab\MediaBundle\Entity\Asset $posterframe
      * @return Episode
      */
-    public function setPosterframe(\Oktolab\MediaBundle\Entity\Asset $posterframe = null)
+    public function setPosterframe($posterframe = null)
     {
         $this->posterframe = $posterframe;
 
