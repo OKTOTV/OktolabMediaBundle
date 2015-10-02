@@ -110,7 +110,7 @@ class SeriesController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('OktolabMediaBundle:Series')->find($id);
+        $entity = $em->getRepository($this->container->getParameter('oktolab_media.series_class'))->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Series entity.');
@@ -135,7 +135,7 @@ class SeriesController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('OktolabMediaBundle:Series')->find($id);
+        $entity = $em->getRepository($this->container->getParameter('oktolab_media.episode_class'))->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Series entity.');

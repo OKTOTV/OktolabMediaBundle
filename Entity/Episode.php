@@ -28,6 +28,7 @@ class Episode implements EpisodeMergerInterface
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @JMS\Exclude
      * @JMS\ReadOnly
      */
     private $id;
@@ -58,56 +59,58 @@ class Episode implements EpisodeMergerInterface
 
     /**
      * @var \DateTime
-     * @JMS\Type("DateTime")
      * @JMS\Expose
+     * @JMS\Type("DateTime")
      * @ORM\Column(name="created_at", type="datetime")
      */
     private $createdAt;
 
     /**
      * @var \DateTime
-     * @JMS\Type("DateTime")
      * @JMS\Expose
+     * @JMS\Type("DateTime")
      * @ORM\Column(name="updated_at", type="datetime")
      */
     private $updatedAt;
 
     /**
      * @var \DateTime
-     * @JMS\Type("DateTime")
      * @JMS\Expose
+     * @JMS\Type("DateTime")
      * @ORM\Column(name="online_start", type="datetime", nullable=true)
      */
     private $onlineStart;
 
     /**
      * @var \DateTime
-     * @JMS\Type("DateTime")
      * @JMS\Expose
+     * @JMS\Type("DateTime")
      * @ORM\Column(name="online_end", type="datetime", nullable=true)
      */
     private $onlineEnd;
 
     /**
      * @var string
-     * @JMS\Type("string")
      * @JMS\Expose
+     * @JMS\Type("string")
      * @ORM\Column(name="uniqID", type="string", length=13)
      */
     private $uniqID;
 
     /**
+    * @JMS\Expose
+    * @JMS\ReadOnly
     * @ORM\OneToOne(targetEntity="Bprs\AssetBundle\Entity\AssetInterface")
     * @ORM\JoinColumn(name="video_id", referencedColumnName="id")
-    * @JMS\ReadOnly
     */
     private $video;
 
     /**
+    * @JMS\Expose
+    * @JMS\ReadOnly
     * @ORM\OneToOne(targetEntity="Bprs\AssetBundle\Entity\AssetInterface")
     * @ORM\JoinColumn(name="posterframe_id", referencedColumnName="id")
     * @JMS\Type("string")
-    * @JMS\Expose
     */
     private $posterframe;
 
@@ -342,6 +345,7 @@ class Episode implements EpisodeMergerInterface
     /**
      * Set posterframe
      *
+     * @param \Oktolab\MediaBundle\Entity\Asset $posterframe
      * @return Episode
      */
     public function setPosterframe($posterframe = null)

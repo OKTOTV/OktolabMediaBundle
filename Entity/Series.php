@@ -4,6 +4,7 @@ namespace Oktolab\MediaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation as JMS;
 
 interface SeriesMergerInterface
 {
@@ -16,6 +17,8 @@ interface SeriesMergerInterface
  * @ORM\Table()
  * @ORM\MappedSuperclass()
  * @ORM\HasLifecycleCallbacks()
+ * @JMS\ExclusionPolicy("all")
+ * @JMS\AccessType("public_method")
  */
 class Series implements SeriesMergerInterface
 {
@@ -25,56 +28,70 @@ class Series implements SeriesMergerInterface
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @JMS\Exclude
+     * @JMS\ReadOnly
      */
     private $id;
 
     /**
      * @var string
-     *
+     * @JMS\Expose
+     * @JMS\Type("string")
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
 
     /**
+    * @JMS\Expose
+    * @JMS\Type("string")
     * @ORM\Column(name="webtitle", type="string", length=255, unique=true)
     */
     private $webtitle;
 
     /**
      * @var string
-     *
+     * @JMS\Expose
+     * @JMS\Type("string")
      * @ORM\Column(name="description", type="string", length=500)
      */
     private $description;
 
     /**
      * @var boolean
-     *
+     * @JMS\Expose
+     * @JMS\Type("boolean")
      * @ORM\Column(name="is_active", type="boolean")
      */
     private $isActive;
 
     /**
      * @var \DateTime
-     *
+     * @JMS\Expose
+     * @JMS\Type("DateTime")
      * @ORM\Column(name="created_at", type="datetime")
      */
     private $createdAt;
 
     /**
      * @var \DateTime
-     *
+     * @JMS\Expose
+     * @JMS\Type("DateTime")
      * @ORM\Column(name="updated_at", type="datetime")
      */
     private $updatedAt;
 
     /**
+     * @JMS\Expose
+     * @JMS\Type("string")
      * @var string
      * @ORM\Column(name="uniqID", type="string", length=13)
      */
     private $uniqID;
 
     /**
+    * @JMS\Expose
+    * @JMS\ReadOnly
+    * @JMS\Type("string")
     * @ORM\OneToOne(targetEntity="Bprs\AssetBundle\Entity\AssetInterface")
     * @ORM\JoinColumn(name="posterframe_id", referencedColumnName="id")
     */

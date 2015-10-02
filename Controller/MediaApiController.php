@@ -60,12 +60,14 @@ class MediaApiController extends Controller
     }
 
     /**
-     * @Route("/asset/{uniqID}.{format}", defaults={"format": "json"}, requirements={"format": "json|xml"})
+     * @Route("/asset/{format}/{uniqID}", requirements={"uniqID"=".+","format": "json|xml"})
      * @Security("has_role('ROLE_OKTOLAB_MEDIA_READ')")
      * @Method("GET")
      */
-    public function showAsset(Asset $asset, $format)
+    public function showAsset($uniqID, $format)
     {
+        $em = $this->getDoctrine()->getManager();
+        $asset = $em->getRepository($this->container->getParameter('bprs_asset.class'))->findOneBy(array('key' => $uniqID));
         $jsonContent = $this->get('jms_serializer')->serialize($asset, $format);
         return new Response($jsonContent, 200, array('Content-Type' => 'application/json; charset=utf8'));
     }
@@ -101,13 +103,13 @@ class MediaApiController extends Controller
     }
 
     /**
-     * @Route("/asset/{key}")
+     * @Route("/download/{key}", requirements={"key"=".+"})
      * @Security("has_role('ROLE_OKTOLAB_MEDIA_READ')")
      * @Method("GET")
      */
     public function downloadAsset($key)
     {
-        $asset = $this->getDoctrine()->getManager()->getRepository('OktolabMediaBundle:Asset')->findOneBy(array('key' => $key));
+        $asset = $this->getDoctrine()->getManager()->getRepository($this->container->getParameter('bprs_asset.class'))->findOneBy(array('key' => $key));
         if ($this->container->getParameter('xsendfile')) {
             $response = new Response();
             $response->headers->set('Content-Disposition', sprintf('attachment; filename="%s"', $asset->getName()));
