@@ -26,5 +26,6 @@ class OktolabMediaExtension extends Extension
         $loader->load('services.yml');
         $container->setParameter('oktolab_media.episode_class', $config['episode_class']);
         $container->setParameter('oktolab_media.series_class', $config['series_class']);
+        $container->setParameter('oktolab_media.asset_class', $config['asset_class']);
     }
 }

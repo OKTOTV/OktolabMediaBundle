@@ -23,6 +23,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('episode_class')->isRequired()->end()
                 ->scalarNode('series_class')->isRequired()->end()
+                ->scalarNode('asset_class')->isRequired()->end()
             ->end();
         // Here you should define the parameters that are allowed to
         // configure your bundle. See the documentation linked above for
