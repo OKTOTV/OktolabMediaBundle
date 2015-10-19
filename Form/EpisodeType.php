@@ -4,7 +4,7 @@ namespace Oktolab\MediaBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EpisodeType extends AbstractType
 {
@@ -18,19 +18,16 @@ class EpisodeType extends AbstractType
             ->add('name')
             ->add('description')
             ->add('isActive')
-            ->add('createdAt')
-            ->add('updatedAt')
             ->add('onlineStart')
             ->add('onlineEnd')
             ->add('uniqID')
-            ->add('series')
         ;
     }
 
     /**
      * @param OptionsResolverInterface $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Oktolab\MediaBundle\Entity\Episode'

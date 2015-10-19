@@ -7,13 +7,14 @@ class ImportSeriesJob extends BprsContainerAwareJob
 {
     public function perform() {
         echo "Start series import\n";
-        $oktolabMediaSerivce = $this->getContainer()->get('oktolab_media');
-        $keychain = $this->getContainer()->getDoctrine()->getManager()->getRepository('BprsAppLinkBundle:Keychain')->findOneBy(array('url' => $this->args['url']));
+        $keychain = $this->getContainer()->get('doctrine.orm.entity_manager')->getRepository('BprsAppLinkBundle:Keychain')->findOneBy(array('user' => $this->args['user']));
         if ($keychain) {
+            $oktolabMediaService = $this->getContainer()->get('oktolab_media');
             $oktolabMediaService->importSeries($keychain, $this->args['uniqID']);
             echo "End of series import\n";
+        } else {
+            echo "No keychain found! Abort action\n";
         }
-        echo "No keychain found! Abort action\n";
     }
 }
 ?>

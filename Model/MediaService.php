@@ -53,7 +53,7 @@ class MediaService
     {
         $this->jobService->addJob(
             "Oktolab\MediaBundle\Model\ImportSeriesJob",
-            array('url' => $keychain->getUrl(), 'uniqID' => $uniqID)
+            array('user' => $keychain->getUser(), 'uniqID' => $uniqID)
         );
     }
 
@@ -131,54 +131,81 @@ class MediaService
     */
     private function importAsset(Keychain $keychain, $key, $adapter)
     {
-        $url = $keychain->getUrl()."/api/oktolab_media/asset/json/".$key;
-        $response = $this->guzzle->get(
-            $url, ['auth' => [$keychain->getUser(), $keychain->getApiKey()]]
-        );
-        if ($response->getStatusCode() == 200) {
-            $remote_asset = json_decode($response->getBody());
-            $asset = new $this->asset_class;
-            $asset->setKey($key);
-            $asset->setAdapter($adapter);
-            $asset->setName($remote_asset->name);
-            $asset->setMimetype($remote_asset->mimetype);
-            shell_exec(
-                sprintf('wget --http-user=%s --http-password=%s %s --output-document=%s',
-                    $keychain->getUser(),
-                    $keychain->getApiKey(),
-                    $keychain->getUrl().'/api/oktolab_media/download/'.$key,
-                    $this->adapters[$adapter]['path'].'/'.$key
-                )
+        if ($key) {
+            echo "Importing key: --".$key."--\n";
+            $url = $keychain->getUrl()."/api/oktolab_media/asset/json/".$key;
+            $response = $this->guzzle->get(
+                $url, ['auth' => [$keychain->getUser(), $keychain->getApiKey()]]
             );
-            $this->em->persist($asset);
-            return $asset;
+            if ($response->getStatusCode() == 200) {
+                $remote_asset = json_decode($response->getBody());
+                $asset = new $this->asset_class;
+                $asset->setKey($key);
+                $asset->setAdapter($adapter);
+                $asset->setName($remote_asset->name);
+                $asset->setMimetype($remote_asset->mimetype);
+                shell_exec(
+                    sprintf('wget --http-user=%s --http-password=%s %s --output-document=%s',
+                        $keychain->getUser(),
+                        $keychain->getApiKey(),
+                        $keychain->getUrl().'/api/oktolab_media/download/'.$key,
+                        $this->adapters[$adapter]['path'].'/'.$key
+                    )
+                );
+                $this->em->persist($asset);
+                return $asset;
+            }
         }
     }
 
-    public function importSeries(Keychain $keychain, $uniqID, $andEpisodes = false)
+    public function importSeries(Keychain $keychain, $uniqID, $andEpisodes = true)
     {
-        $response = $this->guzzle->post(
+        $response = $this->guzzle->get(
             $keychain->getUrl().'/api/oktolab_media/series/'.$uniqID,
             ['auth' => [$keychain->getUser(), $keychain->getApiKey()]]
         );
         if ($response->getStatusCode() == 200) {
             $series = $this->serializer->deserialize($response->getBody(), $this->series_class, 'json');
-            $local_series = $this->em->getRepository('OktolabMediaBundle:Series')->findOneBy(array('uniqID' => $uniqID));
+            $local_series = $this->em->getRepository($this->series_class)->findOneBy(array('uniqID' => $uniqID));
             if (!$local_series) {
-                $local_series = new Series();
+                $local_series = new $this->series_class;
             }
             $local_series->merge($series);
-            $local_series->setPosterframe($this->importAsset($keychain, $series->getPosterframe()));
+            $local_series->setPosterframe($this->importAsset($keychain, $series->getPosterframe(), 'gallery'));
+            $this->em->persist($local_series);
+            $this->em->flush();
             if ($andEpisodes) {
                 gc_enable();
                 foreach ($series->getEpisodes() as $episode) {
-                    $this->importEpisode($keychain, $episode->getUniqID());
+                    //$this->importEpisode($keychain, $episode->getUniqID());
+                    $uniqID = $episode->getUniqID();
+                    $response = $this->guzzle->get(
+                        $keychain->getUrl().'/api/oktolab_media/episode/'.$uniqID,
+                        ['auth' => [$keychain->getUser(), $keychain->getApiKey()]]
+                    );
+                    if ($response->getStatusCode() == 200) {
+                        $episode = $this->serializer->deserialize($response->getBody(), $this->episode_class, 'json');
+                        $local_episode = $this->em->getRepository($this->episode_class)->findOneBy(array('uniqID' => $uniqID));
+                        if (!$local_episode) {
+                            $local_episode = new $this->episode_class;
+                        }
+                        $local_episode->merge($episode);
+                        $local_episode->setSeries($local_series);
+                        $local_series->addEpisode($local_episode);
+                        $local_episode->setVideo($this->importAsset($keychain, $episode->getVideo(), 'video'));
+                        $local_episode->setPosterframe($this->importAsset($keychain, $episode->getPosterframe(), 'gallery'));
+
+                        $this->em->persist($local_episode);
+
+                    } else {
+                        //something went wrong. Application not responding correctly
+                    }
                     unset($episode);
                 }
                 gc_disable();
             }
-            $this->delorian_em->persist($local_series);
-            $this->delorian_em->flush();
+            $this->em->persist($local_series);
+            $this->em->flush();
         } else {
             //something went wrong. Application not responding correctly
         }

@@ -114,7 +114,7 @@ class EpisodeController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('OktolabMediaBundle:Episode')->find($id);
+        $entity = $em->getRepository($this->container->getParameter('oktolab_media.episode_class'))->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Episode entity.');

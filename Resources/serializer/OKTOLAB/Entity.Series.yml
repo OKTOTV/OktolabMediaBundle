@@ -23,3 +23,6 @@ Oktolab\MediaBundle\Entity\Series:
         webtitle:
             expose: true
             type: string
+        posterframe:
+            expose: true
+            type: string
