@@ -6,53 +6,61 @@
 
 {% block body_main -%}
     <div class="page-header">
-        <h1>{{ entity.name }}</h1>
+        <h1>{{ series.name }}</h1>
     </div>
     <div class="row">
         <div class="col-md-8">
-            {% if entity.posterframe is not empty %}
-                <img src="{{ entity.posterframe|path }}" class="img-responsive" />
+            {% if series.posterframe is not empty %}
+                <img src="{{ series.posterframe|path }}" class="img-responsive" />
             {% endif %}
-            {{ entity.description }}
+            {{ series.description }}
         </div>
         <div class="col-md-4">
-            <p>Angelegt am: {{ entity.createdAt|date('Y-m-d H:i:s') }}</p>
-            <p>Aktualisiert am: {{ entity.updatedAt|date('Y-m-d H:i:s') }}</p>
-            {% if entity.isActive %}
+            <p>Angelegt am: {{ series.createdAt|date('Y-m-d H:i:s') }}</p>
+            <p>Aktualisiert am: {{ series.updatedAt|date('Y-m-d H:i:s') }}</p>
+            {% if series.isActive %}
                 <p>Sendereihe ist: Aktiv</p>
             {% else %}
                 <p>Sendereihe ist: Inaktiv</p>
             {% endif %}
-            <p>ID: {{ entity.uniqID }}</p>
-            <p>Webtitel: {{ entity.webtitle }}</p>
-            <a href="{{ path('oktolab_series_edit', { 'id': entity.id }) }}" class="btn btn-default">
+            <p>ID: {{ series.uniqID }}</p>
+            <p>Webtitel: {{ series.webtitle }}</p>
+            <a href="{{ path('oktolab_series_edit', { 'id': series.id }) }}" class="btn btn-default">
                 Edit
             </a>
         </div>
     </div>
-
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <td>Posterframe</td>
-            <td>Name</td>
-            <td>Beschreibung</td>
-            <td>UniqID</td>
-        </tr>
-    </thead>
-    <tbody>
-        {% for episode in entity.episodes %}
-            <tr>
-                <td>
-                    {% if episode.posterframe is not empty %}
-                        <img src="{{ episode.posterframe|thumb(80,120)}}" />
-                    {% endif %}
-                </td>
-                <td>{{ episode.name }}</td>
-                <td>{{ episode.description }}</td>
-                <td><a href="{{ path('oktolab_episode_show', {'id': episode.id })}}">{{ episode.uniqID }}</a></td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
+    {# total items count #}
+    <div class="count">
+        {{ pagination.getTotalItemCount }}
+    </div>
+    <table class="table table-striped">
+    <tr>
+        <th>Posterframe</th>
+    {# sorting of properties based on query components #}
+        <th>{{ knp_pagination_sortable(pagination, 'UniqID', 'e.uniqID') }}</th>
+        <th{% if pagination.isSorted('e.name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'name', 'e.name') }}</th>
+        <th>Beschreibung</th>
+    </tr>
+    <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+    {# table body #}
+    {% for episode in pagination %}
+    <tr {% if loop.index is odd %}class="color"{% endif %}>
+        <td>
+            {% if episode.posterframe is not empty %}
+                <img src="{{ episode.posterframe|thumb(80,120)}}" />
+            {% endif %}
+        </td>
+        <td>{{ episode.uniqID }}</td>
+        <td>{{ episode.name }}</td>
+        <td>{{ episode.description }}</td>
+    </tr>
+    {% endfor %}
+    </table>
+    {# display navigation #}
+    <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+    </div>
 {% endblock %}

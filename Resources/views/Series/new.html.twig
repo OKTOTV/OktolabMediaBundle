@@ -1,13 +1,18 @@
-{% extends '::base.html.twig' %}
+{% extends "BprsStyleBundle::layout.html.twig" %}
 
-{% block body -%}
+{% block nav_head%}
+    {% include 'BprsStyleBundle::menu.html.twig' with {'selected': 'delorian', 'dropdown': ''} %}
+{% endblock %}
+
+
+{% block body_main %}
     <h1>Series creation</h1>
 
     {{ form(form) }}
 
         <ul class="record_actions">
     <li>
-        <a href="{{ path('series') }}">
+        <a href="{{ path('oktolab_series') }}">
             Back to the list
         </a>
     </li>

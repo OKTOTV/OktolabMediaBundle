@@ -12,7 +12,7 @@
         </a>
     </div>
 
-    <table class="table">
+    {# <table class="table">
         <thead>
             <tr>
                 <th>Posterframe</th>
@@ -35,5 +35,37 @@
             </tr>
         {% endfor %}
         </tbody>
+    </table> #}
+
+    <div class="page-header">
+        <h1>Showing {{ seriess.getTotalItemCount }} series</h1>
+    </div>
+
+    <div class="navigation">
+        {{ knp_pagination_render(seriess) }}
+    </div>
+    <table class="table table-striped">
+        <tr>
+            {# sorting of properties based on query components #}
+            <th>Posterframe</th>
+            <th{% if seriess.isSorted('s.name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(seriess, 'Name', 's.name') }}</th>
+            <th{% if seriess.isSorted('s.webtitle') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(seriess, 'Webtitel', 's.webtitle') }}</th>
+            <th{% if seriess.isSorted('s.uniqID') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(seriess, 'UniqID', 's.uniqID') }}</th>
+        </tr>
+        {% for series in seriess %}
+            <tr>
+                <td>
+                    {% if series.posterframe is not empty %}
+                        <img src="{{ series.posterframe|thumb(80,120) }}" class="img-responsive" />
+                    {% endif %}
+                </td>
+                <td><a href="{{ path('oktolab_series_show', { 'id': series.id }) }}">{{ series.name }}</a></td>
+                <td>{{ series.webtitle }}</td>
+                <td>{{ series.uniqID }}</td>
+            </tr>
+        {% endfor %}
     </table>
+    <div class="navigation">
+        {{ knp_pagination_render(seriess) }}
+    </div>
 {% endblock %}

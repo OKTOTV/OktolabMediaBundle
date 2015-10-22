@@ -21,24 +21,28 @@ class SeriesController extends Controller
     /**
      * Lists all Series entities.
      *
-     * @Route("/", name="oktolab_series")
-     * @Method("GET")
+     * @Route("/{page}", name="oktolab_series", defaults={"page" = 1}, requirements={"page": "\d+"})
      * @Template()
      */
-    public function indexAction()
+    public function indexAction($page)
     {
         $em = $this->getDoctrine()->getManager();
-
-        $entities = $em->getRepository('OktolabMediaBundle:Series')->findAll();
-
-        return array(
-            'entities' => $entities,
+        $dql = "SELECT s FROM OktolabMediaBundle:Series s";
+        $query = $em->createQuery($dql);
+        $paginator  = $this->get('knp_paginator');
+        $seriess = $paginator->paginate(
+            $query,
+            $page,
+            5
         );
+
+        return array('seriess' => $seriess);
     }
+
     /**
      * Creates a new Series entity.
      *
-     * @Route("/", name="series_create")
+     * @Route("/new", name="oktolab_series_create")
      * @Method("POST")
      * @Template("OktolabMediaBundle:Series:new.html.twig")
      */
@@ -102,24 +106,33 @@ class SeriesController extends Controller
     /**
      * Finds and displays a Series entity.
      *
-     * @Route("/{id}", name="oktolab_series_show")
+     * @Route("/show/{id}/{page}", name="oktolab_series_show", defaults={"page" = 1}, requirements={"page": "\d+"})
      * @Method("GET")
      * @Template()
      */
-    public function showAction($id)
+    public function showAction($id, $page)
     {
         $em = $this->getDoctrine()->getManager();
+        $series = $em->getRepository($this->container->getParameter('oktolab_media.series_class'))->find($id);
+        $dql = "SELECT e FROM ".$this->container->getParameter('oktolab_media.episode_class')." e WHERE e.series =".$id;
+        $query = $em->createQuery($dql);
 
-        $entity = $em->getRepository($this->container->getParameter('oktolab_media.series_class'))->find($id);
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $query,
+            $page/*page number*/,
+            3
+        );
 
-        if (!$entity) {
+        if (!$series) {
             throw $this->createNotFoundException('Unable to find Series entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity'      => $entity,
+            'series'      => $series,
+            'pagination' => $pagination,
             'delete_form' => $deleteForm->createView(),
         );
     }
@@ -135,7 +148,7 @@ class SeriesController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository($this->container->getParameter('oktolab_media.episode_class'))->find($id);
+        $entity = $em->getRepository($this->container->getParameter('oktolab_media.series_class'))->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Series entity.');
