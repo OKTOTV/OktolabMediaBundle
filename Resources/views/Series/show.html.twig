@@ -50,11 +50,11 @@
     <tr {% if loop.index is odd %}class="color"{% endif %}>
         <td>
             {% if episode.posterframe is not empty %}
-                <img src="{{ episode.posterframe|thumb(80,120)}}" />
+                <a href="{{ path('oktolab_episode_show', {'uniqID': episode.uniqID}) }}"><img src="{{ episode.posterframe|thumb(80,120)}}" /></a>
             {% endif %}
         </td>
-        <td>{{ episode.uniqID }}</td>
-        <td>{{ episode.name }}</td>
+        <td><a href="{{ path('oktolab_episode_show', {'uniqID': episode.uniqID}) }}">{{ episode.uniqID }}</a></td>
+        <td><a href="{{ path('oktolab_episode_show', {'uniqID': episode.uniqID}) }}">{{ episode.name }}</a></td>
         <td>{{ episode.description }}</td>
     </tr>
     {% endfor %}

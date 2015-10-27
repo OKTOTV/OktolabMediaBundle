@@ -84,23 +84,20 @@ class EpisodeController extends Controller
     /**
      * Finds and displays a Episode entity.
      *
-     * @Route("/{id}", name="oktolab_episode_show")
+     * @Route("/{uniqID}", name="oktolab_episode_show")
      * @Method("GET")
      * @Template()
      */
-    public function showAction($id)
+    public function showAction($uniqID)
     {
         $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository($this->container->getParameter('oktolab_media.episode_class'))->find($id);
+        $entity = $em->getRepository($this->container->getParameter('oktolab_media.episode_class'))->findOneBy(array('uniqID' => $uniqID));
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Episode entity.');
         }
 
-        return array(
-            'episode'      => $entity
-        );
+        return ['episode' => $entity];
     }
 
     /**
