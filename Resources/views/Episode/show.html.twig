@@ -32,6 +32,12 @@
                 Online bis: {{ episode.onlineEnd|date("d.m.Y H:i") }}</p>
             {% endif %}
             <p>UniqID: {{ episode.uniqID }}</p>
+            {% if episode.video is not empty %}
+                <a href="{{ path('oktolab_media_download', {'key': episode.video.key}) }}" class="btn btn-default"><span class="glyphicon glyphicon-download"></span>Video</a>
+            {% endif %}
+            {% if episode.posterframe is not empty %}
+                <a href="{{ path('oktolab_media_download', {'key': episode.posterframe.key}) }}" class="btn btn-default"><span class="glyphicon glyphicon-download"></span>Posterframe</a>
+            {% endif %}
         </div>
     </div>
 {% endblock %}
