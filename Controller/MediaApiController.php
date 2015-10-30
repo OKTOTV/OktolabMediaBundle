@@ -69,7 +69,7 @@ class MediaApiController extends Controller
     public function showAssetAction($uniqID, $format)
     {
         $em = $this->getDoctrine()->getManager();
-        $asset = $em->getRepository($this->container->getParameter('bprs_asset.class'))->findOneBy(array('key' => $uniqID));
+        $asset = $em->getRepository($this->container->getParameter('bprs_asset.class'))->findOneBy(array('filekey' => $uniqID));
         $jsonContent = $this->get('jms_serializer')->serialize($asset, $format);
         return new Response($jsonContent, 200, array('Content-Type' => 'application/json; charset=utf8'));
     }
@@ -115,7 +115,7 @@ class MediaApiController extends Controller
      */
     public function downloadAsset($key)
     {
-        $asset = $this->getDoctrine()->getManager()->getRepository($this->container->getParameter('bprs_asset.class'))->findOneBy(array('key' => $key));
+        $asset = $this->getDoctrine()->getManager()->getRepository($this->container->getParameter('bprs_asset.class'))->findOneBy(array('filekey' => $key));
         if ($this->container->getParameter('xsendfile')) {
             $response = new Response();
             $response->headers->set('Content-Disposition', sprintf('attachment; filename="%s"', $asset->getName()));

@@ -140,7 +140,7 @@ class MediaService
             if ($response->getStatusCode() == 200) {
                 $remote_asset = json_decode($response->getBody());
                 $asset = new $this->asset_class;
-                $asset->setKey($key);
+                $asset->setFilekey($key);
                 $asset->setAdapter($adapter);
                 $asset->setName($remote_asset->name);
                 $asset->setMimetype($remote_asset->mimetype);
