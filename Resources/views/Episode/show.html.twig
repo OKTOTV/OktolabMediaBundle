@@ -25,6 +25,7 @@
             <p>Angelegt am: {{ episode.createdAt|date("d.m.Y H:i") }}</p>
             <p>Aktualisiert am: {{ episode.updatedAt|date("d.m.Y H:i") }}</p>
             <p>Online von: {{ episode.onlineStart|date("d.m.Y H:i") }}</p>
+            <p>Erstausstrahlung am: {{ episode.firstranAt|date("d.m.Y H:i") }}</p>
             <p>
             {% if episode.onlineEnd is empty %}
                 Online bis: nicht beschränkt

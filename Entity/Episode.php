@@ -77,6 +77,15 @@ class Episode implements EpisodeMergerInterface
      * @var \DateTime
      * @JMS\Expose
      * @JMS\Type("DateTime")
+     * @ORM\Column(name="firstran_at", type="datetime", nullable=true)
+     */
+    private $firstranAt;
+
+
+    /**
+     * @var \DateTime
+     * @JMS\Expose
+     * @JMS\Type("DateTime")
      * @ORM\Column(name="online_start", type="datetime", nullable=true)
      */
     private $onlineStart;
@@ -251,6 +260,29 @@ class Episode implements EpisodeMergerInterface
     }
 
     /**
+     * Set FirstranAt
+     *
+     * @param \DateTime $onlineStart
+     * @return Episode
+     */
+    public function setFirstranAt($FirstranAt)
+    {
+        $this->firstranAt = $FirstranAt;
+
+        return $this;
+    }
+
+    /**
+     * Get FirstranAt
+     *
+     * @return \DateTime
+     */
+    public function getFirstranAt()
+    {
+        return $this->firstranAt;
+    }
+
+    /**
      * Set onlineStart
      *
      * @param \DateTime $onlineStart
@@ -374,5 +406,6 @@ class Episode implements EpisodeMergerInterface
         $this->onlineStart = $episode->getOnlineStart();
         $this->onlineEnd = $episode->getOnlineEnd();
         $this->createdAt = $episode->getCreatedAt();
+        $this->firstranAt = $episode->getFirstranAt();
     }
 }
