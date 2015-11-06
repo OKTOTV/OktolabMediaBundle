@@ -24,7 +24,7 @@
         "floriansemm/solr-bundle": "~1.2",
         "jms/serializer-bundle": "0.13.*",
         "bprs/applink-bundle": "~1.0",
-        "bprs/commandline-bundle": "1.1.*",
+        "bprs/commandline-bundle": "^1.2",
         "knplabs/knp-paginator-bundle": "^2.5"
     }
 }
