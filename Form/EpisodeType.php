@@ -15,12 +15,54 @@ class EpisodeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('description')
-            ->add('isActive')
-            ->add('onlineStart')
-            ->add('onlineEnd')
-            ->add('uniqID')
+            ->add('name', 'text',
+                ['label' => 'oktolab_media.name_label']
+            )
+
+            ->add('description', 'textarea',
+                [
+                    'label' => 'oktolab_media.description_label',
+                    'attr' => [
+                        'class' => 'character500', 'style' => 'height:200px',
+                        'placeholder' => 'oktolab_media.description_placeholder'
+                    ]
+                ]
+            )
+
+            ->add('isActive', 'checkbox',
+                ['label' => 'oktolab_media.isActive_label']
+            )
+
+            ->add('onlineStart', 'datetime',
+                [
+                    'widget' => 'single_text',
+                    'html5' => false,
+                    //'format' => 'd.m.Y H:i',
+                    'label' => 'oktolab_media.onlineStart_label',
+                    'attr' => ['placeholder' => 'oktolab_media.onlineStart_placeholder']
+                ]
+            )
+
+            ->add('onlineEnd', 'datetime',
+                [
+                    'widget' => 'single_text',
+                    'html5' => false,
+                    //'format' => 'd.m.Y H:i',
+                    'placeholder' => 'oktolab_media.onlineEnd_placeholder',
+                    'label' => 'oktolab_media.onlineEnd_label',
+                    'attr' => ['placeholder' => 'oktolab_media.onlineEnd_placeholder']
+                ]
+            )
+
+            ->add('uniqID', 'text',
+                ['label' => 'oktolab_media.uniqID_label']
+            )
+
+            ->add('posterframe', 'asset',
+                ['label' => 'oktolab_media.posterframe_label']
+            )
+
+            ->add('video', 'asset', ['label' => 'oktolab_media.video_label'])
         ;
     }
 

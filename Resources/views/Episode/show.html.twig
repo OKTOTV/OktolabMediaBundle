@@ -17,11 +17,10 @@
             {% elseif episode.posterframe is not empty %}
                 <img src="{{ episode.posterframe|path }}" class="img-responsive"/>
             {% endif %}
-            {{ episode.description|default('description missing!') }}
+            {{ episode.description|default('oktolab_media.show_episode_description_missing'|trans) }}
         </div>
         <div class="col-md-4">
             <p>Aktiv: {{ episode.isActive }}</p>
-            <p>Sendereihe: <a href="{{ path('oktolab_series_show', {'id': episode.series.id })}}">{{ episode.series.name }}</a></p>
             <p>Angelegt am: {{ episode.createdAt|date("d.m.Y H:i") }}</p>
             <p>Aktualisiert am: {{ episode.updatedAt|date("d.m.Y H:i") }}</p>
             <p>Online von: {{ episode.onlineStart|date("d.m.Y H:i") }}</p>

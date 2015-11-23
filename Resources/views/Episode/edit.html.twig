@@ -1,16 +1,66 @@
 {% extends "BprsStyleBundle::layout.html.twig" %}
 
 {% block nav_head%}
-    {% include 'BprsStyleBundle::menu.html.twig' with {'selected': 'delorian', 'dropdown': ''} %}
+    {% include 'BprsStyleBundle::menu.html.twig' with {'selected': 'oktolab_media', 'dropdown': ''} %}
 {% endblock %}
 
 {% block body_main %}
     <div class="page-header">
-        <h1>Episode edit</h1>
-        <p><a href="{{ path('oktolab_episode_show', {'id': edit_form.vars.value.id}) }}" class="btn btn-default">Zurück</a></p>
+        <h1>{{ 'oktolab_media.edit_episode_header'|trans }}</h1>
+        <a href="{{ path('oktolab_episode_show', {'uniqID': form.uniqID.vars.value}) }}" class="btn btn-default">{{ 'oktolab_media.edit_episode_cancel'|trans }}</a>
     </div>
 
-    {{ form(edit_form) }}
+    {{ form_start(form) }}
+        {{ form_errors(form) }}
+        {{ form_row(form.name) }}
+        {{ form_row(form.description) }}
+        {% include "BprsAssetBundle::singleUpload.html.twig" with {'widget': form.video, 'adapter': 'video'} %}
+        {% include "BprsAssetBundle::singleUpload.html.twig" with {'widget': form.posterframe, 'adapter': 'gallery'} %}
+        {% include "BprsStyleBundle::datetimepicker.html.twig" with {'widget': form.onlineStart} %}
+        {% include "BprsStyleBundle::datetimepicker.html.twig" with {'widget': form.onlineEnd} %}
+    {{ form_end(form) }}
     {{ form(delete_form) }}
-</ul>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/bprsstyle/js/moment/moment.min.js') }}"></script>
+    <script src="{{ asset('bundles/bprsstyle/js/moment/de.js') }}"></script>
+    <script src="{{ asset('bundles/bprsstyle/js/datetimepicker.min.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready( function(){
+            $('#oktolab_mediabundle_episode_onlineStart_picker').datetimepicker({
+                locale: 'de',
+                // format: "DD.MM.YYYY hh:mm",
+                useCurrent: true,
+                calendarWeeks: true,
+                allowInputToggle: true,
+                showTodayButton: true
+            });
+
+            $('#oktolab_mediabundle_episode_onlineEnd_picker').datetimepicker({
+                locale: 'de',
+                // format: "DD.MM.YYYY hh:mm",
+                useCurrent: true,
+                calendarWeeks: true,
+                allowInputToggle: true,
+                showTodayButton: true
+            });
+
+            $(".character500").characterCounter({
+                counterCssClass: 'help-block',
+                limit: 400
+            });
+        });
+    </script>
+    <script src="{{ asset('bundles/bprsasset/js/jcrop.min.js') }}"></script>
+    {% include "BprsAssetBundle::singleUpload.js.twig" %}
+    <script src="{{ asset('bundles/bprsstyle/js/charactercounter.js')}}"></script>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('bundles/bprsstyle/css/datetimepicker.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('bundles/bprsasset/css/jquery.fileupload.css') }}" rel="stylesheet" />
+    <link href="{{ asset('bundles/bprsasset/css/jcrop.css') }}" rel="stylesheet" />
 {% endblock %}

@@ -5,3 +5,41 @@ oktolab_media.show_keychain.placeholder: Suche nach Sendereihen
 oktolab_media.show_keychain.no_matches: Keine Übereinstimmung
 
 oktolab_media.list_keychains.header: Schlüsselkasten
+
+
+# episode
+## episode new.html.twig
+oktolab_media.new_episode_header: Neue Episode
+oktolab_media.new_episode_back_to_list: Zurück zu Sendereihen
+oktolab_media.new_episode_create_button: Episode anlegen
+
+## episode form labels
+oktolab_media.name_label: Folgenname
+oktolab_media.description_label: Beschreibung
+oktolab_media.video_label: Videodatei
+oktolab_media.posterframe_label: Posterframe
+oktolab_media.onlineStart_label: Öffentlich verfügbar ab
+oktolab_media.onlineEnd_label: Öffentlich verfügbar bis
+oktolab_media.isActive_label: Ist Verfügbar
+oktolab_media.uniqID_label: Global einzigartige ID der Episode
+
+## placeholder
+oktolab_media.onlineStart_placeholder: 28.11.2005 12:00
+oktolab_media.onlineEnd_placeholder: 01.01.2007 20:10
+oktolab_media.description_placeholder: Inhaltsbeschreibung. Zeichenbegrenzung (500 Zeichen) unter der Box.
+
+## episode messages
+oktolab_media.error_create_episode: Die Episode konnte nicht angelegt werden.
+oktolab_media.success_create_episode: Episode erfolgreich angelegt.
+oktolab_media.success_edit_episode: Änderungen erfolgreich gespeichert.
+oktolab_media.error_edit_episode: Änderungen konnten nicht übernommen werden.
+
+## episode edit.html.twig
+oktolab_media.edit_episode_button: Änderungen speichern
+oktolab_media.delete_episode_button: Episode löschen
+oktolab_media.edit_episode_cancel: Abbrechen
+
+
+## episode show.html.twig
+
+oktolab_media.show_episode_description_missing: Keine Beschreibung verfügbar

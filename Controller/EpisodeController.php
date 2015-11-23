@@ -35,7 +35,10 @@ class EpisodeController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('oktolab_episode_show', array('id' => $entity->getId())));
+            $this->get('session')->getFlashBag()->add('success', 'oktolab_media.success_create_episode');
+            return $this->redirect($this->generateUrl('oktolab_episode_show', array('uniqID' => $entity->getUniqID())));
+        } else {
+            $this->get('session')->getFlashBag()->add('error', 'oktolab_media.error_create_episode');
         }
 
         return array(
@@ -58,7 +61,7 @@ class EpisodeController extends Controller
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        $form->add('submit', 'submit', ['label' => 'oktolab_media.new_episode_create_button', 'attr' => ['class' => 'btn btn-primary']]);
 
         return $form;
     }
@@ -122,7 +125,7 @@ class EpisodeController extends Controller
 
         return array(
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
@@ -138,10 +141,10 @@ class EpisodeController extends Controller
     {
         $form = $this->createForm(new EpisodeType(), $entity, array(
             'action' => $this->generateUrl('oktolab_episode_update', array('id' => $entity->getId())),
-            'method' => 'PUT',
+            'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        $form->add('submit', 'submit', array('label' => 'oktolab_media.edit_episode_button'));
 
         return $form;
     }
@@ -149,7 +152,7 @@ class EpisodeController extends Controller
      * Edits an existing Episode entity.
      *
      * @Route("/{id}", name="oktolab_episode_update")
-     * @Method("PUT")
+     * @Method("POST")
      * @Template("OktolabMediaBundle:Episode:edit.html.twig")
      */
     public function updateAction(Request $request, $id)
@@ -169,7 +172,10 @@ class EpisodeController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('oktolab_episode_edit', array('id' => $id)));
+            $this->get('session')->getFlashBag()->add('success', 'oktolab_media.success_edit_episode');
+            return $this->redirect($this->generateUrl('oktolab_episode_show', array('uniqID' => $entity->getUniqID())));
+        } else {
+            $this->get('session')->getFlashBag()->add('error', 'oktolab_media.error_edit_episode');
         }
 
         return array(
@@ -216,7 +222,7 @@ class EpisodeController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('oktolab_episode_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
+            ->add('submit', 'submit', array('label' => 'oktolab_media.delete_episode_button', 'attr' => ['class' => 'btn btn-danger']))
             ->getForm()
         ;
     }

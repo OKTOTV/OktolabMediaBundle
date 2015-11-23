@@ -4,6 +4,7 @@ namespace Oktolab\MediaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Validator\Constraints as Assert;
 
 interface EpisodeMergerInterface
 {
@@ -43,6 +44,7 @@ class Episode implements EpisodeMergerInterface
 
     /**
      * @var string
+     * @Assert\Length(max = 400, maxMessage = "oktolab_media.max_description_limit")
      * @JMS\Expose
      * @JMS\Type("string")
      * @ORM\Column(name="description", type="string", length=500, nullable=true)
