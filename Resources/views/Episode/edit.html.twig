@@ -53,7 +53,6 @@
             });
         });
     </script>
-    <script src="{{ asset('bundles/bprsasset/js/jcrop.min.js') }}"></script>
     {% include "BprsAssetBundle::singleUpload.js.twig" %}
     <script src="{{ asset('bundles/bprsstyle/js/charactercounter.js')}}"></script>
 {% endblock %}
@@ -61,6 +60,5 @@
 {% block stylesheets %}
     {{ parent() }}
     <link href="{{ asset('bundles/bprsstyle/css/datetimepicker.min.css') }}" rel="stylesheet" />
-    <link href="{{ asset('bundles/bprsasset/css/jquery.fileupload.css') }}" rel="stylesheet" />
-    <link href="{{ asset('bundles/bprsasset/css/jcrop.css') }}" rel="stylesheet" />
+    {% include "BprsAssetBundle::singleUpload.css.twig" %}
 {% endblock %}
