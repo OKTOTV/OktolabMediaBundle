@@ -6,3 +6,9 @@ services:
     jms_serializer.object_constructor:
         alias: jms_serializer.doctrine_object_constructor
         public: false
+
+    oktolab_media.asset_listener:
+        class: Oktolab\MediaBundle\Event\AssetListener
+        arguments: [ @doctrine.orm.entity_manager, %oktolab_media.episode_class%, %oktolab_media.series_class% ]
+        tags:
+            - { name: kernel.event_listener, event: bprs_asset.delete, method: onAssetDelete }

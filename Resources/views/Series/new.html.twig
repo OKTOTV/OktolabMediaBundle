@@ -6,15 +6,26 @@
 
 
 {% block body_main %}
-    <h1>Series creation</h1>
+    <div class="page-header">
+        <h1>{{ 'oktolab_media.new_series_header'|trans }}</h1>
+        <a href="{{ path('oktolab_series') }}" class="btn btn-default">{{ 'oktolab_media.new_episode_back_to_list'|trans }}</a>
+    </div>
 
-    {{ form(form) }}
-
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('oktolab_series') }}">
-            Back to the list
-        </a>
-    </li>
+    {{ form_start(form) }}
+        {{ form_errors(form) }}
+        {% include "BprsAssetBundle::singleUpload.html.twig" with {'widget': form.posterframe, 'adapter': 'gallery'} %}
+    {{ form_end(form) }}
 </ul>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/bprsasset/js/jcrop.min.js') }}"></script>
+    {% include "BprsAssetBundle::singleUpload.js.twig" %}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('bundles/bprsasset/css/jquery.fileupload.css') }}" rel="stylesheet" />
+    <link href="{{ asset('bundles/bprsasset/css/jcrop.css') }}" rel="stylesheet" />
 {% endblock %}

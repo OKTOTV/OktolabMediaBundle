@@ -13,7 +13,7 @@ use Oktolab\MediaBundle\Form\SeriesType;
 /**
  * Series controller.
  *
- * @Route("/oktolab_series")
+ * @Route("/oktolab_media/series")
  */
 class SeriesController extends Controller
 {
@@ -57,7 +57,7 @@ class SeriesController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('series_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('oktolab_series_show', array('id' => $entity->getId())));
         }
 
         return array(
@@ -173,7 +173,7 @@ class SeriesController extends Controller
     {
         $form = $this->createForm(new SeriesType(), $entity, array(
             'action' => $this->generateUrl('oktolab_series_update', array('id' => $entity->getId())),
-            'method' => 'PUT',
+            'method' => 'POST',
         ));
 
         $form->add('submit', 'submit', array('label' => 'Update'));
@@ -183,8 +183,8 @@ class SeriesController extends Controller
     /**
      * Edits an existing Series entity.
      *
-     * @Route("/{id}", name="oktolab_series_update")
-     * @Method("PUT")
+     * @Route("/{id}/edit", name="oktolab_series_update")
+     * @Method("POST")
      * @Template("OktolabMediaBundle:Series:edit.html.twig")
      */
     public function updateAction(Request $request, $id)
@@ -202,9 +202,12 @@ class SeriesController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
+            $em->persist($entity);
             $em->flush();
-
-            return $this->redirect($this->generateUrl('series_edit', array('id' => $id)));
+            $this->get('session')->getFlashBag()->add('success', 'oktolab_media.success_edit_series');
+            return $this->redirect($this->generateUrl('oktolab_series_show', array('id' => $id)));
+        } else {
+            $this->get('session')->getFlashBag()->add('error', 'oktolab_media.error_edit_series');
         }
 
         return array(

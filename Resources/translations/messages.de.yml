@@ -26,13 +26,13 @@ oktolab_media.uniqID_label: Global einzigartige ID der Episode
 ## placeholder
 oktolab_media.onlineStart_placeholder: 28.11.2005 12:00
 oktolab_media.onlineEnd_placeholder: 01.01.2007 20:10
-oktolab_media.description_placeholder: Inhaltsbeschreibung. Zeichenbegrenzung (500 Zeichen) unter der Box.
+oktolab_media.description_placeholder: Inhaltsbeschreibung. Zeichenbegrenzung unter der Box.
 
 ## episode messages
-oktolab_media.error_create_episode: Die Episode konnte nicht angelegt werden.
-oktolab_media.success_create_episode: Episode erfolgreich angelegt.
-oktolab_media.success_edit_episode: Änderungen erfolgreich gespeichert.
-oktolab_media.error_edit_episode: Änderungen konnten nicht übernommen werden.
+oktolab_media.error_create_episode: Die Episode konnte nicht angelegt werden
+oktolab_media.success_create_episode: Episode erfolgreich angelegt
+oktolab_media.success_edit_episode: Änderungen erfolgreich gespeichert
+oktolab_media.error_edit_episode: Änderungen konnten nicht übernommen werden
 
 ## episode edit.html.twig
 oktolab_media.edit_episode_button: Änderungen speichern
@@ -41,5 +41,27 @@ oktolab_media.edit_episode_cancel: Abbrechen
 
 
 ## episode show.html.twig
-
 oktolab_media.show_episode_description_missing: Keine Beschreibung verfügbar
+
+# series
+## series new.html.twig
+oktolab_media.new_series_header: Neue Sendereihe anlegen
+
+## series form labels
+oktolab_media.series_posterframe_label: Posterframe
+oktolab_media.series_name_label: Sendereihenname
+oktolab_media.series_webtitle_label: Webtitel
+oktolab_media.series_description_label: Beschreibung
+oktolab_media.series_isActive_label: Sendereihe Aktiv
+oktolab_media.series_uniqID_label: Global einzigartige ID der Sendereihe
+
+## placeholder
+oktolab_media.series_description_placeholder: Sendereihenbeschreibung. Zeichenbegrenzung unter der Box.
+
+## series messages
+oktolab_media.success_edit_series: Änderungen erfolgreich gespeichert
+oktolab_media.error_edit_series: Änderungen konnten nicht übernommen werden
+
+## series edit.html.twig
+oktolab_media.edit_series_header: %series_name% bearbeiten
+oktolab_media.edit_series_cancel: Abbrechen

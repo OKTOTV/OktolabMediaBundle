@@ -15,16 +15,34 @@ class SeriesType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('webtitle')
-            ->add('description')
-            ->add('isActive')
-            ->add('createdAt')
-            ->add('updatedAt')
-            ->add('uniqID')
+        ->add('name', 'text',
+            ['label' => 'oktolab_media.series_name_label']
+        )
+
+        ->add('webtitle', 'text',
+            ['label' => 'oktolab_media.series_webtitle_label']
+        )
+        ->add('description', 'textarea',
+            [
+                'label' => 'oktolab_media.description_label',
+                'attr' => [
+                    'class' => 'character500', 'style' => 'height:200px',
+                    'placeholder' => 'oktolab_media.description_placeholder'
+                ]
+            ]
+        )
+        ->add('isActive', 'checkbox',
+            ['label' => 'oktolab_media.series_isActive_label']
+        )
+        ->add('uniqID', 'text',
+            ['label' => 'oktolab_media.series_uniqID_label']
+        )
+        ->add('posterframe', 'asset',
+            ['label' => 'oktolab_media.series_posterframe_label']
+        )
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
