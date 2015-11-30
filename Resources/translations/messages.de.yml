@@ -38,7 +38,7 @@ oktolab_media.error_edit_episode: Änderungen konnten nicht übernommen werden
 oktolab_media.edit_episode_button: Änderungen speichern
 oktolab_media.delete_episode_button: Episode löschen
 oktolab_media.edit_episode_cancel: Abbrechen
-
+oktolab_media.edit_episode_header: Episode bearbeiten
 
 ## episode show.html.twig
 oktolab_media.show_episode_description_missing: Keine Beschreibung verfügbar
