@@ -54,6 +54,7 @@ oktolab_media.series_webtitle_label: Webtitel
 oktolab_media.series_description_label: Beschreibung
 oktolab_media.series_isActive_label: Sendereihe Aktiv
 oktolab_media.series_uniqID_label: Global einzigartige ID der Sendereihe
+oktolab_media.series_add_new_episode: <span class="glyphicon glyphicon-plus"></span> Neue Episode hinzufügen
 
 ## placeholder
 oktolab_media.series_description_placeholder: Sendereihenbeschreibung. Zeichenbegrenzung unter der Box.
@@ -61,7 +62,11 @@ oktolab_media.series_description_placeholder: Sendereihenbeschreibung. Zeichenbe
 ## series messages
 oktolab_media.success_edit_series: Änderungen erfolgreich gespeichert
 oktolab_media.error_edit_series: Änderungen konnten nicht übernommen werden
+oktolab_media.success_delete_series: Sendereihe erfolgreich gelöscht
+oktolab_media.unknown_action_series: Aktion unbekannt
 
 ## series edit.html.twig
 oktolab_media.edit_series_header: %series_name% bearbeiten
 oktolab_media.edit_series_cancel: Abbrechen
+oktolab_media.edit_series_button:  <span class="glyphicon glyphicon-floppy-disk"></span> Änderungen speichern
+oktolab_media.delete_series_button: <span class="glyphicon glyphicon-trash"></span> Sendereihe löschen

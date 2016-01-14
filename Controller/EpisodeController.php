@@ -3,6 +3,7 @@
 namespace Oktolab\MediaBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -106,19 +107,21 @@ class EpisodeController extends Controller
     /**
      * Displays a form to edit an existing Episode entity.
      *
-     * @Route("/{id}/edit", name="oktolab_episode_edit")
+     * @Route("/{episode}/edit", name="oktolab_episode_edit")
+     * @ParamConverter("episode", class="OktolabMediaBundle:Episode")
      * @Method("GET")
      * @Template()
      */
-    public function editAction($id)
+    public function editAction(Request $request, $episode)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository($this->container->getParameter('oktolab_media.episode_class'))->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Episode entity.');
-        }
+        $entity = $episode;
+        // $em = $this->getDoctrine()->getManager();
+        //
+        // $entity = $em->getRepository($this->container->getParameter('oktolab_media.episode_class'))->find($id);
+        //
+        // if (!$entity) {
+        //     throw $this->createNotFoundException('Unable to find Episode entity.');
+        // }
 
         $editForm = $this->createEditForm($entity);
         $deleteForm = $this->createDeleteForm($id);

@@ -1,0 +1,38 @@
+# oktolab_media:
+#     resource: "__DIR__.'/OktolabMediaBundle/Controller/'"
+#     type:     annotation
+#     prefix:   /
+
+# Series
+oktolab_series:
+    path:      /oktolab_media/series/{page}
+    defaults:  { _controller: OktolabMediaBundle:Series:index, page:1 }
+    requirements:
+        page:  \d+
+
+oktolab_series_show:
+    path:       /oktolab_media/series/show/{id}/{page}
+    defaults:   { _controller: OktolabMediaBundle:Series:show, page:1 }
+    requirements:
+        page:   \d+
+
+oktolab_series_new:
+    path:       /oktolab_media/series/new
+    defaults:   { _controller: OktolabMediaBundle:Series:create }
+
+oktolab_series_edit:
+    path:       /oktolab_media/series/{series}/edit
+    defaults:   { _controller: OktolabMediaBundle:Series:edit }
+
+# Episodes
+oktolab_episode_show:
+    path:       /oktolab_media/episode/{uniqID}
+    defaults:   { _controller: OktolabMediaBundle:Episode:show }
+
+oktolab_episode_new:
+    path:       /oktolab_media/episode/new
+    defaults:   { _controller: OktolabMediaBundle:Episode:new }
+
+oktolab_episode_edit:
+    path:       /oktolab_media/episode/{episode}/edit
+    defaults:   { _controller: OktolabMediaBundle:Episode:edit }

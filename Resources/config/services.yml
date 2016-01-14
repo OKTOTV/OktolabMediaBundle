@@ -12,3 +12,8 @@ services:
         arguments: [ @doctrine.orm.entity_manager, %oktolab_media.episode_class%, %oktolab_media.series_class% ]
         tags:
             - { name: kernel.event_listener, event: bprs_asset.delete, method: onAssetDelete }
+
+    oktolab_media.routing_loader:
+        class: Oktolab\MediaBundle\Routing\AdvancedLoader
+        tags:
+            - { name: routing.loader }

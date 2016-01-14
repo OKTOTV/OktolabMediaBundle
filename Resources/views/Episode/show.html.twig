@@ -7,7 +7,7 @@
 {% block body_main %}
     <div class="page-header">
         <h1>{{ episode.name }}</h1>
-        <a href="{{ path('oktolab_episode_edit', {'id': episode.id}) }}" class="btn btn-default">Bearbeiten</a>
+        <a href="{{ path('oktolab_episode_edit', {'episode': episode.id}) }}" class="btn btn-default">Bearbeiten</a>
     </div>
     <div class="row">
         <div class="col-md-8">
@@ -33,10 +33,10 @@
             {% endif %}
             <p>UniqID: {{ episode.uniqID }}</p>
             {% if episode.video is not empty %}
-                <a href="{{ path('oktolab_media_download', {'key': episode.video.filekey}) }}" class="btn btn-default"><span class="glyphicon glyphicon-download"></span>Video</a>
+                <a href="{{ path('bprs_asset_download', {'key': episode.video.filekey}) }}" class="btn btn-default"><span class="glyphicon glyphicon-download"></span>Video</a>
             {% endif %}
             {% if episode.posterframe is not empty %}
-                <a href="{{ path('oktolab_media_download', {'key': episode.posterframe.filekey}) }}" class="btn btn-default"><span class="glyphicon glyphicon-download"></span>Posterframe</a>
+                <a href="{{ path('bprs_asset_download', {'key': episode.posterframe.filekey}) }}" class="btn btn-default"><span class="glyphicon glyphicon-download"></span>Posterframe</a>
             {% endif %}
         </div>
     </div>
@@ -47,10 +47,12 @@
     <script src="http://content.jwplatform.com/libraries/qecJHTsP.js"></script>
     {% if episode.video is not empty %}
         <script type="text/javascript">
-            var playerInstance = jwplayer("video");
-            playerInstance.setup({
-                file: "{{ episode.video|path }}",
-                image: "{{ episode.posterframe|path }}"
+            $(document).ready(function(){
+                var playerInstance = jwplayer("video");
+                playerInstance.setup({
+                    file: "{{ episode.video|path }}",
+                    image: "{{ episode.posterframe|path }}"
+                });
             });
         </script>
     {% endif %}
