@@ -11,10 +11,8 @@ oktolab_series:
         page:  \d+
 
 oktolab_series_show:
-    path:       /oktolab_media/series/show/{id}/{page}
-    defaults:   { _controller: OktolabMediaBundle:Series:show, page:1 }
-    requirements:
-        page:   \d+
+    path:       /oktolab_media/series/show/{series}
+    defaults:   { _controller: OktolabMediaBundle:Series:show }
 
 oktolab_series_new:
     path:       /oktolab_media/series/new

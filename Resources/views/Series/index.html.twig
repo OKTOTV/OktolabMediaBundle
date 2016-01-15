@@ -29,7 +29,7 @@
                         <img src="{{ entity.posterframe|thumb(80,120) }}" class="img-responsive" />
                     {% endif %}
                 </td>
-                <td><a href="{{ path('oktolab_series_show', { 'id': entity.id }) }}">{{ entity.name }}</a></td>
+                <td><a href="{{ path('oktolab_series_show', { 'series': entity.id }) }}">{{ entity.name }}</a></td>
                 <td>{{ entity.webtitle }}</td>
                 <td>{{ entity.uniqID }}</td>
             </tr>
@@ -59,7 +59,7 @@
                         <img src="{{ series.posterframe|thumb(80,120) }}" class="img-responsive" />
                     {% endif %}
                 </td>
-                <td><a href="{{ path('oktolab_series_show', { 'id': series.id }) }}">{{ series.name }}</a></td>
+                <td><a href="{{ path('oktolab_series_show', { 'series': series.id }) }}">{{ series.name }}</a></td>
                 <td>{{ series.webtitle }}</td>
                 <td>{{ series.uniqID }}</td>
             </tr>
