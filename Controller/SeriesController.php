@@ -61,7 +61,7 @@ class SeriesController extends Controller
                     $em->persist($series);
                     $em->flush();
                     $this->get('session')->getFlashBag()->add('success', 'oktolab_media.success_create_series');
-                    return $this->redirect($this->generateUrl('oktolab_series_show', ['id' => $series->getId()]));
+                    return $this->redirect($this->generateUrl('oktolab_series_show', ['series' => $series->getId()]));
                 } else { //???
                     $this->get('session')->getFlashBag()->add('success', 'oktolab_media.unknown_action_series');
                     return $this->redirect($this->generateUrl('oktolab_series'));
@@ -106,7 +106,7 @@ class SeriesController extends Controller
                     $em->persist($series);
                     $em->flush();
                     $this->get('session')->getFlashBag()->add('success', 'oktolab_media.success_edit_series');
-                    return $this->redirect($this->generateUrl('oktolab_series_show', ['id' => $series->getId()]));
+                    return $this->redirect($this->generateUrl('oktolab_series_show', ['series' => $series->getId()]));
                 } elseif ($form->get('delete')->isClicked()) {
                     $em->remove($episode);
                     $em->flush();

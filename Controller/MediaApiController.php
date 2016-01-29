@@ -108,34 +108,35 @@ class MediaApiController extends Controller
         return new Response("", Response::BAD_REQUEST);
     }
 
-    /**
-     * @Route("/download/{key}", requirements={"key"=".+"})
-     * @Security("has_role('ROLE_OKTOLAB_MEDIA_READ')")
-     * @Method("GET")
-     */
-    public function downloadAsset($key)
-    {
-        $asset = $this->getDoctrine()->getManager()->getRepository($this->container->getParameter('bprs_asset.class'))->findOneBy(array('filekey' => $key));
-        if ($this->container->getParameter('xsendfile')) {
-            $response = new Response();
-            $response->headers->set('Content-Disposition', sprintf('attachment; filename="%s"', $asset->getName()));
-            $response->headers->set('Content-type', $asset->getMimetype());
-            $response->headers->set('X-Sendfile', $this->get('bprs.asset_helper')->getPath($asset));
-            $response->sendHeaders();
-            return $response;
-        }
-        $response = new Response();
-        // Set headers
-        $response->headers->set('Cache-Control', 'private');
-        $response->headers->set('Content-type', $asset->getMimetype());
-        $response->headers->set('Content-Disposition', sprintf('attachment; filename="%s"',$asset->getName()));
-        $response->headers->set('Content-length', filesize($this->get('bprs.asset_helper')->getPath($asset)));
-
-        // // Send headers before outputting anything
-        $response->sendHeaders();
-        $response->setContent(readfile($this->get('bprs.asset_helper')->getPath($asset)));
-
-        return $response;
-
-    }
+    // Handle downloads with the bprsAssetBundle downloadAction
+    // /**
+    //  * @Route("/download/{key}", requirements={"key"=".+"})
+    //  * @Security("has_role('ROLE_OKTOLAB_MEDIA_READ')")
+    //  * @Method("GET")
+    //  */
+    // public function downloadAsset($key)
+    // {
+    //     $asset = $this->getDoctrine()->getManager()->getRepository($this->container->getParameter('bprs_asset.class'))->findOneBy(array('filekey' => $key));
+    //     if ($this->container->getParameter('xsendfile')) {
+    //         $response = new Response();
+    //         $response->headers->set('Content-Disposition', sprintf('attachment; filename="%s"', $asset->getName()));
+    //         $response->headers->set('Content-type', $asset->getMimetype());
+    //         $response->headers->set('X-Sendfile', $this->get('bprs.asset_helper')->getPath($asset));
+    //         $response->sendHeaders();
+    //         return $response;
+    //     }
+    //     $response = new Response();
+    //     // Set headers
+    //     $response->headers->set('Cache-Control', 'private');
+    //     $response->headers->set('Content-type', $asset->getMimetype());
+    //     $response->headers->set('Content-Disposition', sprintf('attachment; filename="%s"',$asset->getName()));
+    //     $response->headers->set('Content-length', filesize($this->get('bprs.asset_helper')->getPath($asset)));
+    //
+    //     // // Send headers before outputting anything
+    //     $response->sendHeaders();
+    //     $response->setContent(readfile($this->get('bprs.asset_helper')->getPath($asset)));
+    //
+    //     return $response;
+    //
+    // }
 }

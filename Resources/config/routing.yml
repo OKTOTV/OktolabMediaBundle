@@ -34,3 +34,54 @@ oktolab_episode_new:
 oktolab_episode_edit:
     path:       /oktolab_media/episode/{episode}/edit
     defaults:   { _controller: OktolabMediaBundle:Episode:edit }
+
+# keychain
+oktolab_media_list_keychains:
+    path:       /oktolab_media/list_keychains
+    defaults:   { _controller: OktolabMediaBundle:Keychain:listKeychains }
+
+oktolab_media_show_keychain:
+    path:       /oktolab_media/show_keychain/{keychain}
+    defaults:   { _controller: OktolabMediaBundle:Keychain:showKeychain }
+
+oktolab_media_local_import_episode:
+    path:       /oktolab_media/import/episode
+    defaults:   { _controller: OktolabMediaBundle:Keychain:importEpisode }
+
+oktolab_media_local_import_series:
+    path:       /oktolab_media/import/series
+    defaults:   { _controller: OktolabMediaBundle:Keychain:importSeries }
+
+# mediaApi
+oktolab_media_api_list_series:
+    path:       /api/oktolab_media/series.{format}
+    defaults:   { _controller: OktolabMediaBundle:MediaApi:listSeries, format: json }
+    requirements:
+        format: json|xml
+
+oktolab_media_api_show_series:
+    path:       /api/oktolab_media/series/{uniqID}.{format}
+    defaults:   { _controller: OktolabMediaBundle:MediaApi:showSeries, format: json }
+    requirements:
+        format: json|xml
+
+oktolab_media_api_show_episodes:
+    path:       /api/oktolab_media/episode/{uniqID}.{format}
+    defaults:   { _controller: OktolabMediaBundle:MediaApi:showEpisode, format: json }
+    requirements:
+        format: json|xml
+
+oktolab_media_api_show_asset:
+    path:       /api/oktolab_media/asset/{format}/{uniqID}
+    defaults:   { _controller: OktolabMediaBundle:MediaApi:showAsset, format: json}
+    requirements:
+        format: json|xml
+        uniqID: .+
+
+oktolab_media_api_import_series:
+    path:       /api/oktolab_media/import/series
+    defaults:   { _controller: OktolabMediaBundle:MediaApi:importSeries }
+
+oktolab_media_api_import_episode:
+    path:       /api/oktolab_media/import/episode
+    defaults:   { _controller: OktolabMediaBundle:MediaApi:importEpisode }
