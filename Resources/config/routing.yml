@@ -16,7 +16,7 @@ oktolab_series_show:
 
 oktolab_series_new:
     path:       /oktolab_media/series/new
-    defaults:   { _controller: OktolabMediaBundle:Series:create }
+    defaults:   { _controller: OktolabMediaBundle:Series:new }
 
 oktolab_series_edit:
     path:       /oktolab_media/series/{series}/edit

@@ -46,6 +46,7 @@ oktolab_media.show_episode_description_missing: Keine Beschreibung verfügbar
 # series
 ## series new.html.twig
 oktolab_media.new_series_header: Neue Sendereihe anlegen
+oktolab_media.new_series_button: Anlegen
 
 ## series form labels
 oktolab_media.series_posterframe_label: Posterframe

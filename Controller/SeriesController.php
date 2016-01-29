@@ -43,19 +43,34 @@ class SeriesController extends Controller
     /**
      * Displays a form to create a new Series entity.
      *
-     * @Route("/new", name="series_new")
-     * @Method("GET")
+     * @Route("/new", name="oktolab_series_new")
+     * @Method({"GET", "POST"})
      * @Template()
      */
-    public function newAction()
+    public function newAction(Request $request)
     {
-        $entity = new Series();
-        $form   = $this->createCreateForm($entity);
+        $series = new Series();
+        $form = $this->createForm(new SeriesType(), $series);
+        $form->add('submit', 'submit', ['label' => 'oktolab_media.new_series_button', 'attr' => ['class' => 'btn btn-primary']]);
 
-        return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        );
+        if ($request->getMethod() == "POST") { //sends form
+            $form->handleRequest($request);
+            $em = $this->getDoctrine()->getManager();
+            if ($form->isValid()) { //form is valid, save or preview
+                if ($form->get('submit')->isClicked()) { //save me
+                    $em->persist($series);
+                    $em->flush();
+                    $this->get('session')->getFlashBag()->add('success', 'oktolab_media.success_create_series');
+                    return $this->redirect($this->generateUrl('oktolab_series_show', ['id' => $series->getId()]));
+                } else { //???
+                    $this->get('session')->getFlashBag()->add('success', 'oktolab_media.unknown_action_series');
+                    return $this->redirect($this->generateUrl('oktolab_series'));
+                }
+            }
+            $this->get('session')->getFlashBag()->add('error', 'oktolab_media.error_create_series');
+        }
+
+        return ['form' => $form->createView()];
     }
 
     /**
