@@ -50,8 +50,8 @@
             $(document).ready(function(){
                 var playerInstance = jwplayer("video");
                 playerInstance.setup({
-                    file: "{{ episode.video|path }}",
-                    image: "{{ episode.posterframe|path }}"
+                    image: "{{ episode.posterframe|path }}",
+                    sources: [{% for media in episode.media %}{file: "{{ media.asset|path }}", label: "{{ media.quality }}", type: "mp4"}{% if not loop.last %},{% endif %}{% endfor %}]
                 });
             });
         </script>
