@@ -46,6 +46,11 @@ class MediaService
         );
     }
 
+    public function encodeEpisode($uniqID)
+    {
+        $this->jobService->addJob("Oktolab\MediaBundle\Model\EncodeVideoJob", ['uniqID' => $uniqID]);
+    }
+
     /**
     * starts an import worker for a series by uniqID from the given Keychain
     */
@@ -120,10 +125,11 @@ class MediaService
                 $this->em->flush();
                 $this->em->clear();
             }
+
+            $this->encodeEpisode($local_episode->getUniqID());
         } else {
             //something went wrong. Application not responding correctly
         }
-
     }
 
     /**

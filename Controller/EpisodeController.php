@@ -115,13 +115,6 @@ class EpisodeController extends Controller
     public function editAction(Request $request, $episode)
     {
         $entity = $episode;
-        // $em = $this->getDoctrine()->getManager();
-        //
-        // $entity = $em->getRepository($this->container->getParameter('oktolab_media.episode_class'))->find($id);
-        //
-        // if (!$entity) {
-        //     throw $this->createNotFoundException('Unable to find Episode entity.');
-        // }
 
         $editForm = $this->createEditForm($entity);
         $deleteForm = $this->createDeleteForm($id);
