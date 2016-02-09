@@ -1,7 +1,7 @@
 {% extends "BprsStyleBundle::layout.html.twig" %}
 
 {% block nav_head%}
-    {% include 'BprsStyleBundle::menu.html.twig' with {'selected': 'delorian', 'dropdown': ''} %}
+    {% include 'BprsStyleBundle::menu.html.twig' with {'selected': '', 'dropdown': ''} %}
 {% endblock %}
 
 {% block body_main -%}
@@ -12,10 +12,16 @@
     </div>
     <div class="row">
         <div class="col-md-8">
-            {% if series.posterframe is not empty %}
-                <img src="{{ series.posterframe|path }}" class="img-responsive" />
-            {% endif %}
-            {{ series.description }}
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {% if series.posterframe is not empty %}
+                        <img src="{{ series.posterframe|path }}" class="img-responsive" />
+                    {% endif %}
+                </div>
+                <div class="panel-footer">
+                    {{ series.description }}
+                </div>
+            </div>
         </div>
         <div class="col-md-4">
             <table class="table table-bordered">

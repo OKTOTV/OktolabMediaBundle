@@ -1,7 +1,7 @@
 {% extends "BprsStyleBundle::layout.html.twig" %}
 
 {% block nav_head%}
-    {% include 'BprsStyleBundle::menu.html.twig' with {'selected': 'delorian', 'dropdown': ''} %}
+    {% include 'BprsStyleBundle::menu.html.twig' with {'selected': '', 'dropdown': ''} %}
 {% endblock %}
 
 {% block body_main %}
@@ -12,13 +12,19 @@
     </div>
     <div class="row">
         <div class="col-md-8">
-            {% if episode.video is not empty %}
-                <div id="video">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {% if episode.video is not empty %}
+                        <div id="video">
+                        </div>
+                    {% elseif episode.posterframe is not empty %}
+                        <img src="{{ episode.posterframe|path }}" class="img-responsive"/>
+                    {% endif %}
                 </div>
-            {% elseif episode.posterframe is not empty %}
-                <img src="{{ episode.posterframe|path }}" class="img-responsive"/>
-            {% endif %}
-            {{ episode.description|default('oktolab_media.show_episode_description_missing'|trans) }}
+                <div class="panel-footer">
+                    {{ episode.description|default('oktolab_media.show_episode_description_missing'|trans) }}
+                </div>
+            </div>
         </div>
         <div class="col-md-4">
             <table class="table table-bordered">
