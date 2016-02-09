@@ -13,7 +13,7 @@
 
     {{ form_start(form) }}
         {{ form_errors(form) }}
-        {% include "BprsAssetBundle::singleUpload.html.twig" with {'widget': form.posterframe, 'adapter': 'gallery'} %}
+        {% include "BprsAssetBundle::singleUpload.html.twig" with {'widget': form.posterframe, 'adapter': 'posterframe'} %}
     {{ form_end(form) }}
 </ul>
 {% endblock %}

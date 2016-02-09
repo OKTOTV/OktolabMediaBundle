@@ -65,7 +65,7 @@ oktolab_media_api_show_series:
     requirements:
         format: json|xml
 
-oktolab_media_api_show_episodes:
+oktolab_media_api_show_episode:
     path:       /api/oktolab_media/episode/{uniqID}.{format}
     defaults:   { _controller: OktolabMediaBundle:MediaApi:showEpisode, format: json }
     requirements:

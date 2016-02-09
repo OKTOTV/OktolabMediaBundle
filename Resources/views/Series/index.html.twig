@@ -7,38 +7,8 @@
 {% block body_main -%}
     <div class="page-header">
         <h1>Sendereihen</h1>
-        <a href="{{ path('oktolab_series_new') }}" class="btn btn-default">
-            <span class="glyphicon glyphicon-plus"></span> Neue Sendereihe anlegen
-        </a>
-    </div>
-
-    {# <table class="table">
-        <thead>
-            <tr>
-                <th>Posterframe</th>
-                <th>Name</th>
-                <th>Webtitle</th>
-                <th>Uniqid</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for entity in entities %}
-            <tr>
-                <td>
-                    {% if entity.posterframe is not empty %}
-                        <img src="{{ entity.posterframe|thumb(80,120) }}" class="img-responsive" />
-                    {% endif %}
-                </td>
-                <td><a href="{{ path('oktolab_series_show', { 'series': entity.id }) }}">{{ entity.name }}</a></td>
-                <td>{{ entity.webtitle }}</td>
-                <td>{{ entity.uniqID }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table> #}
-
-    <div class="page-header">
-        <h1>Showing {{ seriess.getTotalItemCount }} series</h1>
+        <p>{{ 'oktolab_media.series_index_total_series_choice'|transchoice(seriess.getTotalItemCount)}}</p>
+        <a href="{{ path('oktolab_series_new') }}" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> Neue Sendereihe anlegen</a>
     </div>
 
     <div class="navigation">
@@ -56,7 +26,7 @@
             <tr>
                 <td>
                     {% if series.posterframe is not empty %}
-                        <img src="{{ series.posterframe|thumb(80,120) }}" class="img-responsive" />
+                        <a href="{{ path('oktolab_series_show', { 'series': series.id }) }}"><img src="{{ series.posterframe|thumb(80,120) }}" class="img-responsive" /></a>
                     {% endif %}
                 </td>
                 <td><a href="{{ path('oktolab_series_show', { 'series': series.id }) }}">{{ series.name }}</a></td>

@@ -13,6 +13,21 @@ oktolab_media.new_episode_header: Neue Episode
 oktolab_media.new_episode_back_to_list: Zurück zu Sendereihen
 oktolab_media.new_episode_create_button: Episode anlegen
 
+## episode show.html.twig
+oktolab_media.episode_show_api: <span class="glyphicon glyphicon-link"></span> API zugriff
+oktolab_media.episode_edit_button: <span class="glyphicon glyphicon-cog"></span> Bearbeiten
+oktolab_media.episode_download_video_button: <span class="glyphicon glyphicon-film"></span> Video
+oktolab_media.episode_download_posterframe_button: <span class="glyphicon glyphicon-picture"></span> Posterframe
+oktolab_media.episode_info_uniqID: Episoden ID
+oktolab_media.episode_info_isActive: Verfügbarkeit
+oktolab_media.episode_info_isActive_choice: "{0} Inaktiv|{1} Aktiv"
+oktolab_media.episode_info_createdAt: Erstellt am
+oktolab_media.episode_info_updatedAt: Aktualisiert am
+oktolab_media.episode_info_onlineStart: Verfügbar von
+oktolab_media.episode_info_onlineEnd: Verfügbar bis
+oktolab_media.episode_info_firstranAt: Erstausstrahlung
+
+
 ## episode form labels
 oktolab_media.name_label: Folgenname
 oktolab_media.description_label: Beschreibung
@@ -71,3 +86,17 @@ oktolab_media.edit_series_header: %series_name% bearbeiten
 oktolab_media.edit_series_cancel: Abbrechen
 oktolab_media.edit_series_button:  <span class="glyphicon glyphicon-floppy-disk"></span> Änderungen speichern
 oktolab_media.delete_series_button: <span class="glyphicon glyphicon-trash"></span> Sendereihe löschen
+
+## series show.html.twig
+oktolab_media.series_show_api: <span class="glyphicon glyphicon-link"></span> API zugriff
+oktolab_media.series_edit_button: <span class="glyphicon glyphicon-cog"></span> Bearbeiten
+oktolab_media.series_info_isActive_choice: "{0} Inaktiv|{1} Aktiv"
+oktolab_media.series_info_isActive: Verfügbarkeit
+oktolab_media.series_info_uniqID: Sendereihen ID
+oktolab_media.series_info_webtitle: Webkürzel
+oktolab_media.series_info_createdAt: Angelegt
+oktolab_media.series_info_updatedAt: Aktualisiert
+oktolab_media.series_download_posterframe_button: <span class="glyphicon glyphicon-picture"></span> Posterframe
+
+## series index.html.twig
+oktolab_media.series_index_total_series_choice: "{0} Derzeit ist keine Sendereihe vorhanden|{1} Derzeit ist %count% Sendereihe vorhanden|]2,Inf[ Derzeit sind %count% Sendereihen vorhanden"

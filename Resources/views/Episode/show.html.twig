@@ -7,7 +7,8 @@
 {% block body_main %}
     <div class="page-header">
         <h1>{{ episode.name }}</h1>
-        <a href="{{ path('oktolab_episode_edit', {'episode': episode.id}) }}" class="btn btn-default">Bearbeiten</a>
+        <a href="{{ path('oktolab_episode_edit', {'episode': episode.id}) }}" class="btn btn-default">{{ 'oktolab_media.episode_edit_button'|trans|raw }}</a>
+        <a href="{{ path('oktolab_media_api_show_episode', {'uniqID': episode.uniqID}) }}" class="btn btn-default">{{ 'oktolab_media.episode_show_api'|trans|raw }}</a>
     </div>
     <div class="row">
         <div class="col-md-8">
@@ -20,23 +21,47 @@
             {{ episode.description|default('oktolab_media.show_episode_description_missing'|trans) }}
         </div>
         <div class="col-md-4">
-            <p>Aktiv: {{ episode.isActive }}</p>
-            <p>Angelegt am: {{ episode.createdAt|date("d.m.Y H:i") }}</p>
-            <p>Aktualisiert am: {{ episode.updatedAt|date("d.m.Y H:i") }}</p>
-            <p>Online von: {{ episode.onlineStart|date("d.m.Y H:i") }}</p>
-            <p>Erstausstrahlung am: {{ episode.firstranAt|date("d.m.Y H:i") }}</p>
-            <p>
-            {% if episode.onlineEnd is empty %}
-                Online bis: nicht beschränkt
-            {% else %}
-                Online bis: {{ episode.onlineEnd|date("d.m.Y H:i") }}</p>
-            {% endif %}
-            <p>UniqID: {{ episode.uniqID }}</p>
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <td>{{'oktolab_media.episode_info_uniqID'|trans}}</td>
+                        <td>{{ episode.uniqID }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{'oktolab_media.episode_info_isActive'|trans}}</td>
+                        <td>{{ episode.isActive }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{'oktolab_media.episode_info_createdAt'|trans}}</td>
+                        <td>{{ episode.createdAt|date("d.m.Y H:i") }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{'oktolab_media.episode_info_updatedAt'|trans}}</td>
+                        <td>{{ episode.updatedAt|date("d.m.Y H:i") }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{'oktolab_media.episode_info_onlineStart'|trans}}</td>
+                        <td>{{ episode.onlineStart|date("d.m.Y H:i") }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{'oktolab_media.episode_info_onlineEnd'|trans}}</td>
+                        <td>
+                            {% if episode.onlineEnd is not empty %}
+                                {{ episode.onlineEnd|date("d.m.Y H:i") }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{{'oktolab_media.episode_info_firstranAt'|trans}}</td>
+                        <td>{{ episode.firstranAt|date("d.m.Y H:i") }}</td>
+                    </tr>
+                </tbody>
+            </table>
             {% if episode.video is not empty %}
-                <a href="{{ path('bprs_asset_download', {'key': episode.video.filekey}) }}" class="btn btn-default"><span class="glyphicon glyphicon-download"></span>Video</a>
+                <a href="{{ path('bprs_asset_download', {'key': episode.video.filekey}) }}" class="btn btn-default">{{ 'oktolab_media.episode_download_video_button'|trans|raw }}</a>
             {% endif %}
             {% if episode.posterframe is not empty %}
-                <a href="{{ path('bprs_asset_download', {'key': episode.posterframe.filekey}) }}" class="btn btn-default"><span class="glyphicon glyphicon-download"></span>Posterframe</a>
+                <a href="{{ path('bprs_asset_download', {'key': episode.posterframe.filekey}) }}" class="btn btn-default">{{ 'oktolab_media.episode_download_posterframe_button'|trans|raw }}</a>
             {% endif %}
         </div>
     </div>
