@@ -13,11 +13,14 @@ use Oktolab\MediaBundle\Entity\Media;
  */
 class EncodeVideoJob extends BprsContainerAwareJob
 {
+    private $em;
+
     public function perform() {
         $resolutions = $this->getContainer()->getParameter('oktolab_media.resolutions');
 
         $episode_class = $this->getContainer()->getParameter('oktolab_media.episode_class');
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
+        $this->em = $em;
         $episode = $em->getRepository($episode_class)->findOneBy(['uniqID' => $this->args['uniqID']]);
         $uri = $this->getContainer()->get('bprs.asset_helper')->getAbsoluteUrl($episode->getVideo());
         $adapters = $this->getContainer()->getParameter('bprs_asset.adapters');
@@ -97,7 +100,7 @@ class EncodeVideoJob extends BprsContainerAwareJob
                     $best_media = $media;
                 }
             }
-            $episode->setVideo($best_media);
+            $episode->setVideo($best_media->getAsset());
         }
         //TODO: add finalize episode
         $this->finalizeEpisode($episode);
@@ -139,6 +142,8 @@ class EncodeVideoJob extends BprsContainerAwareJob
         $em->persist($media);
         $em->persist($episode);
         $em->flush();
+
+        // TODO: we created a new asset. inform the AssetBundle! (send event)
 
         // move encoded media from "cache" to adapter of the original file
         $this->getContainer()->get('bprs_jobservice')->addJob(

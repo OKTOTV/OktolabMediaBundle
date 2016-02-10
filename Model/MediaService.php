@@ -123,8 +123,9 @@ class MediaService
             $local_series->merge($episode->getSeries());
             $local_episode->setSeries($local_series);
             $local_series->addEpisode($local_episode);
+            //TODO: remove hardcoded adapter names and replace them with a container parameter!
             $local_episode->setVideo($this->importAsset($keychain, $episode->getVideo(), 'video'));
-            $local_episode->setPosterframe($this->importAsset($keychain, $episode->getPosterframe(), 'gallery'));
+            $local_episode->setPosterframe($this->importAsset($keychain, $episode->getPosterframe(), 'posterframe'));
 
             $this->em->persist($local_episode);
             $this->em->persist($local_series);
@@ -142,7 +143,6 @@ class MediaService
 
     /**
     * imports and returns asset
-    * TODO: move hardcoded link to service!
     */
     private function importAsset(Keychain $keychain, $key, $adapter)
     {
@@ -163,7 +163,7 @@ class MediaService
                     sprintf('wget --http-user=%s --http-password=%s %s --output-document=%s',
                         $keychain->getUser(),
                         $keychain->getApiKey(),
-                        $keychain->getUrl().'/api/oktolab_media/download/'.$key,
+                        $keychain->getUrl().'/api/bprs_asset/download/'.$key, //$keychain->getUrl().'/api/oktolab_media/download/'.$key,
                         $this->adapters[$adapter]['path'].'/'.$key
                     )
                 );
