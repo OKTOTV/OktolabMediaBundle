@@ -14,7 +14,6 @@ use Oktolab\MediaBundle\Entity\Media;
 class EncodeVideoJob extends BprsContainerAwareJob
 {
     public function perform() {
-        print_r($this->getContainer()->getParameter('oktolab_media.episode_class'));
         $resolutions = $this->getContainer()->getParameter('oktolab_media.resolutions');
 
         $episode_class = $this->getContainer()->getParameter('oktolab_media.episode_class');
@@ -40,15 +39,15 @@ class EncodeVideoJob extends BprsContainerAwareJob
         }
 
         foreach($resolutions as $format => $resolution) {
-            // create new asset, path and key
+            // create new asset in "cache"
             $class = $this->getContainer()->getParameter('oktolab_media.asset_class');
             $asset = new $class;
             $key = uniqId().'.'.$resolution['container'];
-            $path = $adapters[$episode->getVideo()->getAdapter()]['path'].'/'.$key;
             $asset->setFilekey($key);
-            $asset->setAdapter($episode->getVideo()->getAdapter());
+            $asset->setAdapter($this->getContainer()->getParameter('oktolab_media.encoding_filesystem'));
             $asset->setName((string)$episode);
             $asset->setMimetype('video/quicktime');
+            $path = $this->getContainer()->get('bprs.asset_helper')->getPath($asset);
 
             if ($this->resolutionIsTheSame($resolution, $metadata_video)) { //resolution is the same
                 if ($this->videoCanBeCopied($resolution, $metadata_video)) { //videocodec is the same, can be copied
@@ -91,7 +90,7 @@ class EncodeVideoJob extends BprsContainerAwareJob
         }
 
         if (!$this->getContainer()->getParameter('oktolab_media.keep_original')) {
-            $this->getContainer()->get('asset_service')->deleteAsset($episode->getVideo());
+            $this->getContainer()->get('bprs.asset_helper')->deleteAsset($episode->getVideo());
             $best_media = $episode->getMedia()[0];
             foreach ($episode->getMedia() as $media) {
                 if ($media->getSortNumber() > $best_media->getSortNumber()) {
@@ -140,19 +139,28 @@ class EncodeVideoJob extends BprsContainerAwareJob
         $em->persist($media);
         $em->persist($episode);
         $em->flush();
+
+        // move encoded media from "cache" to adapter of the original file
+        $this->getContainer()->get('bprs_jobservice')->addJob(
+        'Bprs\AssetBundle\Model\MoveAssetJob',
+            [
+                'filekey'=> $asset->getFilekey(),
+                'adapter' => $episode->getVideo()->getAdapter()
+            ]
+        );
     }
 
     private function finalizeEpisode($episode)
     {
         $is_active = true;
-        $guzzle = $this->getContainer()->get('guzzle.client');
-        $asset_helper = $this->getContainer()->get('asset_helper');
-        foreach ($episode->getMedia() as $media) {
-            $response = $guzzle->get($asset_helper->getAbsoluteUrl($media->getAsset()));
-            if (!$response->getStatusCode() == 200) {
-                $is_active = false;
-            }
-        }
+        // $guzzle = $this->getContainer()->get('guzzle.client');
+        // $asset_helper = $this->getContainer()->get('bprs.asset_helper');
+        // foreach ($episode->getMedia() as $media) {
+        //     $response = $guzzle->get($asset_helper->getAbsoluteUrl($media->getAsset()));
+        //     if (!$response->getStatusCode() == 200) {
+        //         $is_active = false;
+        //     }
+        // }
 
         $episode->setIsActive($is_active);
         $this->em->persist($episode);

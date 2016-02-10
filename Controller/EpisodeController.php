@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Oktolab\MediaBundle\Entity\Episode;
 use Oktolab\MediaBundle\Form\EpisodeType;
 
@@ -221,5 +222,20 @@ class EpisodeController extends Controller
             ->add('submit', 'submit', array('label' => 'oktolab_media.delete_episode_button', 'attr' => ['class' => 'btn btn-danger']))
             ->getForm()
         ;
+    }
+
+    /**
+     * @Route("/{uniqID}/encode", name="oktolab_episode_encode")
+     * @Method({"GET","POST"})
+     * @Template()
+     */
+    public function encodeVideoAction(Request $request, $uniqID)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $episode = $em->getRepository($this->container->getParameter('oktolab_media.episode_class'))->findOneBy(array('uniqID' => $uniqID));
+
+        $this->get('oktolab_media')->addEncodeVideoJob($episode->getUniqID());
+        $this->get('session')->getFlashBag()->add('info', 'oktolab_media.episode_encode_info');
+        return $this->redirect($request->headers->get('referer'));
     }
 }

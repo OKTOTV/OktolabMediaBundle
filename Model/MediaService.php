@@ -35,6 +35,14 @@ class MediaService
         $this->adapters = $adapters;
     }
 
+    public function addEncodeVideoJob($uniqID)
+    {
+        $this->jobService->addJob(
+            "Oktolab\MediaBundle\Model\EncodeVideoJob",
+            ['uniqID' => $uniqID]
+        );
+    }
+
     /**
     * starts an import worker for an episode by uniqID from the given Keychain
     */

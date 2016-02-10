@@ -25,6 +25,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('series_class')->isRequired()->end()
                 ->scalarNode('asset_class')->isRequired()->end()
                 ->booleanNode('keep_original')->defaultFalse()->end()
+                ->scalarNode('encoding_filesystem')->isRequired()->end()
                 ->arrayNode('resolutions')
                     ->requiresAtLeastOneElement()
                     ->prototype('array')
