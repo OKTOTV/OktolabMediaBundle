@@ -17,18 +17,16 @@ class MediaService
     private $jobService; // triggers jobs for the workers
     private $em; // entity manager
     private $serializer; // json -> object
-    private $guzzle; // load json with login
     private $episode_class; // your episode class
     private $series_class; // your series class
     private $asset_class; // the asset class
     private $adapters; // the adapter paths to save the assets to
 
-    public function __construct($jobService, $entity_manager, $serializer, $guzzle, $episode_class, $series_class, $asset_class, $adapters)
+    public function __construct($jobService, $entity_manager, $serializer, $episode_class, $series_class, $asset_class, $adapters)
     {
         $this->jobService = $jobService;
         $this->em = $entity_manager;
         $this->serializer = $serializer;
-        $this->guzzle = $guzzle;
         $this->episode_class = $episode_class;
         $this->series_class = $series_class;
         $this->asset_class= $asset_class;
@@ -105,7 +103,8 @@ class MediaService
      */
     public function importEpisode(Keychain $keychain, $uniqID, $flush = true)
     {
-        $response = $this->guzzle->get(
+        $client = new GuzzleHttp\Client();
+        $response = $client->request('GET',
             $keychain->getUrl().'/api/oktolab_media/episode/'.$uniqID,
             ['auth' => [$keychain->getUser(), $keychain->getApiKey()]]
         );
@@ -149,7 +148,8 @@ class MediaService
         if ($key) {
             echo "Importing key: --".$key."--\n";
             $url = $keychain->getUrl()."/api/oktolab_media/asset/json/".$key;
-            $response = $this->guzzle->get(
+            $client = new GuzzleHttp\Client();
+            $response = $client->request('GET',
                 $url, ['auth' => [$keychain->getUser(), $keychain->getApiKey()]]
             );
             if ($response->getStatusCode() == 200) {
