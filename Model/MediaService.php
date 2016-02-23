@@ -5,6 +5,7 @@ namespace Oktolab\MediaBundle\Model;
 use Bprs\AppLinkBundle\Entity\Keychain;
 use Bprs\AppLinkBundle\Entity\Key;
 use Oktolab\MediaBundle\Entity\Asset;
+use GuzzleHttp\Client;
 
 /**
 * handles import worker, jobs for worker and permission handling
@@ -103,7 +104,7 @@ class MediaService
      */
     public function importEpisode(Keychain $keychain, $uniqID, $flush = true)
     {
-        $client = new GuzzleHttp\Client();
+        $client = new Client();
         $response = $client->request('GET',
             $keychain->getUrl().'/api/oktolab_media/episode/'.$uniqID,
             ['auth' => [$keychain->getUser(), $keychain->getApiKey()]]
@@ -148,7 +149,7 @@ class MediaService
         if ($key) {
             echo "Importing key: --".$key."--\n";
             $url = $keychain->getUrl()."/api/oktolab_media/asset/json/".$key;
-            $client = new GuzzleHttp\Client();
+            $client = new Client();
             $response = $client->request('GET',
                 $url, ['auth' => [$keychain->getUser(), $keychain->getApiKey()]]
             );
@@ -175,7 +176,8 @@ class MediaService
 
     public function importSeries(Keychain $keychain, $uniqID, $andEpisodes = true)
     {
-        $response = $this->guzzle->get(
+        $client = new Client();
+        $response = $client->request('GET',
             $keychain->getUrl().'/api/oktolab_media/series/'.$uniqID,
             ['auth' => [$keychain->getUser(), $keychain->getApiKey()]]
         );
@@ -194,7 +196,8 @@ class MediaService
                 foreach ($series->getEpisodes() as $episode) {
                     //$this->importEpisode($keychain, $episode->getUniqID());
                     $uniqID = $episode->getUniqID();
-                    $response = $this->guzzle->get(
+                    $client = new Client();
+                    $response = $client->request('GET',
                         $keychain->getUrl().'/api/oktolab_media/episode/'.$uniqID,
                         ['auth' => [$keychain->getUser(), $keychain->getApiKey()]]
                     );
