@@ -42,6 +42,9 @@
         $.ajax({
             type: "GET",
             url: "{{ keychain.url~'/api/oktolab_media/series.json'}}",
+            headers: {
+                "Authorization": "Basic " + btoa("{{ keychain.user }}" + ":" + "{{ keychain.apiKey }}")
+            },
             dataType: 'json',
             username: '{{ keychain.user }}',
             password: '{{ keychain.apiKey }}',
@@ -76,6 +79,9 @@
                   $.ajax({
                       type: "GET",
                       url: "{{ keychain.url~'/api/oktolab_media/series/'}}" + suggestion.id + ".json",
+                      headers: {
+                          "Authorization": "Basic " + btoa("{{ keychain.user }}" + ":" + "{{ keychain.apiKey }}")
+                      },
                       dataType: 'json',
                       username: '{{ keychain.user }}',
                       password: '{{ keychain.apiKey }}',
