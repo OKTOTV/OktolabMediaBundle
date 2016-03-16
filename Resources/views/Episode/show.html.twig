@@ -61,6 +61,10 @@
                         <td>{{'oktolab_media.episode_info_firstranAt'|trans}}</td>
                         <td>{{ episode.firstranAt|date("d.m.Y H:i") }}</td>
                     </tr>
+                    <tr>
+                        <td>{{ 'oktolab_media.show_episode_technical_state'|trans }}</td>
+                        <td>{{ 'oktolab_media.show_episode_technical_state_choice'|transchoice(episode.technicalStatus)}}</td>
+                    </tr>
                 </tbody>
             </table>
             {% if episode.video is not empty %}

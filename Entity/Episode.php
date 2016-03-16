@@ -23,6 +23,13 @@ interface EpisodeMergerInterface
  */
 class Episode implements EpisodeMergerInterface
 {
+    const STATE_READY = 50;                 // Video exists, Media is encoded
+    const STATE_IN_PROGRESS = 40;           // Video exists, Media is encoding
+    const STATE_IN_PROGRESS_QUEUE = 30;     // Video exists, Media encoding in queue
+    const STATE_IMPORTING = 20;             // Video is importing
+    const STATE_IMPORTING_QUEUE = 10;       // Video importing is in queue
+    const STATE_NOT_READY = 0;              // No Video. Episode not ready for anything exept metadata
+
     /**
      * @var integer
      *
@@ -125,9 +132,15 @@ class Episode implements EpisodeMergerInterface
     */
     private $posterframe;
 
+    /**
+     * @ORM\Column(name="technical_status", type="integer", nullable=true, options={"default" = 0})
+     */
+    private $technical_status;
+
     public function __construct()
     {
-        $this->isActive = true;
+        $this->technical_status = $this::STATE_NOT_READY;
+        $this->isActive = false;
         $this->uniqID = uniqid();
     }
 
@@ -397,6 +410,17 @@ class Episode implements EpisodeMergerInterface
     public function getPosterframe()
     {
         return $this->posterframe;
+    }
+
+    public function getTechnicalStatus()
+    {
+        return $this->technical_status;
+    }
+
+    public function setTechnicalStatus($technical_status)
+    {
+        $this->technical_status = $technical_status;
+        return $this;
     }
 
     public function merge(Episode $episode)
