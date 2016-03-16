@@ -3,6 +3,8 @@ namespace Oktolab\MediaBundle\Model;
 
 use Bprs\CommandLineBundle\Model\BprsContainerAwareJob;
 use Oktolab\MediaBundle\Entity\Media;
+use Oktolab\MediaBundle\Event\EncodedEpisodeEvent;
+use Oktolab\MediaBundle\OktolabMediaEvent;
 
 //TODO: flexibility to encode audio only too!
 //TODO: implement gaufrette filesystems correctly! only works with local files at this moment
@@ -158,6 +160,7 @@ class EncodeVideoJob extends BprsContainerAwareJob
     private function finalizeEpisode($episode)
     {
         $is_active = true;
+        //TODO: check existence and of media files
         // $guzzle = $this->getContainer()->get('guzzle.client');
         // $asset_helper = $this->getContainer()->get('bprs.asset_helper');
         // foreach ($episode->getMedia() as $media) {
@@ -166,6 +169,9 @@ class EncodeVideoJob extends BprsContainerAwareJob
         //         $is_active = false;
         //     }
         // }
+
+        $event = new EncodedEpisodeEvent($episode);
+        $this->getContainer()->get('event_dispatcher')->dispatch(OktolabMediaEvent::ENCODED_EPISODE, $event);
 
         $episode->setIsActive($is_active);
         $this->em->persist($episode);
