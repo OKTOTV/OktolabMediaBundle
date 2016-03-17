@@ -23,90 +23,93 @@ class EncodeVideoJob extends BprsContainerAwareJob
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
         $this->em = $em;
         $episode = $em->getRepository($episode_class)->findOneBy(['uniqID' => $this->args['uniqID']]);
-        $uri = $this->getContainer()->get('bprs.asset_helper')->getAbsoluteUrl($episode->getVideo());
-        $adapters = $this->getContainer()->getParameter('bprs_asset.adapters');
-
         $this->getContainer()->get('oktolab_media')->setEpisodeStatus($episode->getUniqID(), Episode::STATE_IN_PROGRESS);
+        if (!$episode->getVideo()) {
+            $this->getContainer()->get('oktolab_media')->setEpisodeStatus($episode->getUniqID(), Episode::STATE_IN_PROGRESS_NO_VIDEO);
+        } else {
+            $uri = $this->getContainer()->get('bprs.asset_helper')->getAbsoluteUrl($episode->getVideo());
+            $adapters = $this->getContainer()->getParameter('bprs_asset.adapters');
 
-        $metainfo = json_decode(shell_exec(sprintf('ffprobe -v error -show_streams -print_format json %s', $uri)), true);
-        $metadata_video = null;
-        $metadata_audio = null;
+            $metainfo = json_decode(shell_exec(sprintf('ffprobe -v error -show_streams -print_format json %s', $uri)), true);
+            $metadata_video = null;
+            $metadata_audio = null;
 
-        foreach ($metainfo['streams'] as $stream) {
-            if ($metadata_audio && $metadata_video) {
-                break;
+            foreach ($metainfo['streams'] as $stream) {
+                if ($metadata_audio && $metadata_video) {
+                    break;
+                }
+                if ($stream['codec_type'] == "audio") {
+                    $metadata_audio = $stream;
+                }
+                if ($stream['codec_type'] == "video") {
+                    $metadata_video = $stream;
+                }
             }
-            if ($stream['codec_type'] == "audio") {
-                $metadata_audio = $stream;
-            }
-            if ($stream['codec_type'] == "video") {
-                $metadata_video = $stream;
-            }
-        }
 
-        foreach($resolutions as $format => $resolution) {
-            // create new asset in "cache"
-            $class = $this->getContainer()->getParameter('oktolab_media.asset_class');
-            $asset = new $class;
-            $key = uniqId().'.'.$resolution['container'];
-            $asset->setFilekey($key);
-            $asset->setAdapter($this->getContainer()->getParameter('oktolab_media.encoding_filesystem'));
-            $asset->setName((string)$episode);
-            $asset->setMimetype('video/quicktime');
-            $path = $this->getContainer()->get('bprs.asset_helper')->getPath($asset);
+            foreach($resolutions as $format => $resolution) {
+                // create new asset in "cache"
+                $class = $this->getContainer()->getParameter('oktolab_media.asset_class');
+                $asset = new $class;
+                $key = uniqId().'.'.$resolution['container'];
+                $asset->setFilekey($key);
+                $asset->setAdapter($this->getContainer()->getParameter('oktolab_media.encoding_filesystem'));
+                $asset->setName((string)$episode);
+                $asset->setMimetype('video/quicktime');
+                $path = $this->getContainer()->get('bprs.asset_helper')->getPath($asset);
 
-            if ($this->resolutionIsTheSame($resolution, $metadata_video)) { //resolution is the same
-                if ($this->videoCanBeCopied($resolution, $metadata_video)) { //videocodec is the same, can be copied
-                    if ($this->audioCanBeCopied($resolution, $metadata_audio)) { // audiocodec is the same, can be copied
-                        shell_exec(sprintf('ffmpeg -i "%s" -movflags +faststart -c:v copy -c:a copy "%s"', $uri, $path));
-                        $this->saveMedia($em, $format, $resolution, $asset, $episode);
-                    } else { // just copy video
-                        shell_exec(sprintf('ffmpeg -i "%s" -movflags +faststart -c:v copy -c:a aac -strict -2 "%s"', $uri, $path));
+                if ($this->resolutionIsTheSame($resolution, $metadata_video)) { //resolution is the same
+                    if ($this->videoCanBeCopied($resolution, $metadata_video)) { //videocodec is the same, can be copied
+                        if ($this->audioCanBeCopied($resolution, $metadata_audio)) { // audiocodec is the same, can be copied
+                            shell_exec(sprintf('ffmpeg -i "%s" -movflags +faststart -c:v copy -c:a copy "%s"', $uri, $path));
+                            $this->saveMedia($em, $format, $resolution, $asset, $episode);
+                        } else { // just copy video
+                            shell_exec(sprintf('ffmpeg -i "%s" -movflags +faststart -c:v copy -c:a aac -strict -2 "%s"', $uri, $path));
+                            $this->saveMedia($em, $format, $resolution, $asset, $episode);
+                        }
+                    } else { // video can not be copied (encode me)
+                        shell_exec(sprintf('ffmpeg -i "%s" -deinterlace -crf 21 -movflags +faststart -c:v h264 -r 50 -c:a aac -strict -2 "%s"', $uri, $path));
                         $this->saveMedia($em, $format, $resolution, $asset, $episode);
                     }
-                } else { // video can not be copied (encode me)
-                    shell_exec(sprintf('ffmpeg -i "%s" -deinterlace -crf 21 -movflags +faststart -c:v h264 -r 50 -c:a aac -strict -2 "%s"', $uri, $path));
-                    $this->saveMedia($em, $format, $resolution, $asset, $episode);
-                }
-            } elseif ($this->resolutionCanBeEncoded($resolution, $metadata_video)) { // resolution can be encoded
-                if ($this->audioCanBeCopied($resolution, $metadata_audio)) { // audiocodec is the same, can be copied
-                    shell_exec(
-                        sprintf(
-                            'ffmpeg -i "%s" -deinterlace -crf 21 -s %sx%s -movflags +faststart -c:v h264 -r 50 -c:a copy "%s"',
-                            $uri,
-                            $resolution['video_width'],
-                            $resolution['video_height'],
-                            $path
-                        )
-                    );
-                    $this->saveMedia($em, $format, $resolution, $asset, $episode);
-                } else { // encode video and audio in resolution
-                    shell_exec(
-                        sprintf(
-                            'ffmpeg -i "%s" -deinterlace -crf 21 -s %sx%s -movflags +faststart -c:v copy -c:a aac -strict -2 "%s"',
-                            $uri,
-                            $resolution['video_width'],
-                            $resolution['video_height'],
-                            $path
-                        )
-                    );
-                    $this->saveMedia($em, $format, $resolution, $asset, $episode);
+                } elseif ($this->resolutionCanBeEncoded($resolution, $metadata_video)) { // resolution can be encoded
+                    if ($this->audioCanBeCopied($resolution, $metadata_audio)) { // audiocodec is the same, can be copied
+                        shell_exec(
+                            sprintf(
+                                'ffmpeg -i "%s" -deinterlace -crf 21 -s %sx%s -movflags +faststart -c:v h264 -r 50 -c:a copy "%s"',
+                                $uri,
+                                $resolution['video_width'],
+                                $resolution['video_height'],
+                                $path
+                            )
+                        );
+                        $this->saveMedia($em, $format, $resolution, $asset, $episode);
+                    } else { // encode video and audio in resolution
+                        shell_exec(
+                            sprintf(
+                                'ffmpeg -i "%s" -deinterlace -crf 21 -s %sx%s -movflags +faststart -c:v copy -c:a aac -strict -2 "%s"',
+                                $uri,
+                                $resolution['video_width'],
+                                $resolution['video_height'],
+                                $path
+                            )
+                        );
+                        $this->saveMedia($em, $format, $resolution, $asset, $episode);
+                    }
                 }
             }
-        }
 
-        if (!$this->getContainer()->getParameter('oktolab_media.keep_original')) {
-            $this->getContainer()->get('bprs.asset_helper')->deleteAsset($episode->getVideo());
-            $best_media = $episode->getMedia()[0];
-            foreach ($episode->getMedia() as $media) {
-                if ($media->getSortNumber() > $best_media->getSortNumber()) {
-                    $best_media = $media;
+            if (!$this->getContainer()->getParameter('oktolab_media.keep_original')) {
+                $this->getContainer()->get('bprs.asset_helper')->deleteAsset($episode->getVideo());
+                $best_media = $episode->getMedia()[0];
+                foreach ($episode->getMedia() as $media) {
+                    if ($media->getSortNumber() > $best_media->getSortNumber()) {
+                        $best_media = $media;
+                    }
                 }
+                $episode->setVideo($best_media->getAsset());
             }
-            $episode->setVideo($best_media->getAsset());
+            //TODO: add finalize episode
+            $this->finalizeEpisode($episode);
         }
-        //TODO: add finalize episode
-        $this->finalizeEpisode($episode);
     }
 
     public function getName() {

@@ -24,6 +24,7 @@ interface EpisodeMergerInterface
 class Episode implements EpisodeMergerInterface
 {
     const STATE_READY = 50;                 // Video exists, Media is encoded
+    const STATE_IN_PROGRESS_NO_VIDEO = 41;   // Video does not exist in expected place.
     const STATE_IN_PROGRESS = 40;           // Video exists, Media is encoding
     const STATE_IN_PROGRESS_QUEUE = 30;     // Video exists, Media encoding in queue
     const STATE_IMPORTING = 20;             // Video is importing
