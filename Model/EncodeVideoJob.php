@@ -163,18 +163,12 @@ class EncodeVideoJob extends BprsContainerAwareJob
 
     private function finalizeEpisode($episode)
     {
-        $is_active = true;
-        // $guzzle = $this->getContainer()->get('guzzle.client');
-        // $asset_helper = $this->getContainer()->get('bprs.asset_helper');
-        // foreach ($episode->getMedia() as $media) {
-        //     $response = $guzzle->get($asset_helper->getAbsoluteUrl($media->getAsset()));
-        //     if (!$response->getStatusCode() == 200) {
-        //         $is_active = false;
-        //     }
-        // }
-        $this->getContainer()->get('oktolab_media')->setEpisodeStatus($episode->getUniqID(), Episode::STATE_READY);
-        $episode->setIsActive($is_active);
-        $this->em->persist($episode);
-        $this->em->flush();
+        $this->getContainer()->get('oktolab_media')->setEpisodeStatus($episode->getUniqID(), Episode::STATE_IN_FINALIZE_QUEUE);
+        $this->getContainer()->get('bprs_jobservice')->addJob(
+        'Bprs\AssetBundle\Model\FinalizeVideoJob',
+            [
+                'uniqID'=> $episode->getUniqID()
+            ]
+        );
     }
 }
