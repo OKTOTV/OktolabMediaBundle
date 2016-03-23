@@ -25,10 +25,10 @@ class FinalizeVideoJob extends BprsContainerAwareJob
         $episode = $this->em->getRepository($episode_class)->findOneBy(['uniqID' => $this->args['uniqID']]);
 
         if ($episode) {
+            $this->media_service = $this->getContainer()->get('oktolab_media');
+            $this->asset_helper_service = $this->getContainer()->get('bprs.asset_helper');
 
             $this->media_service->setEpisodeStatus($this->args['uniqID'], Episode::STATE_FINALIZING);
-            $this->media_service = $this->getContainer()->get('oktolab_media');
-            $this->asset_helper_service = $this->getContainer()->get('bprs_asset_helper');
 
             if ($this->checkMediaStatus($episode)) {
                 $episode->setIsActive(true);
@@ -67,3 +67,4 @@ class FinalizeVideoJob extends BprsContainerAwareJob
 
         return $is_active;
     }
+}
