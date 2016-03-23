@@ -165,7 +165,7 @@ class EncodeVideoJob extends BprsContainerAwareJob
     {
         $this->getContainer()->get('oktolab_media')->setEpisodeStatus($episode->getUniqID(), Episode::STATE_IN_FINALIZE_QUEUE);
         $this->getContainer()->get('bprs_jobservice')->addJob(
-        'Bprs\AssetBundle\Model\FinalizeVideoJob',
+        'Oktolab\MediaBundle\Model\FinalizeVideoJob',
             [
                 'uniqID'=> $episode->getUniqID()
             ]
