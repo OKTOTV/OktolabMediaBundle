@@ -3,9 +3,9 @@ namespace Oktolab\MediaBundle\Model;
 
 use Bprs\CommandLineBundle\Model\BprsContainerAwareJob;
 use Oktolab\MediaBundle\Entity\Media;
+use Oktolab\MediaBundle\Entity\Episode;
 use Oktolab\MediaBundle\Event\EncodedEpisodeEvent;
 use Oktolab\MediaBundle\OktolabMediaEvent;
-
 //TODO: flexibility to encode audio only too!
 //TODO: implement gaufrette filesystems correctly! only works with local files at this moment
 
