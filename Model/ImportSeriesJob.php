@@ -16,5 +16,10 @@ class ImportSeriesJob extends BprsContainerAwareJob
             echo "No keychain found! Abort action\n";
         }
     }
+
+    public function getName()
+    {
+        return 'Import Series';
+    }
 }
 ?>
