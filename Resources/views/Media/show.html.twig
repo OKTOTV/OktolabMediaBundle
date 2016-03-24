@@ -1,0 +1,39 @@
+{% extends "BprsStyleBundle::layout.html.twig" %}
+
+{% block nav_head%}
+    {% include 'BprsStyleBundle::menu.html.twig' with {'selected': '', 'dropdown': ''} %}
+{% endblock %}
+
+{% block body_main %}
+    <div class="page-header">
+        <h1>{{ media.episode.name }}</h1>
+        <a href="{{ path('oktolab_media_edit_media', {'media': media.id}) }}" class="btn btn-default">{{ 'oktolab_media_edit_media'|trans|raw }}</a>
+        <a href="{{ path('oktolab_media_new_media', {'uniqID': media.episode.uniqID}) }}" class="btn btn-default">{{ 'oktolab_media_create_new_media'|trans|raw }}</a>
+    </div>
+    <table class="table">
+        <tr>
+            <td>{{'oktolab_media_quality_label'|trans}}</td>
+            <td>{{ media.quality }}</td>
+        </tr>
+        <tr>
+            <td>{{'oktolab_media_sortNumber_label'|trans}}</td>
+            <td>{{ media.sortNumber }}</td>
+        </tr>
+        <tr>
+            <td>{{'createdAt'|trans}}</td>
+            <td>{{ media.createdAt|date('d.m.Y H:i')}}</td>
+        </tr>
+        <tr>
+            <td>{{'updatedAt'|trans}}</td>
+            <td>{{ media.updatedAt|date('d.m.Y H:i')}}</td>
+        </tr>
+        <tr>
+            <td>{{'episode'|trans}}</td>
+            <td><a href="{{ path('oktolab_episode_show', {'uniqID': media.episode.uniqID })}}">{{ media.episode }}</a></td>
+        </tr>
+        <tr>
+            <td>{{'oktolab_media_public_label'|trans}}</td>
+            <td>{{ 'oktolab_media_public_choice'|transchoice(media.public) }}</td>
+        </tr>
+    </table>
+{% endblock %}

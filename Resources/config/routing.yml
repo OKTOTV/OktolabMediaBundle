@@ -35,6 +35,23 @@ oktolab_episode_edit:
     path:       /oktolab_media/episode/{episode}/edit
     defaults:   { _controller: OktolabMediaBundle:Episode:edit }
 
+# Media
+oktolab_media_media_for_episode:
+    path:       /oktolab_media/media/media_for_episode/{uniqID}
+    defaults:   { _controller: OktolabMediaBundle:Media:mediaForEpisode }
+
+oktolab_media_new_media:
+    path:       /oktolab_media/media/new/{uniqID}
+    defaults:   { _controller: OktolabMediaBundle:Media:new }
+
+oktolab_media_show_media:
+    path:       /oktolab_media/media/{media}
+    defaults:   { _controller: OktolabMediaBundle:Media:show }
+
+oktolab_media_edit_media:
+    path:       /oktolab_media/media/{media}/edit
+    defaults:   { _controller: OktolabMediaBundle:Media:edit }
+
 # keychain
 oktolab_media_list_keychains:
     path:       /oktolab_media/list_keychains

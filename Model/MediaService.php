@@ -198,30 +198,7 @@ class MediaService
             if ($andEpisodes) {
                 gc_enable();
                 foreach ($series->getEpisodes() as $episode) {
-                    //$this->importEpisode($keychain, $episode->getUniqID());
-                    $uniqID = $episode->getUniqID();
-                    $client = new Client();
-                    $response = $client->request('GET',
-                        $keychain->getUrl().'/api/oktolab_media/episode/'.$uniqID,
-                        ['auth' => [$keychain->getUser(), $keychain->getApiKey()]]
-                    );
-                    if ($response->getStatusCode() == 200) {
-                        $episode = $this->serializer->deserialize($response->getBody(), $this->episode_class, 'json');
-                        $local_episode = $this->getEpisode($uniqID);
-                        if (!$local_episode) {
-                            $local_episode = new $this->episode_class;
-                        }
-                        $local_episode->merge($episode);
-                        $local_episode->setSeries($local_series);
-                        $local_series->addEpisode($local_episode);
-                        $local_episode->setVideo($this->importAsset($keychain, $episode->getVideo(), 'video'));
-                        $local_episode->setPosterframe($this->importAsset($keychain, $episode->getPosterframe(), 'gallery'));
-
-                        $this->em->persist($local_episode);
-
-                    } else {
-                        //something went wrong. Application not responding correctly
-                    }
+                    $this->addEpisodeJob($keychain, $episode->getUniqID());
                     unset($episode);
                 }
                 gc_disable();

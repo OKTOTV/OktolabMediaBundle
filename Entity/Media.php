@@ -4,6 +4,7 @@ namespace Oktolab\MediaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Media
@@ -28,6 +29,7 @@ class Media
     private $id;
 
     /**
+     * @Assert\NotBlank()
      * @JMS\Expose
      * @JMS\Type("string")
      * @ORM\Column(name="quality", type="string", length=20)
@@ -35,6 +37,7 @@ class Media
     private $quality;
 
     /**
+     * @Assert\NotBlank()
      * @ORM\Column(name="sortNumber", type="integer")
      */
     private $sortNumber;

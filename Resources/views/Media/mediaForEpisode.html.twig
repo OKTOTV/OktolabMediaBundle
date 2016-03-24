@@ -1,0 +1,5 @@
+<div class="list-group">
+    {% for media in medias %}
+        <a href="{{ path('oktolab_media_show_media', {'media': media.id })}}" class="list-group-item">{{ media.quality }}</a>
+    {% endfor %}
+</div>

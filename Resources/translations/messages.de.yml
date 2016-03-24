@@ -1,3 +1,4 @@
+# api  -------------------------------------------------------------------------
 oktolab_media.show_series.import_episode: Folge Importieren
 oktolab_media.show_series.import_series: Sendereihe Importieren
 oktolab_media_show_keychain.back_to_keychains: Zurück zum Schlüsselkasten
@@ -7,7 +8,7 @@ oktolab_media.show_keychain.no_matches: Keine Übereinstimmung
 oktolab_media.list_keychains.header: Schlüsselkasten
 
 
-# episode
+# episode ----------------------------------------------------------------------
 ## episode new.html.twig
 oktolab_media.new_episode_header: Neue Episode
 oktolab_media.new_episode_back_to_list: Zurück zu Sendereihen
@@ -59,7 +60,8 @@ oktolab_media.edit_episode_header: Episode bearbeiten
 oktolab_media.show_episode_description_missing: Keine Beschreibung verfügbar
 oktolab_media.show_episode_technical_state:     Technischer Status
 oktolab_media.show_episode_technical_state_choice: "[0, 10] Nicht Bereit. Keine Videodatei |[10, 20] Episode in Queue |[20, 30] Episode wird importiert |[30,40] Medien werden encodiert |{41} Episode besitzt kein Video zum Encodieren |[41, 50] Episode bereit"
-# series
+
+# series -----------------------------------------------------------------------
 ## series new.html.twig
 oktolab_media.new_series_header: Neue Sendereihe anlegen
 oktolab_media.new_series_button: Anlegen
@@ -101,3 +103,28 @@ oktolab_media.series_download_posterframe_button: <span class="glyphicon glyphic
 oktolab_first_runs:                     Erstausstrahlungsdatum als CSV
 ## series index.html.twig
 oktolab_media.series_index_total_series_choice: "{0} Derzeit ist keine Sendereihe vorhanden|{1} Derzeit ist %count% Sendereihe vorhanden|]1,Inf]Derzeit sind %count% Sendereihen vorhanden"
+
+
+# media ------------------------------------------------------------------------
+oktolab_media_media_create_button:      Media anlegen
+oktolab_media_success_create_media:     Media erfolgreich angelegt
+oktolab_media_error_create_media:       Media konnte nicht angelegt werden
+
+oktolab_media_edit_media_header:        Media bearbeiten
+oktolab_media_delete_media_button:      Media löschen
+oktolab_media_edit_media_button:        Änderungen speichern
+oktolab_media_success_update_media:     Media erfolgreich aktualisiert
+oktolab_media_success_delete_media:     Media erfolgreich gelöscht
+oktolab_media_error_update_media:       Media konnte nicht aktualisiert werden
+
+oktolab_media_quality_label:            Qualitätsname
+oktolab_media_public_label:             Öffentlich verfügbar
+oktolab_media_asset_label:              Media anhang
+oktolab_media_sortNumber_label:         Nummer in Reihenfolge
+
+oktolab_media_public_choice:            "{0} Nicht Öffentlich|{1} Öffentlich"
+
+oktolab_media_edit_media:               Media bearbeiten
+oktolab_media_create_new_media:         Neues Media anlegen
+
+oktolab_media_media_for_episode_header: Episodenformate

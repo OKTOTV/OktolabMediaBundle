@@ -1,0 +1,25 @@
+{% extends "BprsStyleBundle::layout.html.twig" %}
+
+{% block nav_head%}
+    {% include 'BprsStyleBundle::menu.html.twig' with {'selected': '', 'dropdown': ''} %}
+{% endblock %}
+
+{% block body_main %}
+    <div class="page-header">
+        <h1>{{ 'oktolab_media_edit_media_header'|trans }}</h1>
+    </div>
+
+{{ form_start(form)}}
+    {% include "BprsAssetBundle::singleUpload.html.twig" with {'widget': form.asset, 'adapter': 'video', 'asset': form.vars.value.asset} %}
+{{ form_end(form)}}
+{% endblock %}
+
+{% block javascripts %}
+ {{ parent() }}
+ {% include "BprsAssetBundle::singleUpload.js.twig" %}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% include "BprsAssetBundle::singleUpload.css.twig" %}
+{% endblock %}
