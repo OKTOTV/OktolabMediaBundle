@@ -90,7 +90,7 @@ class MediaController extends Controller
                     $em->remove($media);
                     $em->flush();
                     $this->get('session')->getFlashBag()->add('success', 'oktolab_media_success_delete_media');
-                    return $this->redirect($this->generateUrl('oktolab_episode_show', $uniqID));
+                    return $this->redirect($this->generateUrl('oktolab_episode_show', ['uniqID' => $uniqID]));
                 }
             } else {
                 $this->get('session')->getFlashBag()->add('error', 'oktolab_media_error_update_media');
