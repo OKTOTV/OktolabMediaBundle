@@ -84,7 +84,7 @@ class MediaController extends Controller
                     $em->persist($media);
                     $em->flush();
                     $this->get('session')->getFlashBag()->add('success', 'oktolab_media_success_update_media');
-                    return $this->redirect($this->generateUrl('oktolab_media_show_media'));
+                    return $this->redirect($this->generateUrl('oktolab_media_show_media', ['media' => $media->getId()]));
                 } else { //delete media
                     $uniqID = $media->getEpisode()->getUniqID();
                     $em->remove($media);

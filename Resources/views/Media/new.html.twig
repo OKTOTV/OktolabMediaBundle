@@ -6,24 +6,20 @@
 
 {% block body_main %}
     <div class="page-header">
-        <h1>{{ media.episode.name }}</h1>
-        <a href="{{ path('oktolab_media_edit_media', {'media': media.id}) }}" class="btn btn-default">{{ 'oktolab_media_edit_media'|trans|raw }}</a>
-        <a href="{{ path('oktolab_media_new_media', {'uniqID': media.episode.uniqID}) }}" class="btn btn-default">{{ 'oktolab_media_create_new_media'|trans|raw }}</a>
+        <h1>{{ 'oktolab_media_edit_media_header'|trans }}</h1>
     </div>
-    <table class="table">
-        <tr>
-            <td>{{'oktolab_media_quality_label'|trans}}</td>
-            <td>{{ media.quality }}</td>
-            <td>{{'sortNumber'|trans}}</td>
-            <td>{{ media.sortNumber }}</td>
-            <td>{{'createdAt'|trans}}</td>
-            <td>{{ media.createdAt|date('d.m.Y H:i')}}</td>
-            <td>{{'updatedAt'|trans}}</td>
-            <td>{{ media.updatedAt|date('d.m.Y H:i')}}</td>
-            <td>{{'episode'|trans}}</td>
-            <td><a href="{{ path('oktolab_episode_show', {'unidID': media.episode.uniqID })}}"{{ media.episode }}</td>
-            <td>{{'oktolab_media_public_label'|trans}}</td>
-            <td>{{ 'oktolab_media_public_choice'|transchoice(media.public) }}</td>
-        </tr>
-    </table>
+
+{{ form_start(form)}}
+    {% include "BprsAssetBundle::singleUpload.html.twig" with {'widget': form.asset, 'adapter': 'video', 'asset': form.vars.value.asset} %}
+{{ form_end(form)}}
+{% endblock %}
+
+{% block javascripts %}
+ {{ parent() }}
+ {% include "BprsAssetBundle::singleUpload.js.twig" %}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% include "BprsAssetBundle::singleUpload.css.twig" %}
 {% endblock %}

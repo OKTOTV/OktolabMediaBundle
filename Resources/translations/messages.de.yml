@@ -92,7 +92,7 @@ oktolab_media.delete_series_button: <span class="glyphicon glyphicon-trash"></sp
 
 ## series show.html.twig
 oktolab_media.series_show_api: <span class="glyphicon glyphicon-link"></span> API zugriff
-oktolab_media.series_edit_button: <span class="glyphicon glyphicon-cog"></span> Bearbeiten
+oktolab_media.series_edit_button: <span class="glyphicon glyphicon-edit"></span> Bearbeiten
 oktolab_media.series_info_isActive_choice: "{0} Inaktiv|{1} Aktiv"
 oktolab_media.series_info_isActive: Verfügbarkeit
 oktolab_media.series_info_uniqID: Sendereihen ID
@@ -128,3 +128,4 @@ oktolab_media_edit_media:               Media bearbeiten
 oktolab_media_create_new_media:         Neues Media anlegen
 
 oktolab_media_media_for_episode_header: Episodenformate
+oktolab_media_media_fore_episode_empty: Derzeit keine Formate vorhanden

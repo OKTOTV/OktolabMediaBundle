@@ -53,7 +53,6 @@ class MediaService
     */
     public function addEpisodeJob(Keychain $keychain, $uniqID)
     {
-        $this->setEpisodeStatus($uniqID, Episode::STATE_IMPORTING_QUEUE);
         $this->jobService->addJob(
             "Oktolab\MediaBundle\Model\ImportEpisodeJob",
             array('user' => $keychain->getUser(), 'uniqID' => $uniqID)
@@ -115,30 +114,33 @@ class MediaService
         if ($response->getStatusCode() == 200) {
             $episode = $this->serializer->deserialize($response->getBody(), $this->episode_class, 'json');
             $local_episode = $this->getEpisode($uniqID);
-            $local_series = $this->em->getRepository($this->series_class)->findOneBy(array('uniqID' => $episode->getSeries()->getUniqID()));
+            $local_series = $this->em->getRepository($this->series_class)->findOneBy(['uniqID' => $episode->getSeries()->getUniqID()]);
             if (!$local_series) {
-                $local_series = new $this->series_class;
+                $this->importSeries($keychain, $episode->getSeries()->getUniqID(), false);
             }
             if (!$local_episode) {
                 $local_episode = new $this->episode_class;
             }
             $local_episode->merge($episode);
-            $local_series->merge($episode->getSeries());
             $local_episode->setSeries($local_series);
             $local_series->addEpisode($local_episode);
             //TODO: remove hardcoded adapter names and replace them with a container parameter!
             $local_episode->setVideo($this->importAsset($keychain, $episode->getVideo(), 'video'));
             $local_episode->setPosterframe($this->importAsset($keychain, $episode->getPosterframe(), 'posterframe'));
 
+            if (!$local_series->getPosterframe()) {
+                $local_series->setPosterframe($this->importAsset($keychain, $episode->getSeries()->getPosterframe(), 'gallery'));
+            }
+
+
             $this->em->persist($local_episode);
             $this->em->persist($local_series);
 
             if ($flush) {
                 $this->em->flush();
-                $this->em->clear();
             }
 
-            $this->encodeEpisode($local_episode->getUniqID());
+            $this->addEncodeVideoJob($local_episode->getUniqID());
         } else {
             $this->setEpisodeStatus($uniqID, Episode::STATE_NOT_READY);
             //something went wrong. Application not responding correctly
@@ -187,7 +189,7 @@ class MediaService
         );
         if ($response->getStatusCode() == 200) {
             $series = $this->serializer->deserialize($response->getBody(), $this->series_class, 'json');
-            $local_series = $this->em->getRepository($this->series_class)->findOneBy(array('uniqID' => $uniqID));
+            $local_series = $this->em->getRepository($this->series_class)->findOneBy(['uniqID' => $uniqID]);
             if (!$local_series) {
                 $local_series = new $this->series_class;
             }
@@ -213,9 +215,11 @@ class MediaService
     public function setEpisodeStatus($uniqID, $status)
     {
         $episode = $this->getEpisode($uniqID);
-        $episode->setTechnicalStatus($status);
-        $this->em->persist($episode);
-        $this->em->flush();
+        if ($episode) {
+            $episode->setTechnicalStatus($status);
+            $this->em->persist($episode);
+            $this->em->flush();
+        }
     }
 
     public function getEpisode($uniqID)
