@@ -1,0 +1,8 @@
+{% if player_type == 'jwplayer' %}
+    {
+        "file": "{{ absolute_url(asset('bundles/oktolabmedia/img/'~origin.logo)) }}",
+        "link": "{{ origin.url }}",
+        "margin": "{{ origin.margin }}",
+        "position": "{{ origin.position }}"
+    }
+{% endif %}

@@ -3,6 +3,10 @@ services:
         class:  Oktolab\MediaBundle\Model\MediaService
         arguments: [ @bprs_jobservice, @doctrine.orm.entity_manager, @jms_serializer, %oktolab_media.episode_class%, %oktolab_media.series_class%, %bprs_asset.class%, %bprs_asset.adapters% ]
 
+    origin:
+        class: Oktolab\MediaBundle\Model\OriginService
+        arguments: [ @oktolab_media, @bprs_applink, @router ]
+
     jms_serializer.object_constructor:
         alias: jms_serializer.doctrine_object_constructor
         public: false
@@ -17,3 +21,11 @@ services:
         class: Oktolab\MediaBundle\Routing\AdvancedLoader
         tags:
             - { name: routing.loader }
+
+    # TWIG Extension
+    oktolab_media.twig_extension:
+        class: Oktolab\MediaBundle\Twig\PlayerExtension
+        public: false
+        arguments: [ @twig, %oktolab_media.player_url%, %oktolab_media.player_type%, @origin ]
+        tags:
+            - { name: twig.extension }

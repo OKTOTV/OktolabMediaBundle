@@ -1,0 +1,20 @@
+{% set public_medias = [] %}
+{% for media in episode.media if media.public%}
+    {% set public_medias = public_medias|merge([media]) %}
+{% endfor %}
+
+[
+        {
+            "image": "{{ episode.posterframe|thumb(720,1280)}}",
+            "title": "{{ episode.name }}",
+            "sources": [
+                {% for media in public_medias %}
+                        {
+                            "file": "{{ media.asset|link }}",
+                            "label": "{{ media.quality }}",
+                            "type": "mp4"
+                        }{% if not loop.last %},{% endif %}
+                {% endfor %}
+            ]
+        }
+]

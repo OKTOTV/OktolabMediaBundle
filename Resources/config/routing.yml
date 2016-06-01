@@ -102,3 +102,14 @@ oktolab_media_api_import_series:
 oktolab_media_api_import_episode:
     path:       /api/oktolab_media/import/episode
     defaults:   { _controller: OktolabMediaBundle:MediaApi:importEpisode }
+
+#PublicApi
+oktolab_media_player_for_episode:
+    path:       /oktolab_media/public_api/episode/{uniqID}/{player_type}.{_format}
+    defaults:   { _controller: OktolabMediaBundle:PublicApi:episode }
+
+oktolab_media_origin_for_episode:
+    path:       /oktolab_media/public_api/origin/{player_type}.{_format}
+    defaults:   { _controller: OktolabMediaBundle:PublicApi:origin, _format: json }
+    requirements:
+        _format: json

@@ -141,6 +141,12 @@ class Episode implements EpisodeMergerInterface
      */
     private $technical_status;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Bprs\AppLinkBundle\Entity\Keychain")
+     * @ORM\JoinColumn(name="keychain_id", referencedColumnName="id", nullable=true)
+     */
+    private $keychain;
+
     public function __construct()
     {
         $this->technical_status = $this::STATE_NOT_READY;
@@ -427,6 +433,17 @@ class Episode implements EpisodeMergerInterface
         return $this;
     }
 
+    public function getKeychain()
+    {
+        return $this->keychain;
+    }
+
+    public function setKeychain($keychain)
+    {
+        $this->keychain = $keychain;
+        return $this;
+    }
+
     public function merge(Episode $episode)
     {
         $this->name = $episode->getName();
@@ -437,5 +454,6 @@ class Episode implements EpisodeMergerInterface
         $this->onlineEnd = $episode->getOnlineEnd();
         $this->createdAt = $episode->getCreatedAt();
         $this->firstranAt = $episode->getFirstranAt();
+
     }
 }

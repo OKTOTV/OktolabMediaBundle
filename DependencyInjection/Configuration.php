@@ -21,6 +21,17 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('oktolab_media');
         $rootNode
             ->children()
+                ->arrayNode('origin')
+                ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('url')->defaultValue('http://www.oktolab.at')->end()
+                        ->scalarNode('position')->defaultValue('top-right')->end()
+                        ->integerNode('margin')->defaultValue(8)->end()
+                        ->scalarNode('logo')->defaultValue('logo.png')->end()
+                    ->end()
+                ->end()
+                ->scalarNode('player_type')->defaultValue('jwplayer')->end()
+                ->scalarNode('player_url')->isRequired()->end()
                 ->scalarNode('episode_class')->isRequired()->end()
                 ->scalarNode('series_class')->isRequired()->end()
                 ->scalarNode('asset_class')->isRequired()->end()

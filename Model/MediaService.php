@@ -129,7 +129,7 @@ class MediaService
             $local_episode->setPosterframe($this->importAsset($keychain, $episode->getPosterframe(), 'posterframe'));
 
             if (!$local_series->getPosterframe()) {
-                $local_series->setPosterframe($this->importAsset($keychain, $episode->getSeries()->getPosterframe(), 'gallery'));
+                $local_series->setPosterframe($this->importAsset($keychain, $episode->getSeries()->getPosterframe(), 'posterframe'));
             }
 
 
@@ -225,5 +225,15 @@ class MediaService
     public function getEpisode($uniqID)
     {
         return $this->em->getRepository($this->episode_class)->findOneBy(['uniqID' => $uniqID]);
+    }
+
+    public function getSeries($uniqID)
+    {
+        return $this->em->getRepository($this->series_class)->findOneBy(['uniqID' => $uniqID]);
+    }
+
+    public function getAvailableRoles()
+    {
+        return [$this::ROLE_READ, $this::ROLE_WRITE];
     }
 }

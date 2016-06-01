@@ -30,5 +30,8 @@ class OktolabMediaExtension extends Extension
         $container->setParameter('oktolab_media.resolutions', $config['resolutions']);
         $container->setParameter('oktolab_media.keep_original', $config['keep_original']);
         $container->setParameter('oktolab_media.encoding_filesystem', $config['encoding_filesystem']);
+        $container->setParameter('oktolab_media.player_type', $config['player_type']);
+        $container->setParameter('oktolab_media.player_url', $config['player_url']);
+        $container->setParameter('oktolab_media.origin', $config['origin']);
     }
 }
