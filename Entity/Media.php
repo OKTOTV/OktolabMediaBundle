@@ -59,7 +59,7 @@ class Media
     /**
     * @JMS\Expose
     * @JMS\ReadOnly
-    * @ORM\OneToOne(targetEntity="Bprs\AssetBundle\Entity\AssetInterface")
+    * @ORM\OneToOne(targetEntity="Bprs\AssetBundle\Entity\AssetInterface", fetch="EAGER")
     */
     private $asset;
 

@@ -122,7 +122,7 @@ class Episode implements EpisodeMergerInterface
     /**
     * @JMS\Expose
     * @JMS\ReadOnly
-    * @ORM\OneToOne(targetEntity="Bprs\AssetBundle\Entity\AssetInterface")
+    * @ORM\OneToOne(targetEntity="Bprs\AssetBundle\Entity\AssetInterface", fetch="EAGER")
     * @ORM\JoinColumn(name="video_id", referencedColumnName="id")
     */
     private $video;
@@ -130,7 +130,7 @@ class Episode implements EpisodeMergerInterface
     /**
     * @JMS\Expose
     * @JMS\ReadOnly
-    * @ORM\OneToOne(targetEntity="Bprs\AssetBundle\Entity\AssetInterface")
+    * @ORM\OneToOne(targetEntity="Bprs\AssetBundle\Entity\AssetInterface", fetch="EAGER")
     * @ORM\JoinColumn(name="posterframe_id", referencedColumnName="id")
     * @JMS\Type("string")
     */
