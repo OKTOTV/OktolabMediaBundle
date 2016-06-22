@@ -27,7 +27,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('url')->defaultValue('http://www.oktolab.at')->end()
                         ->scalarNode('position')->defaultValue('top-right')->end()
                         ->integerNode('margin')->defaultValue(8)->end()
-                        ->scalarNode('logo')->defaultValue('logo.png')->end()
+                        ->scalarNode('logo')->end()
                     ->end()
                 ->end()
                 ->scalarNode('player_type')->defaultValue('jwplayer')->end()

@@ -87,6 +87,9 @@ class MediaController extends Controller
                     return $this->redirect($this->generateUrl('oktolab_media_show_media', ['media' => $media->getId()]));
                 } else { //delete media
                     $uniqID = $media->getEpisode()->getUniqID();
+                    if ($media->getAsset()) {
+                        $this->get('bprs.asset_helper')->deleteAsset($media->getAsset());
+                    }
                     $em->remove($media);
                     $em->flush();
                     $this->get('session')->getFlashBag()->add('success', 'oktolab_media_success_delete_media');

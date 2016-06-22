@@ -7,7 +7,7 @@ use Oktolab\MediaBundle\Entity\Episode;
 use Oktolab\MediaBundle\Event\EncodedEpisodeEvent;
 use Oktolab\MediaBundle\OktolabMediaEvent;
 //TODO: flexibility to encode audio only too!
-//TODO: implement gaufrette filesystems correctly! only works with local files at this moment
+//TODO: only works with local files at this moment
 
 /**
  * checks original video and starts encoding according to configurated resolutions.
@@ -56,7 +56,7 @@ class EncodeVideoJob extends BprsContainerAwareJob
                 $asset->setAdapter($this->getContainer()->getParameter('oktolab_media.encoding_filesystem'));
                 $asset->setName((string)$episode);
                 $asset->setMimetype('video/quicktime');
-                $path = $this->getContainer()->get('bprs.asset_helper')->getPath($asset);
+                $path = $this->getContainer()->get('bprs.asset_helper')->getPath($asset, true);
 
                 if ($this->resolutionIsTheSame($resolution, $metadata_video)) { //resolution is the same
                     if ($this->videoCanBeCopied($resolution, $metadata_video)) { //videocodec is the same, can be copied

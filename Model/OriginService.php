@@ -46,7 +46,6 @@ class OriginService {
             $api_url
         );
         if ($response->getStatusCode() == 200) {
-            //die(var_dump(json_decode($response->getBody())));
             return json_decode($response->getBody());
         }
     }

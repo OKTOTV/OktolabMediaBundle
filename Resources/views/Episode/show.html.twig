@@ -9,6 +9,7 @@
         <h1>{{ episode.name }}</h1>
         <a href="{{ path('oktolab_episode_edit', {'episode': episode.id}) }}" class="btn btn-default">{{ 'oktolab_media.episode_edit_button'|trans|raw }}</a>
         <a href="{{ path('oktolab_media_api_show_episode', {'uniqID': episode.uniqID}) }}" class="btn btn-default">{{ 'oktolab_media.episode_show_api'|trans|raw }}</a>
+        <a href="{{ path('oktolab_episode_encode', {'uniqID': episode.uniqID}) }}" class="btn btn-danger">{{ 'oktolab_media.show_episode_add_to_encode_queue'|trans|raw }}</a>
     </div>
     <div class="row">
         <div class="col-md-8">
