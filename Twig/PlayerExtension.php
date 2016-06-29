@@ -20,6 +20,7 @@ class PlayerExtension extends \Twig_Extension
     public function getFunctions() {
         return array(
             new \Twig_SimpleFunction('player', [$this,'player']),
+            new \Twig_SimpleFunction('playlist', [$this,'playlist']),
             new \Twig_SimpleFunction('origin', [$this, 'origin'])
         );
     }
@@ -30,6 +31,14 @@ class PlayerExtension extends \Twig_Extension
             $player_type = $this->default_player;
         }
         return $this->getPlayerForType($episode, $player_id, $player_type);
+    }
+
+    public function playlist($playlist, $player_id = "player", $player_type = false)
+    {
+        if (!$player_type) {
+            $player_type = $this->default_player;
+        }
+        return $this->getPlaylistPlayerForType($playlist, $player_id, $player_type);
     }
 
     public function origin($episode, $player_type = false)
@@ -59,6 +68,28 @@ class PlayerExtension extends \Twig_Extension
                         'player_id' => $player_id
                     ]
                 );
+        }
+    }
+
+    private function getPlaylistPlayerForType($playlist, $player_id, $player_type)
+    {
+        switch ($player_type) {
+            case 'jwplayer':
+                return $this->twig->render('OktolabMediaBundle:Player:playlist_jwplayer.js.twig',
+                    [
+                        'playlist' => $playlist,
+                        'player_url' => $this->player_url,
+                        'player_id' => $player_id
+                    ]
+                );
+            default:
+            return $this->twig->render('OktolabMediaBundle:Player:playlist_jwplayer.js.twig',
+                [
+                    'playlist' => $playlist,
+                    'player_url' => $this->player_url,
+                    'player_id' => $player_id
+                ]
+            );
         }
     }
 

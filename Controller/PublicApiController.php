@@ -44,6 +44,14 @@ class PublicApiController extends Controller
     }
 
     /**
+     * @TODO: migrate playlist functionality
+     */
+    // public function playlistAction($uniqID, $player_type)
+    // {
+    //     return [];
+    // }
+
+    /**
     * @Route("/origin/{player_type}.{_format}", defaults={"_format": "json"}, requirements={"_format": "json"}, name="oktolab_media_origin_for_episode")
     * @Method("GET")
     * Cache(expires="+1 day", public="yes")

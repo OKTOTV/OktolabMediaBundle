@@ -1,11 +1,11 @@
 services:
     oktolab_media:
         class:  Oktolab\MediaBundle\Model\MediaService
-        arguments: [ @bprs_jobservice, @doctrine.orm.entity_manager, @jms_serializer, %oktolab_media.episode_class%, %oktolab_media.series_class%, %bprs_asset.class%, %bprs_asset.adapters% ]
+        arguments: [ "@bprs_jobservice", "@doctrine.orm.entity_manager", "@jms_serializer", %oktolab_media.episode_class%, %oktolab_media.series_class%, %bprs_asset.class%, %bprs_asset.adapters% ]
 
     origin:
         class: Oktolab\MediaBundle\Model\OriginService
-        arguments: [ @oktolab_media, @bprs_applink, @router ]
+        arguments: [ "@oktolab_media", "@bprs_applink", "@router" ]
 
     jms_serializer.object_constructor:
         alias: jms_serializer.doctrine_object_constructor
@@ -13,7 +13,7 @@ services:
 
     oktolab_media.asset_listener:
         class: Oktolab\MediaBundle\Event\AssetListener
-        arguments: [ @doctrine.orm.entity_manager, %oktolab_media.episode_class%, %oktolab_media.series_class% ]
+        arguments: [ "@doctrine.orm.entity_manager", %oktolab_media.episode_class%, %oktolab_media.series_class% ]
         tags:
             - { name: kernel.event_listener, event: bprs_asset.delete, method: onAssetDelete }
 
@@ -26,6 +26,6 @@ services:
     oktolab_media.twig_extension:
         class: Oktolab\MediaBundle\Twig\PlayerExtension
         public: false
-        arguments: [ @twig, %oktolab_media.player_url%, %oktolab_media.player_type%, @origin ]
+        arguments: [ "@twig", %oktolab_media.player_url%, %oktolab_media.player_type%, "@origin" ]
         tags:
             - { name: twig.extension }
