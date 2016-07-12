@@ -60,7 +60,7 @@ oktolab_media.edit_episode_header: Episode bearbeiten
 oktolab_media.show_episode_add_to_encode_queue: <span class="glyphicon glyphicon-compressed" aria-hidden="true"></span> Episode Encodieren
 oktolab_media.show_episode_description_missing: Keine Beschreibung verfügbar
 oktolab_media.show_episode_technical_state:     Technischer Status
-oktolab_media.show_episode_technical_state_choice: "[0, 10] Nicht Bereit. Keine Videodatei |[10, 20] Episode in Queue |[20, 30] Episode wird importiert |[30,40] Medien werden encodiert |{41} Episode besitzt kein Video zum Encodieren |[41, 50] Episode bereit"
+oktolab_media.show_episode_technical_state_choice: "[0, 9] Nicht Bereit. Keine Videodatei |[10, 19] Episode in Queue |[20, 29] Episode wird importiert |[30,40] Medien werden encodiert |{41} Episode besitzt kein Video zum Encodieren |[42, 50] Episode bereit"
 
 # series -----------------------------------------------------------------------
 ## series new.html.twig

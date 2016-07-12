@@ -51,6 +51,7 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('audio_sample_rate')->defaultValue("48000")->end()
                             ->scalarNode('container')->defaultValue('mov')->end()
                             ->booleanNode('public')->defaultTrue()->end()
+                            ->scalarNode('adapter')->defaultValue('')->end()
                         ->end()
                     ->end()
                 ->end()

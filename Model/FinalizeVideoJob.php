@@ -14,6 +14,7 @@ class FinalizeVideoJob extends BprsContainerAwareJob
     private $em;
     private $media_service;
     private $asset_helper_service;
+    private $logger;
 
     public function getName() {
         return 'Finalize Episode';
@@ -21,11 +22,11 @@ class FinalizeVideoJob extends BprsContainerAwareJob
 
     public function perform() {
         $this->em = $this->getContainer()->get('doctrine.orm.entity_manager');
-        $episode_class = $this->getContainer()->getParameter('oktolab_media.episode_class');
-        $episode = $this->em->getRepository($episode_class)->findOneBy(['uniqID' => $this->args['uniqID']]);
-
+        $this->media_service = $this->getContainer()->get('oktolab_media');
+        $this->logger = $this->getContainer()->get('logger');
+        $episode = $this->media_service->getEpisode($this->args['uniqID']);
+        $this->logger->info(sprintf('[FinalizeVideoJob] Started Finalize of Episode %s', $this->args['uniqID']));
         if ($episode) {
-            $this->media_service = $this->getContainer()->get('oktolab_media');
             $this->asset_helper_service = $this->getContainer()->get('bprs.asset_helper');
 
             $this->media_service->setEpisodeStatus($this->args['uniqID'], Episode::STATE_FINALIZING);
@@ -43,9 +44,7 @@ class FinalizeVideoJob extends BprsContainerAwareJob
             }
 
         } else { // episode not found
-
-            $logger = $this->getContainer()->get('logger');
-            $logger->error(sprintf('FINALIZE JOB could not find EPISODE with UniqID [%s]', $this->args['uniqID']));
+            $this->logger->error(sprintf('FINALIZE JOB could not find EPISODE with UniqID [%s]', $this->args['uniqID']));
         }
     }
 
@@ -55,8 +54,10 @@ class FinalizeVideoJob extends BprsContainerAwareJob
 
         foreach ($episode->getMedia() as $media) {
             if ($media->getAsset()) {
+                $url = $this->asset_helper_service->getAbsoluteUrl($media->getAsset());
+                $this->logger->info(sprintf('[FinalizeVideoJob] Check Media Status of %s', $url));
                 $client = new Client();
-                $response = $client->request('GET', $this->asset_helper_service->getAbsoluteUrl($media->getAsset()));
+                $response = $client->request('GET', $url);
                 if ($response->getStatusCode() != Response::HTTP_OK) {
                     $is_active = false;
                 }

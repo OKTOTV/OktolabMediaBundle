@@ -122,7 +122,7 @@ class Episode implements EpisodeMergerInterface
     /**
     * @JMS\Expose
     * @JMS\ReadOnly
-    * @ORM\OneToOne(targetEntity="Bprs\AssetBundle\Entity\AssetInterface", fetch="EAGER")
+    * @ORM\OneToOne(targetEntity="Bprs\AssetBundle\Entity\AssetInterface", fetch="EAGER", cascade={"persist", "remove"})
     * @ORM\JoinColumn(name="video_id", referencedColumnName="id")
     */
     private $video;
