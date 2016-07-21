@@ -6,14 +6,14 @@ use Bprs\CommandLineBundle\Model\BprsContainerAwareJob;
 class ImportEpisodeJob extends BprsContainerAwareJob
 {
     public function perform() {
-        echo "Start episode import\n";
+        $this->getContainer()->get('bprs_logbook')->info('oktolab_media.episode_start_import', [], $this->args['uniqID']);
         $keychain = $this->getContainer()->get('doctrine.orm.entity_manager')->getRepository('BprsAppLinkBundle:Keychain')->findOneBy(array('user' => $this->args['user']));
         if ($keychain) {
             $oktolabMediaService = $this->getContainer()->get('oktolab_media');
             $oktolabMediaService->importEpisode($keychain, $this->args['uniqID']);
-            echo "End of episode import\n";
+            $this->getContainer()->get('bprs_logbook')->info('oktolab_media.series_end_import', [], $this->args['uniqID']);
         } else{
-            echo "No keychain found! Abort action\n";
+            $this->getContainer()->get('bprs_logbook')->warning('oktolab_media.series_import_no_keychain', [], $this->args['uniqID']);
         }
     }
 

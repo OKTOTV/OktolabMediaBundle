@@ -28,7 +28,7 @@ class SeriesController extends Controller
     public function indexAction($page)
     {
         $em = $this->getDoctrine()->getManager();
-        $dql = "SELECT s FROM OktolabMediaBundle:Series s";
+        $dql = "SELECT s, p FROM OktolabMediaBundle:Series s LEFT JOIN s.posterframe p";
         $query = $em->createQuery($dql);
         $paginator  = $this->get('knp_paginator');
         $seriess = $paginator->paginate(

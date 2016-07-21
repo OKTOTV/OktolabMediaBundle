@@ -24,6 +24,7 @@
         "jms/serializer-bundle": "^1.1",
         "bprs/applink-bundle": "~1.0",
         "bprs/commandline-bundle": "^1.2",
+        "bprs/logbook-bundle": "^1.0",
         "knplabs/knp-paginator-bundle": "^2.5"
     }
 }

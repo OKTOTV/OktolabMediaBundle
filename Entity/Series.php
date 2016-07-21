@@ -92,7 +92,7 @@ class Series implements SeriesMergerInterface
     * @JMS\Expose
     * @JMS\ReadOnly
     * @JMS\Type("string")
-    * @ORM\OneToOne(targetEntity="Bprs\AssetBundle\Entity\AssetInterface")
+    * @ORM\OneToOne(targetEntity="Bprs\AssetBundle\Entity\AssetInterface", fetch="EAGER")
     * @ORM\JoinColumn(name="posterframe_id", referencedColumnName="id")
     */
     private $posterframe;

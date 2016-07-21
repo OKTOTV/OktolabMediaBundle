@@ -16,11 +16,12 @@ use Oktolab\MediaBundle\OktolabMediaEvent;
 class EncodeVideoJob extends BprsContainerAwareJob
 {
     private $em;
-    private $logger;
+    private $logbook;
 
     public function perform() {
         $episode = $this->getContainer()->get('oktolab_media')->getEpisode($this->args['uniqID']);
-        $this->logger = $this->getContainer()->get('logger');
+        $this->logbook = $this->getContainer()->get('bprs_logbook');
+        $this->logbook->info('oktolab_media.episode_start_encodevideo', [], $this->args['uniqID']);
 
         if ($episode) {
             $this->em = $this->getContainer()->get('doctrine.orm.entity_manager');
@@ -80,9 +81,10 @@ class EncodeVideoJob extends BprsContainerAwareJob
                 }
 
                 $this->finalizeEpisode($episode);
+                $this->logbook->info('oktolab_media.episode_end_encodevideo', [], $this->args['uniqID']);
             }
         } else {
-            $this->logger->error('[EncodeVideoJob] No Episode with uniqID %s', $this->args['uniqID']);
+            $this->logbook->error('oktolab_media.episode_encode_error', [], $this->args['uniqID']);
         }
     }
 
@@ -170,7 +172,7 @@ class EncodeVideoJob extends BprsContainerAwareJob
     {
         $uri = $this->getContainer()->get('bprs.asset_helper')->getAbsoluteUrl($episode->getVideo());
         if (!$uri) { // can't create uri of episode video
-            $this->logger->error(sprintf("Can't create uri for episode %s", $episode));
+            $this->logbook->error('oktolab_media.episode_encode_no_streams', [], $this->args['uniqID']);
             return false;
         }
 
@@ -207,7 +209,7 @@ class EncodeVideoJob extends BprsContainerAwareJob
     private function deleteOriginalIfConfigured($episode)
     {
         if (!$this->getContainer()->getParameter('oktolab_media.keep_original')) {
-            $this->logger->info(sprintf('Removing Original Media of Episode: %s', $episode));
+            $this->logbook->info('oktolab_media.episode_encode_remove_old_media', [], $this->args['uniqID']);
             $best_media = $episode->getMedia()[0];
             foreach ($episode->getMedia() as $media) {
                 if ($media->getSortNumber() > $best_media->getSortNumber()) {

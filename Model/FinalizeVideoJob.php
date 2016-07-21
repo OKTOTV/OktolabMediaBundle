@@ -14,18 +14,18 @@ class FinalizeVideoJob extends BprsContainerAwareJob
     private $em;
     private $media_service;
     private $asset_helper_service;
-    private $logger;
+    private $logbook;
 
     public function getName() {
         return 'Finalize Episode';
     }
 
     public function perform() {
+        $this->logbook = this->getContainer()->get('bprs_logbook');
+        $this->logbook->info('oktolab_media.episode_start_finalize', [], $this->args['uniqID']);
         $this->em = $this->getContainer()->get('doctrine.orm.entity_manager');
         $this->media_service = $this->getContainer()->get('oktolab_media');
-        $this->logger = $this->getContainer()->get('logger');
         $episode = $this->media_service->getEpisode($this->args['uniqID']);
-        $this->logger->info(sprintf('[FinalizeVideoJob] Started Finalize of Episode %s', $this->args['uniqID']));
         if ($episode) {
             $this->asset_helper_service = $this->getContainer()->get('bprs.asset_helper');
 
@@ -44,8 +44,9 @@ class FinalizeVideoJob extends BprsContainerAwareJob
             }
 
         } else { // episode not found
-            $this->logger->error(sprintf('FINALIZE JOB could not find EPISODE with UniqID [%s]', $this->args['uniqID']));
+            $this->logbook->error('oktolab_media.episode_finalize_error', [], $this->args['uniqID']);
         }
+        $this->logbook->info('oktolab_media.episode_end_finalize', [], $this->args['uniqID']);
     }
 
     private function checkMediaStatus($episode)
@@ -55,10 +56,12 @@ class FinalizeVideoJob extends BprsContainerAwareJob
         foreach ($episode->getMedia() as $media) {
             if ($media->getAsset()) {
                 $url = $this->asset_helper_service->getAbsoluteUrl($media->getAsset());
-                $this->logger->info(sprintf('[FinalizeVideoJob] Check Media Status of %s', $url));
+                $this->logbook->info('oktolab_media.episode_finalize_url', ['%media%' => $media->getQuality(),'%url%' => $url], $this->args['uniqID']);
+
                 $client = new Client();
                 $response = $client->request('GET', $url);
                 if ($response->getStatusCode() != Response::HTTP_OK) {
+                    $this->logbook->warning('oktolab_media.episode_finalize_not_ok' ['%media%' => $media->getQuality(),'%url%' => $url], $this->args['uniqID']);
                     $is_active = false;
                 }
             } else {

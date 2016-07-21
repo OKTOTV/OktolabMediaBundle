@@ -60,7 +60,7 @@ oktolab_media.edit_episode_header: Episode bearbeiten
 oktolab_media.show_episode_add_to_encode_queue: <span class="glyphicon glyphicon-compressed" aria-hidden="true"></span> Episode Encodieren
 oktolab_media.show_episode_description_missing: Keine Beschreibung verfügbar
 oktolab_media.show_episode_technical_state:     Technischer Status
-oktolab_media.show_episode_technical_state_choice: "[0, 9] Nicht Bereit. Keine Videodatei |[10, 19] Episode in Queue |[20, 29] Episode wird importiert |[30,40] Medien werden encodiert |{41} Episode besitzt kein Video zum Encodieren |[42, 50] Episode bereit"
+oktolab_media.show_episode_technical_state_choice: "[0, 9] Nicht Bereit. Keine Videodatei |[10, 19] Episode in Queue |[20, 29] Episode wird importiert |[30,39] Medien in Queue | {40} Medien werden Encodiert |[41, 46] Episode besitzt kein Video zum Encodieren |{47} In Finalizierungsqueue |{48} Wird Finalisiert |{49} Eine oder mehrere Medien konnten nicht geprüft werden |{50} Episode bereit"
 
 # series -----------------------------------------------------------------------
 ## series new.html.twig
@@ -130,3 +130,28 @@ oktolab_media_create_new_media:         Neues Media anlegen
 
 oktolab_media_media_for_episode_header: Episodenformate
 oktolab_media_media_fore_episode_empty: Derzeit keine Formate vorhanden
+
+
+# Logbook messages -------------------------------------------------------------
+oktolab_media.episode_start_encodevideo:    "Episode wird nun Encodiert"
+oktolab_media.episode_end_encodevideo:      "Episode encodierung beendet"
+oktolab_media.episode_encode_media_start:   "Episode Media %media% wird encodiert"
+oktolab_media.episode_encode_media_end:     "Episode Media %media% encodierung beendet"
+oktolab_media.episode_encode_error:         "Es ist ein Fehler beim Encodieren aufgetreten"
+oktolab_media.episode_encode_no_streams:    "Es konnte keine Streaminformation des Videos gelesen werden"
+oktolab_media.episode_encode_remove_old_media: "Encodierte Medien werden bereinigt"
+
+oktolab_media.episode_start_finalize:       "Episode wird finalisiert"
+oktolab_media.episode_end_finalize:         "Episoden finalisierung beendet"
+oktolab_media.episode_finalize_error:       "Es ist ein Fehler beim Finalisieren aufgetreten"
+oktolab_media.episode_finalize_url:         "Überprüfe Media [%media%] [%url%]"
+oktolab_media.episode_finalize_not_ok:      "Media [%media%] URI [%url%] antwortet nicht korrekt"
+
+oktolab_media.episode_start_import:         "Episodenimport gestartet"
+oktolab_media.episode_end_import:           "Episodenimport beendet"
+oktolab_media.episode_import_error:         "Es ist ein Fehler beim Episodenimport aufgetreten"
+
+oktolab_media.series_start_import:          "Sendereihenimport gestartet"
+oktolab_media.series_end_import:            "Sendereihenimport beendet"
+oktolab_media.series_import_no_keychain:    "Keychain für Import wurde nicht gefunden"
+oktolab_media.series_import_error:          "Es ist ein (un)erwarteter Fehler beim Sendereihenimport aufgetreten"
