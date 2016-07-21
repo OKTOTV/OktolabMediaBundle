@@ -154,11 +154,16 @@ class EncodeVideoJob extends BprsContainerAwareJob
 
     private function purgeEpisodeMedias($episode)
     {
+
         foreach($episode->getMedia() as $media) {
             $this->em->remove($media);
             $episode->removeMedia($media);
             $this->em->persist($episode);
-            $this->getContainer()->get('bprs.asset_helper')->deleteAsset($media->getAsset());
+            if ($media->getAsset() != $episode->getVideo()) { //don't delete the video asset
+                if ($media->getAsset()) {
+                    $this->getContainer()->get('bprs.asset_helper')->deleteAsset($media->getAsset());
+                }
+            }
         }
         $this->em->flush();
     }

@@ -21,7 +21,7 @@ class FinalizeVideoJob extends BprsContainerAwareJob
     }
 
     public function perform() {
-        $this->logbook = this->getContainer()->get('bprs_logbook');
+        $this->logbook = $this->getContainer()->get('bprs_logbook');
         $this->logbook->info('oktolab_media.episode_start_finalize', [], $this->args['uniqID']);
         $this->em = $this->getContainer()->get('doctrine.orm.entity_manager');
         $this->media_service = $this->getContainer()->get('oktolab_media');
@@ -54,14 +54,14 @@ class FinalizeVideoJob extends BprsContainerAwareJob
         $is_active = true;
 
         foreach ($episode->getMedia() as $media) {
-            if ($media->getAsset()) {
+            if ($media->getAsset() !== null) {
                 $url = $this->asset_helper_service->getAbsoluteUrl($media->getAsset());
                 $this->logbook->info('oktolab_media.episode_finalize_url', ['%media%' => $media->getQuality(),'%url%' => $url], $this->args['uniqID']);
 
                 $client = new Client();
                 $response = $client->request('GET', $url);
                 if ($response->getStatusCode() != Response::HTTP_OK) {
-                    $this->logbook->warning('oktolab_media.episode_finalize_not_ok' ['%media%' => $media->getQuality(),'%url%' => $url], $this->args['uniqID']);
+                    $this->logbook->warning('oktolab_media.episode_finalize_not_ok', ['%media%' => $media->getQuality(),'%url%' => $url], $this->args['uniqID']);
                     $is_active = false;
                 }
             } else {
