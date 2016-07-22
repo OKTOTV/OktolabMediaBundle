@@ -111,7 +111,7 @@ class SeriesController extends Controller
                     $em->remove($series);
                     $em->flush();
                     $this->get('session')->getFlashBag()->add('success', 'oktolab_media.success_delete_series');
-                    return $this->redirect($this->generateUrl('backend'));
+                    return $this->redirect($this->generateUrl('oktolab_series'));
                 } else { //???
                     $this->get('session')->getFlashBag()->add('success', 'oktolab_media.unknown_action_series');
                     return $this->redirect($this->generateUrl('oktolab_series_show', ['id' => $series->getId()]));
