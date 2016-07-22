@@ -3,6 +3,10 @@ services:
         class:  Oktolab\MediaBundle\Model\MediaService
         arguments: [ "@bprs_jobservice", "@doctrine.orm.entity_manager", "@jms_serializer", %oktolab_media.episode_class%, %oktolab_media.series_class%, %bprs_asset.class%, %bprs_asset.adapters% ]
 
+    oktolab_media_helper:
+        class:  Oktolab\MediaBundle\Model\MediaHelperService
+        arguments: [ "@doctrine.orm.entity_manager", "@bprs.asset_helper", "@bprs_logbook", "@event_dispatcher"]
+
     origin:
         class: Oktolab\MediaBundle\Model\OriginService
         arguments: [ "@oktolab_media", "@bprs_applink", "@router" ]

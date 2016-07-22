@@ -45,10 +45,11 @@ oktolab_media.onlineEnd_placeholder: 01.01.2007 20:10
 oktolab_media.description_placeholder: Inhaltsbeschreibung. Zeichenbegrenzung unter der Box.
 
 ## episode messages
-oktolab_media.error_create_episode: Die Episode konnte nicht angelegt werden
-oktolab_media.success_create_episode: Episode erfolgreich angelegt
-oktolab_media.success_edit_episode: Änderungen erfolgreich gespeichert
-oktolab_media.error_edit_episode: Änderungen konnten nicht übernommen werden
+oktolab_media.error_create_episode:     Die Episode konnte nicht angelegt werden
+oktolab_media.success_create_episode:   Episode erfolgreich angelegt
+oktolab_media.success_edit_episode:     Änderungen erfolgreich gespeichert
+oktolab_media.error_edit_episode:       Änderungen konnten nicht übernommen werden
+oktothek.success_delete_episode:        Episode erfolgreich gelöscht
 
 ## episode edit.html.twig
 oktolab_media.edit_episode_button: Änderungen speichern
@@ -155,3 +156,7 @@ oktolab_media.series_start_import:          "Sendereihenimport gestartet"
 oktolab_media.series_end_import:            "Sendereihenimport beendet"
 oktolab_media.series_import_no_keychain:    "Keychain für Import wurde nicht gefunden"
 oktolab_media.series_import_error:          "Es ist ein (un)erwarteter Fehler beim Sendereihenimport aufgetreten"
+
+
+oktolab_media.logbook_delete_series_start:  "Beginne Sendereihe zu löschen"
+oktolab_media.logbook_delete_series_end:    "Sendereihe gelöscht"

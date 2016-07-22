@@ -200,8 +200,7 @@ class EpisodeController extends Controller
                 throw $this->createNotFoundException('Unable to find Episode entity.');
             }
 
-            $em->remove($entity);
-            $em->flush();
+            $this->get('oktolab_media_helper')->deleteEpisode($episode);
         }
 
         return $this->redirect($this->generateUrl('oktolab_episode'));
