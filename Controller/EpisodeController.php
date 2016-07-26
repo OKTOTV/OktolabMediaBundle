@@ -75,7 +75,7 @@ class EpisodeController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function newAction()
+    public function newAction(Request $request)
     {
         $entity = new Episode();
         $form   = $this->createCreateForm($entity);
