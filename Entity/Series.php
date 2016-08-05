@@ -37,6 +37,7 @@ class Series implements SeriesMergerInterface
      * @var string
      * @JMS\Expose
      * @JMS\Type("string")
+     * @JMS\Groups({"search", "oktolab"})
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
@@ -44,6 +45,7 @@ class Series implements SeriesMergerInterface
     /**
     * @JMS\Expose
     * @JMS\Type("string")
+    * @JMS\Groups({"oktolab"})
     * @ORM\Column(name="webtitle", type="string", length=255, unique=true)
     */
     private $webtitle;
@@ -52,6 +54,7 @@ class Series implements SeriesMergerInterface
      * @var string
      * @JMS\Expose
      * @JMS\Type("string")
+     * @JMS\Groups({"search", "oktolab"})
      * @ORM\Column(name="description", type="string", length=500)
      */
     private $description;
@@ -60,6 +63,7 @@ class Series implements SeriesMergerInterface
      * @var boolean
      * @JMS\Expose
      * @JMS\Type("boolean")
+     * @JMS\Groups({"search", "oktolab"})
      * @ORM\Column(name="is_active", type="boolean")
      */
     private $isActive;
@@ -83,6 +87,7 @@ class Series implements SeriesMergerInterface
     /**
      * @JMS\Expose
      * @JMS\Type("string")
+     * @JMS\Groups({"search", "oktolab"})
      * @var string
      * @ORM\Column(name="uniqID", type="string", length=13)
      */
@@ -92,6 +97,7 @@ class Series implements SeriesMergerInterface
     * @JMS\Expose
     * @JMS\ReadOnly
     * @JMS\Type("string")
+    * @JMS\Groups({"oktolab"})
     * @ORM\OneToOne(targetEntity="Bprs\AssetBundle\Entity\AssetInterface", fetch="EAGER")
     * @ORM\JoinColumn(name="posterframe_id", referencedColumnName="id")
     */

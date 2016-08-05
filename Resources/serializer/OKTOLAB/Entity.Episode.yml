@@ -18,12 +18,12 @@ Oktolab\MediaBundle\Entity\Episode:
             expose: true
         firstranAt:
             expose: true
-        posterframe:
-            expose: true
-            type: string
-        video:
-            expose: true
-            type: string
-        isActive:
-            expose: true
-            type: boolean
+        # posterframe:
+        #     expose: true
+        #     type: string
+        # video:
+        #     expose: true
+        #     type: string
+        # isActive:
+        #     expose: true
+        #     type: boolean

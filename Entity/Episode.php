@@ -49,6 +49,7 @@ class Episode implements EpisodeMergerInterface
      * @var string
      * @JMS\Expose
      * @JMS\Type("string")
+     * @JMS\Groups({"search", "oktolab"})
      * @ORM\Column(name="name", type="string", length=255, nullable=true)
      */
     private $name;
@@ -58,6 +59,7 @@ class Episode implements EpisodeMergerInterface
      * @Assert\Length(max = 550, maxMessage = "oktolab_media.max_description_limit")
      * @JMS\Expose
      * @JMS\Type("string")
+     * @JMS\Groups({"search", "oktolab"})
      * @ORM\Column(name="description", type="text", length=600, nullable=true)
      */
     private $description;
@@ -66,6 +68,7 @@ class Episode implements EpisodeMergerInterface
      * @var boolean
      * @JMS\Expose
      * @JMS\Type("boolean")
+     * @JMS\Groups({"search", "oktolab"})
      * @ORM\Column(name="is_active", type="boolean")
      */
     private $isActive;
@@ -90,6 +93,7 @@ class Episode implements EpisodeMergerInterface
      * @var \DateTime
      * @JMS\Expose
      * @JMS\Type("DateTime")
+     * @JMS\Groups({"search", "oktolab"})
      * @ORM\Column(name="firstran_at", type="datetime", nullable=true)
      */
     private $firstranAt;
@@ -99,6 +103,7 @@ class Episode implements EpisodeMergerInterface
      * @var \DateTime
      * @JMS\Expose
      * @JMS\Type("DateTime")
+     * @JMS\Groups({"search"})
      * @ORM\Column(name="online_start", type="datetime", nullable=true)
      */
     private $onlineStart;
@@ -107,6 +112,7 @@ class Episode implements EpisodeMergerInterface
      * @var \DateTime
      * @JMS\Expose
      * @JMS\Type("DateTime")
+     * @JMS\Groups({"search"})
      * @ORM\Column(name="online_end", type="datetime", nullable=true)
      */
     private $onlineEnd;
@@ -115,6 +121,7 @@ class Episode implements EpisodeMergerInterface
      * @var string
      * @JMS\Expose
      * @JMS\Type("string")
+     * @JMS\Groups({"search", "oktolab"})
      * @ORM\Column(name="uniqID", type="string", length=13)
      */
     private $uniqID;
@@ -122,6 +129,7 @@ class Episode implements EpisodeMergerInterface
     /**
     * @JMS\Expose
     * @JMS\ReadOnly
+    * @JMS\Groups({"oktolab"})
     * @ORM\OneToOne(targetEntity="Bprs\AssetBundle\Entity\AssetInterface", fetch="EAGER", cascade={"persist", "remove"})
     * @ORM\JoinColumn(name="video_id", referencedColumnName="id")
     */
@@ -130,6 +138,7 @@ class Episode implements EpisodeMergerInterface
     /**
     * @JMS\Expose
     * @JMS\ReadOnly
+    * @JMS\Groups({"oktolab"})
     * @ORM\OneToOne(targetEntity="Bprs\AssetBundle\Entity\AssetInterface", fetch="EAGER")
     * @ORM\JoinColumn(name="posterframe_id", referencedColumnName="id")
     * @JMS\Type("string")

@@ -10,6 +10,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use JMS\Serializer\SerializationContext;
+
 
 use Oktolab\MediaBundle\Entity\Series;
 use Oktolab\MediaBundle\Entity\Episode;
@@ -57,7 +59,7 @@ class MediaApiController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $episode = $em->getRepository($this->container->getParameter('oktolab_media.episode_class'))->findOneBy(array('uniqID' => $uniqID));
-        $jsonContent = $this->get('jms_serializer')->serialize($episode, $format);
+        $jsonContent = $this->get('jms_serializer')->serialize($episode, $format, SerializationContext::create()->setVersion(1)->setGroups(["oktolab"]));
         return new Response($jsonContent, 200, array('Content-Type' => 'application/json; charset=utf8'));
     }
 
