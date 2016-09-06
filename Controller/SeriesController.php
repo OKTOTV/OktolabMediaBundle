@@ -3,6 +3,7 @@
 namespace Oktolab\MediaBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -10,6 +11,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Oktolab\MediaBundle\Entity\Series;
 use Oktolab\MediaBundle\Form\SeriesType;
+use Bprs\AppLinkBundle\Entity\Keychain;
+use GuzzleHttp\Client;
 
 /**
  * Series controller.
@@ -120,5 +123,39 @@ class SeriesController extends Controller
         }
 
         return ['form' => $form->createView()];
+    }
+
+    /**
+     * Browse Series of an remote application (with the keychain)
+     * @Route("/remote/{keychain}", name="oktolab_media_remote_seriess")
+     * @Method("GET")
+     * @Template()
+     */
+    public function listRemoteSeriess(Keychain $keychain)
+    {
+        $series_url = $this->get('bprs_applink')->getApiUrlsForKey($keychain, 'oktolab_media_api_list_series');
+        if ($series_url) {
+            $client = new Client();
+            $response = $client->request('GET', $series_url, ['auth' => [$keychain->getUser(), $keychain->getApiKey()]]);
+            if ($response->getStatusCode() == 200) {
+                $info = json_decode(html_entity_decode((string)$response->getBody()),true);
+                return ['result' => $info, 'keychain' => $keychain];
+            }
+        }
+        return new Response('', Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * @Route("/import/{keychain}", name="oktolab_media_import_remote_series")
+     * @Method("GET")
+     */
+    public function importSeriesAction(Request $request, Keychain $keychain)
+    {
+        $uniqID = $request->query->get('uniqID');
+        if ($uniqID) {
+            $this->get('oktolab_media')->addSeriesJob($keychain, $uniqID);
+            return new Response('', Response::HTTP_ACCEPTED);
+        }
+        return new Response('', Response::HTTP_BAD_REQUEST);
     }
 }

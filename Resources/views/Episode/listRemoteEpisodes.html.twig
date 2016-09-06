@@ -1,0 +1,31 @@
+{% extends "BprsStyleBundle::layout.html.twig" %}
+
+{% block nav_head%}
+    {% include 'BprsStyleBundle::menu.html.twig' with {'selected': 'oktolab_media_backend', 'dropdown': ''} %}
+{% endblock %}
+
+{% block body_main -%}
+    <div class="page-header">
+        <h1>Episoden von {{ keychain.user }}</h1>
+    </div>
+        {% for episode in result.episodes %}
+            <div class="row">
+                <div class="col-md-12">
+                    {{ episode.name }}
+                </div>
+                <div class="col-md-3">
+                    {{ episode.posterframe|default('') }}
+                    {{ episode.video|default('')}}
+                </div>
+                <div class="col-md-7">
+                    {{ episode.description }}
+                </div>
+                <div class="col-md-2">
+                    {{ episode.uniqID }}
+                </div>
+            </div>
+        {% endfor %}
+    <div class="navigation">
+        {{ result.navigation.next|default('') }}
+    </div>
+{% endblock %}

@@ -8,12 +8,22 @@ use GuzzleHttp\Client;
 use Oktolab\MediaBundle\Entity\Episode;
 
 /**
+ * TODO: use standardized links with applinkbundle (applink_helperservice)
+ * uselogging with logbook-bundle
+ *
+ */
+
+/**
 * handles import worker, jobs for worker and permission handling
 */
 class MediaService
 {
     const ROLE_READ = "ROLE_OKTOLAB_MEDIA_READ";
     const ROLE_WRITE = "ROLE_OKTOLAB_MEDIA_WRITE";
+
+    const ROUTE_EPISODE = "oktolab_media_api_show_episode";
+    const ROUTE_SERIES = "oktolab_media_api_show_series";
+    const ROUTE_ASSET = "oktolab_media_api_show_asset";
 
     private $jobService; // triggers jobs for the workers
     private $em; // entity manager
@@ -22,6 +32,8 @@ class MediaService
     private $series_class; // your series class
     private $asset_class; // the asset class
     private $adapters; // the adapter paths to save the assets to
+    private $applinkservice; // service for api urls
+    private $logbook; // loggingservice
 
     public function __construct($jobService, $entity_manager, $serializer, $episode_class, $series_class, $asset_class, $adapters)
     {
@@ -32,6 +44,8 @@ class MediaService
         $this->series_class = $series_class;
         $this->asset_class= $asset_class;
         $this->adapters = $adapters;
+        $this->applinkservice = $applinkservice;
+        $this->logbook = $logbook;
     }
 
     /**
@@ -98,6 +112,21 @@ class MediaService
         }
     }
 
+    public function getResponse($keychain, $route, array $query)
+    {
+        $url = $this->applinkservice->getApiUrlsForKey($keychain, $route);
+        $client = new Client();
+        $response = $client->request(
+            'GET',
+            $url,
+            [
+                'auth'  => [$keychain->getUser(), $keychain->getApiKey()],
+                'query' => $query
+            ]
+        );
+        return $response;
+    }
+
     /**
      * loads and deserializes remote episode,
      * merges metadata
@@ -107,10 +136,7 @@ class MediaService
     {
         $this->setEpisodeStatus($uniqID, Episode::STATE_IMPORTING);
         $client = new Client();
-        $response = $client->request('GET',
-            $keychain->getUrl().'/api/oktolab_media/episode/'.$uniqID,
-            ['auth' => [$keychain->getUser(), $keychain->getApiKey()]]
-        );
+        $response = $this->getResponse($keychain, this::ROUTE_EPISODE, ['uniqID' => $uniqID]);
         if ($response->getStatusCode() == 200) {
             $episode = $this->serializer->deserialize($response->getBody(), $this->episode_class, 'json');
             $local_episode = $this->getEpisode($uniqID);
@@ -149,6 +175,7 @@ class MediaService
 
     /**
     * imports and returns asset
+    * step 1 wget file to cache fs, step 2: move to adapter fs
     */
     private function importAsset(Keychain $keychain, $key, $adapter)
     {
@@ -170,7 +197,7 @@ class MediaService
                     sprintf('wget --http-user=%s --http-password=%s %s --output-document=%s',
                         $keychain->getUser(),
                         $keychain->getApiKey(),
-                        $keychain->getUrl().'/api/bprs_asset/download/'.$key, //$keychain->getUrl().'/api/oktolab_media/download/'.$key,
+                        $keychain->getUrl().'/api/bprs_asset/download/'.$key,
                         $this->adapters[$adapter]['path'].'/'.$key
                     )
                 );
@@ -235,5 +262,29 @@ class MediaService
     public function getAvailableRoles()
     {
         return [$this::ROLE_READ, $this::ROLE_WRITE];
+    }
+
+    public function addImportEpisodePosterframeJob($uniqID, $keychain, $filekey)
+    {
+        $this->jobService->addJob(
+            "Oktolab\MediaBundle\Model\ImportEpisodePosterframeJob",
+            ['uniqID' => $uniqID, 'keychain' => $keychain->getUser(), 'key' => $filekey]
+        );
+    }
+
+    public function addImportSeriesPosterframeJob($uniqID, $keychain, $filekey)
+    {
+        $this->jobService->addJob(
+            "Oktolab\MediaBundle\Model\ImportSeriesPosterframeJob",
+            ['uniqID' => $uniqID, 'keychain' => $keychain->getUser(), 'key' => $filekey]
+        );
+    }
+
+    public function addImportEpisodeVideoJob($value='')
+    {
+        $this->jobService->addJob(
+            "Oktolab\MediaBundle\Model\ImportEpisodeVideoJob",
+            ['uniqID' => $uniqID, 'keychain' => $keychain->getUser(), 'key' => $filekey]
+        );
     }
 }

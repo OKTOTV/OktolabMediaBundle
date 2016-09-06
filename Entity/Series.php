@@ -87,6 +87,7 @@ class Series implements SeriesMergerInterface
     /**
      * @JMS\Expose
      * @JMS\Type("string")
+     * @JMS\SerializedName("uniqID")
      * @JMS\Groups({"search", "oktolab"})
      * @var string
      * @ORM\Column(name="uniqID", type="string", length=13)

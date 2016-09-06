@@ -33,3 +33,8 @@ services:
         arguments: [ "@twig", %oktolab_media.player_url%, %oktolab_media.player_type%, "@origin" ]
         tags:
             - { name: twig.extension }
+
+    # BPRSAppLinkAPIUrl
+    oktolab_media_api:
+        class: Oktolab\MediaBundle\Model\ApiUrlService
+        arguments: [ "@router", %oktolab_media.api_urls%]

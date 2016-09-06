@@ -1,0 +1,70 @@
+{% extends "BprsStyleBundle::layout.html.twig" %}
+
+{% block nav_head%}
+    {% include 'BprsStyleBundle::menu.html.twig' with {'selected': 'oktolab_media_backend', 'dropdown': ''} %}
+{% endblock %}
+
+{% block body_main -%}
+    <div class="page-header">
+        <h1>{{ keychain.user }} Series</h1>
+    </div>
+        {% for series in result["seriess"] %}
+            <div class="row">
+                <div class="col-md-3">
+                    <img src="http://localhost/FLUX2/web/app_dev.php/api/bprs_asset/download?key={{ series.posterframe }}" class="img img-responsive"/>
+                </div>
+                <div class="col-md-7">
+                    <h1>{{ series.name }}</h1>
+                    <p>
+                        {{ series.description }}
+                    </p>
+                </div>
+                <div class="col-md-2">
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal{{ loop.index }}">
+                     Importieren
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="myModal{{ loop.index }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Sendereihe Importieren</h4>
+                          </div>
+                          <div class="modal-body">
+                            "Import" wird einen Sendereihenimport in Auftrag geben. Je nach verbindungsgeschwindigkeit, länge der Episoden und Leistung des Servers kann der Auftrag mehrere Tage dauern.
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
+                            <button type="button" class="btn btn-primary series_import" data-dismiss="modal" data-uniqID="{{ series.uniqID }}">Import</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    <div class="navigation">
+        {{ result.navigation.next|default('') }}
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(document).on('click', '.series_import', function() {
+                console.log(this);
+                $.ajax(
+                    {url: "{{ url('oktolab_media_import_remote_series', {'keychain': keychain.id }) }}",
+                    data: {'uniqID': $(this).attr('data-uniqID')}}
+                ).done(function(){
+                    console.log('startet import');
+                });
+            });
+
+            //TODO: paginator loading
+        });
+    </script>
+{% endblock %}

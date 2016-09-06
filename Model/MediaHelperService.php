@@ -8,16 +8,18 @@ use Oktolab\MediaBundle\Event\DeleteSeriesEvent;
 class MediaHelperService {
 
     private $em;
-    private $media_helper;
+    private $asset_helper;
     private $logbook;
     private $dispatcher;
+    private $adapters;
 
-    public function __construct($em, $media_helper, $logbook, $dispatcher)
+    public function __construct($em, $asset_helper, $logbook, $dispatcher, $adapters)
     {
         $this->em = $em;
-        $this->media_helper = $media_helper;
+        $this->asset_helper = $asset_helper;
         $this->logbook = $logbook;
         $this->dispatcher = $dispatcher;
+        $this->adapters = $adapters;
     }
 
     public function deleteEpisode($episode)
@@ -26,7 +28,7 @@ class MediaHelperService {
         $this->em->remove($episode);
         $this->deleteMedia($episode, true);
         if ($episode->getPosterframe()) {
-            $this->media_helper->deleteAsset($episode->getPosterframe());
+            $this->asset_helper->deleteAsset($episode->getPosterframe());
         }
         $this->em->flush();
         $this->logbook->info('oktolab_media.logbook_delete_episode_end', [], $episode->getUniqID());
@@ -41,7 +43,7 @@ class MediaHelperService {
 
         $this->em->remove($series);
         if ($series->getPosterframe()) {
-            $this->media_helper->deleteAsset($series->getPosterframe());
+            $this->asset_helper->deleteAsset($series->getPosterframe());
         }
         $this->em->flush();
         $this->logbook->info('oktolab_media.logbook_delete_series_end', [], $series->getUniqID());
@@ -56,16 +58,21 @@ class MediaHelperService {
             if ($media == $episode->getVideo()) {
                 $this->em->remove($media);
                 if ($including_video) {
-                    $this->media_helper->deleteAsset($media->getAsset());
+                    $this->asset_helper->deleteAsset($media->getAsset());
                 }
             } else { // delete media
                 $this->em->remove($media);
-                $this->media_helper->deleteAsset($media->getAsset());
+                $this->asset_helper->deleteAsset($media->getAsset());
 
             }
         }
         $this->em->flush();
         $this->logbook->info('oktolab_media.logbook_delete_media_end', [], $episode->getUniqID());
+    }
+
+    public function getAdapters()
+    {
+        return $this->adapters;
     }
 }
 

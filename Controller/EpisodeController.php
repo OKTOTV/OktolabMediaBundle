@@ -11,6 +11,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Oktolab\MediaBundle\Entity\Episode;
 use Oktolab\MediaBundle\Form\EpisodeType;
+use Bprs\AppLinkBundle\Entity\Keychain;
+use GuzzleHttp\Client;
 
 /**
  * Episode controller.
@@ -236,5 +238,39 @@ class EpisodeController extends Controller
         $this->get('oktolab_media')->addEncodeVideoJob($episode->getUniqID());
         $this->get('session')->getFlashBag()->add('info', 'oktolab_media.episode_encode_info');
         return $this->redirect($request->headers->get('referer'));
+    }
+
+    /**
+     * Browse Episodes of an remote application (with the keychain)
+     * @Route("/remote/{keychain}", name="oktolab_media_remote_episodes")
+     * @Method("GET")
+     * @Template()
+     */
+    public function listRemoteEpisodes(Keychain $keychain)
+    {
+        $episodes_url = $this->get('bprs_applink')->getApiUrlsForKey($keychain, 'oktolab_media_api_list_episodes');
+        if ($episodes_url) {
+            $client = new Client();
+            $response = $client->request('GET', $episodes_url, ['auth' => [$keychain->getUser(), $keychain->getApiKey()]]);
+            if ($response->getStatusCode() == 200) {
+                $info = json_decode(html_entity_decode((string)$response->getBody()), true);
+                return ['result' => $info, 'keychain' => $keychain];
+            }
+        }
+        return new Response('', Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * @Route("/import/{keychain}", name="oktolab_media_import_remote_episode")
+     * @Method("GET")
+     */
+    public function importEpisodeAction(Request $request, Keychain $keychain)
+    {
+        $uniqID = $request->query->get('uniqID');
+        if ($uniqID) {
+            $this->get('oktolab_media')->addEpisodeJob($keychain, $uniqID);
+            return new Response('', Response::HTTP_ACCEPTED);
+        }
+        return new Response('', Response::HTTP_BAD_REQUEST);
     }
 }

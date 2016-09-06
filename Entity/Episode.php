@@ -121,6 +121,7 @@ class Episode implements EpisodeMergerInterface
      * @var string
      * @JMS\Expose
      * @JMS\Type("string")
+     * @JMS\SerializedName("uniqID")
      * @JMS\Groups({"search", "oktolab"})
      * @ORM\Column(name="uniqID", type="string", length=13)
      */

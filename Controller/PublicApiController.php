@@ -32,18 +32,6 @@ class PublicApiController extends Controller
     }
 
     /**
-     * @Route("/series/{uniqID}/{player_type}.{_format}", defaults={"_format": "json"}, requirements={"_format": "json"}, name="oktolab_media_player_for_series")
-     * @Method("GET")
-     * @Template()
-     */
-    public function seriesAction($uniqID, $player_type)
-    {
-        $origin = $this->getParameter('oktolab_media.origin');
-        $series = $this->get('oktolab_media')->getSeries($uniqID);
-        return ['series' => $series, 'player_type' => $player_type, 'origin' => $origin];
-    }
-
-    /**
      * @TODO: migrate playlist functionality
      */
     // public function playlistAction($uniqID, $player_type)

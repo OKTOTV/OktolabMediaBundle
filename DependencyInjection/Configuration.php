@@ -36,7 +36,9 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('series_class')->isRequired()->end()
                 ->scalarNode('asset_class')->isRequired()->end()
                 ->booleanNode('keep_original')->defaultFalse()->end()
-                ->scalarNode('encoding_filesystem')->isRequired()->end()
+                ->scalarNode('encoding_filesystem')->defaultValue('cache')->end()
+                ->scalarNode('posterframe_filesystem')->defaultValue('posterframe')->end()
+                ->scalarNode('default_filesystem')->defaultValue('video')->end()
                 ->arrayNode('resolutions')
                     ->requiresAtLeastOneElement()
                     ->prototype('array')
@@ -51,10 +53,14 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('audio_sample_rate')->defaultValue("48000")->end()
                             ->scalarNode('container')->defaultValue('mov')->end()
                             ->booleanNode('public')->defaultTrue()->end()
-                            ->scalarNode('adapter')->defaultValue('')->end()
+                            ->scalarNode('adapter')->defaultValue('video')->end()
                         ->end()
                     ->end()
                 ->end()
+                ->arrayNode('api_urls')
+                    ->prototype('array')
+                        ->prototype('scalar')->end()
+                    ->end()
             ->end();
         // Here you should define the parameters that are allowed to
         // configure your bundle. See the documentation linked above for

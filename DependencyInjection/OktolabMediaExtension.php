@@ -33,5 +33,25 @@ class OktolabMediaExtension extends Extension
         $container->setParameter('oktolab_media.player_type', $config['player_type']);
         $container->setParameter('oktolab_media.player_url', $config['player_url']);
         $container->setParameter('oktolab_media.origin', $config['origin']);
+        $container->setParameter('oktolab_media.posterframe_filesystem', $config['posterframe_filesystem']);
+        $container->setParameter('oktolab_media.default_filesystem', $config['default_filesystem']);
+
+        $this->addApiUrlParameter($container, $config['api_urls']);
+    }
+
+    private function addApiUrlParameter(ContainerBuilder $container, array $urls)
+    {
+        $default_urls = [
+            'oktolab_media_api_list_series',
+            'oktolab_media_api_show_series',
+            'oktolab_media_api_list_episodes',
+            'oktolab_media_api_show_episode',
+            'oktolab_media_api_show_asset',
+            'oktolab_media_api_import_series',
+            'oktolab_media_api_import_episode'
+        ];
+
+        $urls = array_merge($default_urls, $urls);
+        $container->setParameter('oktolab_media.api_urls', $urls);
     }
 }

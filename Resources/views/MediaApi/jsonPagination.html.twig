@@ -1,0 +1,13 @@
+{% spaceless %}
+{
+    {% if pageCount > 1 %}
+    {% if previous is defined %}
+            "prev": "{{ url(route, query|merge({(pageParameterName): previous})) }}",
+    {% endif %}
+
+    {% if next is defined %}
+            "next": "{{ url(route, query|merge({(pageParameterName): next})) }}"
+    {% endif %}
+{% endif %}
+}
+{% endspaceless %}

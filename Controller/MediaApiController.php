@@ -25,59 +25,110 @@ use Oktolab\MediaBundle\Entity\Episode;
 class MediaApiController extends Controller
 {
     /**
-     * @Route("/series.{format}", defaults={"format": "json"}, requirements={"format": "json|xml"})
+     * @Route("/list/series.{_format}", defaults={"_format": "json"}, requirements={"_format": "json|html"}, name="oktolab_media_api_list_series")
      * @Security("has_role('ROLE_OKTOLAB_MEDIA_READ')")
-     * Cache(expires="+1 hour", public="yes")
      * @Method("GET")
+     * @Template()
      */
-    public function listSeriesAction($format)
+    public function listSeriesAction(Request $request, $_format)
     {
-        $seriess = $this->getDoctrine()->getManager()->getRepository($this->container->getParameter('oktolab_media.series_class'))->findAll();
-        $jsonContent = $this->get('jms_serializer')->serialize($seriess, $format);
-        return new Response($jsonContent, 200, array('Content-Type' => 'application/json; charset=utf-8'));
+        $series_class = $this->container->getParameter('oktolab_media.series_class');
+        $query = $this->getDoctrine()
+            ->getManager()
+            ->getRepository($series_class)
+            ->findActive($series_class, true);
+
+        $paginator = $this->get('knp_paginator');
+
+        $seriess = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            10
+        );
+        $seriess->setUsedRoute('oktolab_media_api_list_series');
+        $seriess->setParam('_format', $_format);
+
+        return ['seriess' => $seriess, 'serialization_group' => $request->query->get('group')];
     }
 
     /**
-     * @Route("/series/{uniqID}.{format}", defaults={"format": "json"}, requirements={"format": "json|xml"})
+     * @Route("/series.{_format}", defaults={"_format": "json"}, requirements={"_format": "json|xml"}, name="oktolab_media_api_show_series")
      * @Security("has_role('ROLE_OKTOLAB_MEDIA_READ')")
      * @Method("GET")
+     * @Template()
      */
-    public function showSeriesAction($uniqID, $format)
+    public function showSeriesAction(Request $request, $_format)
     {
-        $em = $this->getDoctrine()->getManager();
-        $series = $em->getRepository($this->container->getParameter('oktolab_media.series_class'))->findOneBy(array('uniqID' => $uniqID));
-        $jsonContent = $this->get('jms_serializer')->serialize($series, $format);
-        return new Response($jsonContent, 200, array('Content-Type' => 'application/json; charset=utf8'));
+        $uniqID = $request->query->get('uniqID');
+        if ($uniqID) {
+            $em = $this->getDoctrine()->getManager();
+            $series = $this->get('oktolab_media')->getSeries($uniqID);
+            $jsonContent = $this->get('jms_serializer')->serialize($series, $_format);
+            return ['series' => $series, 'serialization_group' => $request->query->get('group')];
+        }
+        return new Response("", Response::HTTP_BAD_REQUEST);
     }
 
     /**
-     * @Route("/episode/{uniqID}.{format}", defaults={"format": "json"}, requirements={"format": "json|xml"})
+     * @Route("/episodes.{_format}",  defaults={"_format": "json"}, requirements={"_format": "json"}, name="oktolab_media_api_list_episodes")
      * @Security("has_role('ROLE_OKTOLAB_MEDIA_READ')")
      * @Method("GET")
+     * @Template()
      */
-    public function showEpisodeAction($uniqID, $format)
+    public function listEpisodesAction(Request $request, $_format)
     {
-        $em = $this->getDoctrine()->getManager();
-        $episode = $em->getRepository($this->container->getParameter('oktolab_media.episode_class'))->findOneBy(array('uniqID' => $uniqID));
-        $jsonContent = $this->get('jms_serializer')->serialize($episode, $format, SerializationContext::create()->setVersion(1)->setGroups(["oktolab"]));
-        return new Response($jsonContent, 200, array('Content-Type' => 'application/json; charset=utf8'));
+        $episode_class = $this->container->getParameter('oktolab_media.episode_class');
+        $query = $this->getDoctrine()
+            ->getManager()
+            ->getRepository($episode_class)
+            ->findActive($episode_class, true);
+
+        $paginator = $this->get('knp_paginator');
+
+        $episodes = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            10
+        );
+        $episodes->setUsedRoute('oktolab_media_api_list_episodes');
+        $episodes->setParam('_format', $_format);
+        return ['episodes' => $episodes, 'serialization_group' => $request->query->get('group')];
     }
 
     /**
-     * @Route("/asset/{format}/{uniqID}", requirements={"uniqID"=".+","format": "json|xml"})
+     * @Route("/episode.{_format}", defaults={"_format": "json"}, requirements={"_format": "json|xml"}, name="oktolab_media_api_show_episode")
+     * @Security("has_role('ROLE_OKTOLAB_MEDIA_READ')")
+     * @Method("GET")
+     * @Template()
+     */
+    public function showEpisodeAction(Request $request)
+    {
+        $uniqID = $request->query->get('uniqID');
+        if ($uniqID) {
+            $em = $this->getDoctrine()->getManager();
+            $episode = $this->get('oktolab_media')->getEpisode($uniqID);
+            //$jsonContent = $this->get('jms_serializer')->serialize($episode, $format, SerializationContext::create()->setVersion(1)->setGroups(["oktolab"]));
+            return ['episode' => $episode, 'serialization_group' => $request->query->get('group')];
+            // return new Response($jsonContent, 200, array('Content-Type' => 'application/json; charset=utf8'));
+        }
+        return new Response("", Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * @Route("/asset/{format}/{uniqID}", requirements={"uniqID"=".+","format": "json|xml"}, name="oktolab_media_api_show_asset")
      * @Security("has_role('ROLE_OKTOLAB_MEDIA_READ')")
      * @Method("GET")
      */
-    public function showAssetAction($uniqID, $format)
+    public function showAssetAction($_format, $uniqID)
     {
         $em = $this->getDoctrine()->getManager();
         $asset = $em->getRepository($this->container->getParameter('bprs_asset.class'))->findOneBy(array('filekey' => $uniqID));
-        $jsonContent = $this->get('jms_serializer')->serialize($asset, $format);
+        $jsonContent = $this->get('jms_serializer')->serialize($asset, $_format);
         return new Response($jsonContent, 200, array('Content-Type' => 'application/json; charset=utf8'));
     }
 
     /**
-     * @Route("/import/series")
+     * @Route("/import/series", name="oktolab_media_api_import_series")
      * @Security("has_role('ROLE_OKTOLAB_MEDIA_WRITE')")
      * @Method("POST")
      */
@@ -91,11 +142,11 @@ class MediaApiController extends Controller
             return new Response("", Response::HTTP_ACCEPTED);
             //and send OktolabMediaBundle worker to import an entire series
         }
-        return new Response("", Response::BAD_REQUEST);
+        return new Response("", Response::HTTP_BAD_REQUEST);
     }
 
     /**
-     * @Route("/import/episode", name="oktolab_media_import_episode")
+     * @Route("/import/episode", name="oktolab_media_api_import_episode")
      * @Security("has_role('ROLE_OKTOLAB_MEDIA_WRITE')")
      * @Method("POST")
      */
