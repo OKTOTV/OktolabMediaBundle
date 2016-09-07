@@ -1,7 +1,7 @@
 services:
     oktolab_media:
         class:  Oktolab\MediaBundle\Model\MediaService
-        arguments: [ "@bprs_jobservice", "@doctrine.orm.entity_manager", "@jms_serializer", %oktolab_media.episode_class%, %oktolab_media.series_class%, %bprs_asset.class%, %bprs_asset.adapters% ]
+        arguments: [ "@bprs_jobservice", "@doctrine.orm.entity_manager", "@jms_serializer", %oktolab_media.episode_class%, %oktolab_media.series_class%, %bprs_asset.class%, %bprs_asset.adapters%, "@bprs_applink", "@bprs_logbook" ]
 
     oktolab_media_helper:
         class:  Oktolab\MediaBundle\Model\MediaHelperService

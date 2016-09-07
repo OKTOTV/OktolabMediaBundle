@@ -9,7 +9,7 @@ use Oktolab\MediaBundle\Entity\Episode;
 
 /**
  * TODO: use standardized links with applinkbundle (applink_helperservice)
- * uselogging with logbook-bundle
+ * use logging with logbook-bundle
  *
  */
 
@@ -35,7 +35,7 @@ class MediaService
     private $applinkservice; // service for api urls
     private $logbook; // loggingservice
 
-    public function __construct($jobService, $entity_manager, $serializer, $episode_class, $series_class, $asset_class, $adapters)
+    public function __construct($jobService, $entity_manager, $serializer, $episode_class, $series_class, $asset_class, $adapters, $applinkservice, $logbook)
     {
         $this->jobService = $jobService;
         $this->em = $entity_manager;

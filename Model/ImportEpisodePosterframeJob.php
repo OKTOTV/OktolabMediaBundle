@@ -8,7 +8,7 @@ class ImportEpisodePosterframeJob extends BprsContainerAwareJob
     public function perform() {
         $mediaService = $this->getContainer()->get('oktolab_media');
         $episode = $mediaService->getEpisode($this->args['uniqID']);
-        $keychain = $this->getContainer()->get('bprs_app_link')->getKeychain($this->args['keychain']);
+        $keychain = $this->getContainer()->get('bprs_applink')->getKeychain($this->args['keychain']);
         $logbook = $this->getContainer()->get('bprs_logbook');
         $asset_service = $this->getContainer()->get('bprs_asset');
         $cacheFS = $this->getContainer()->getParameter('oktolab_media.encoding_filesystem');
@@ -29,11 +29,13 @@ class ImportEpisodePosterframeJob extends BprsContainerAwareJob
 
                 $mediaHelper = $this->getContainer()->get('oktolab_media_helper');
 
+                $applinkservice = $this->getContainer()->get('bprs_applink');
+
                 shell_exec(
                     sprintf('wget --http-user=%s --http-password=%s "%s" --output-document="%s"',
                         $keychain->getUser(),
                         $keychain->getApiKey(),
-                        $this->applinkservice->getApiUrlsForKey($keychain, 'bprs_asset_api_download').'?'.http_build_query(['key' => $asset->getFilekey()]),
+                        $applinkservice->getApiUrlsForKey($keychain, 'bprs_asset_api_download').'?'.http_build_query(['key' => $asset->getFilekey()]),
                         $mediaHelper->getAdapters()[$cacheFS]['path'].'/'.$key
                     )
                 );
