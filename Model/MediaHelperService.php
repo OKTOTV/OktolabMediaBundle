@@ -70,6 +70,28 @@ class MediaHelperService {
         $this->logbook->info('oktolab_media.logbook_delete_media_end', [], $episode->getUniqID());
     }
 
+    public function deleteVideo($episode, $including_media = false)
+    {
+        $this->logbook->info('oktolab_media.logbook_delete_video_start', [], $episode->getUniqID());
+        if ($episode->getVideo()) {
+            $video = $episode->getVideo();
+            $can_delete_video = true;
+            foreach($episode->getMedia() as $media) {
+                if ($media == $video) {
+                    $can_delete_video = false;
+                }
+            }
+            $episode->setVideo(null);
+            if ($can_delete_video) {
+                $this->asset_helper->deleteAsset($video);
+            }
+            if ($including_media) {
+                $this->deleteMedia($episode);
+            }
+        }
+        $this->logbook->info('oktolab_media.logbook_delete_video_end', [], $episode->getUniqID());
+    }
+
     public function deletePosterframe($episode)
     {
         $this->logbook->info('oktolab_media.logbook_delete_posterframe_start', [], $episode->getUniqID());

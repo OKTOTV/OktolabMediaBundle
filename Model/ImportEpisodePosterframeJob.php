@@ -22,7 +22,7 @@ class ImportEpisodePosterframeJob extends BprsContainerAwareJob
             if ($response->getStatusCode() == 200) {
                 $remote_asset = json_decode($response->getBody());
                 $asset = $asset_service->createAsset();
-                $asset->setFilekey($this->args['key']);
+                // $asset->setFilekey($this->args['key']);
                 $asset->setAdapter($cacheFS);
                 $asset->setName($remote_asset->name);
                 $asset->setMimetype($remote_asset->mimetype);
@@ -35,7 +35,7 @@ class ImportEpisodePosterframeJob extends BprsContainerAwareJob
                     sprintf('wget --http-user=%s --http-password=%s "%s" --output-document="%s"',
                         $keychain->getUser(),
                         $keychain->getApiKey(),
-                        $applinkservice->getApiUrlsForKey($keychain, 'bprs_asset_api_download').'?'.http_build_query(['filekey' => $asset->getFilekey()]),
+                        $applinkservice->getApiUrlsForKey($keychain, 'bprs_asset_api_download').'?'.http_build_query(['filekey' => $this->args['key']]),
                         $mediaHelper->getAdapters()[$cacheFS]['path'].'/'.$asset->getFilekey()
                     )
                 );

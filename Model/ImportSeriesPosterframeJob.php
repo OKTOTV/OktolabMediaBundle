@@ -35,7 +35,7 @@ class ImportSeriesPosterframeJob extends BprsContainerAwareJob
                     sprintf('wget --http-user=%s --http-password=%s "%s" --output-document="%s"',
                         $keychain->getUser(),
                         $keychain->getApiKey(),
-                        $applinkservice->getApiUrlsForKey($keychain, 'bprs_asset_api_download').'?'.http_build_query(['filekey' => $asset->getFilekey()]),
+                        $applinkservice->getApiUrlsForKey($keychain, 'bprs_asset_api_download').'?'.http_build_query(['filekey' => $this->args['key']]),
                         $mediaHelper->getAdapters()[$cacheFS]['path'].'/'.$key
                     )
                 );

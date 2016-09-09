@@ -31,14 +31,14 @@ class AssetListener
             ->setParameter('id', $asset->getId())
             ->getResult();
 
-        foreach ($episodes as $episode) {
-            if ($episode->getPosterframe()->getFilekey() == $asset->getFilekey()) {
-                $episode->setPosterframe(Null);
-            } elseif ($episode->getVideo()->getFilekey() == $asset->getFilekey()) {
-                $episode->setVideo(Null);
+            foreach ($episodes as $episode) {
+                if ($episode->getPosterframe() != null && $episode->getPosterframe()->getFilekey() == $asset->getFilekey()) {
+                    $episode->setPosterframe(Null);
+                } elseif ($episode->getVideo() != null && $episode->getVideo()->getFilekey() == $asset->getFilekey()) {
+                    $episode->setVideo(Null);
+                }
+                $this->em->persist($episode);
             }
-            $this->em->persist($episode);
-        }
     }
 
     private function updateSeries($asset)
