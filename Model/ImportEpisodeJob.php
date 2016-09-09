@@ -22,4 +22,3 @@ class ImportEpisodeJob extends BprsContainerAwareJob
         return 'Import Episode';
     }
 }
-?>

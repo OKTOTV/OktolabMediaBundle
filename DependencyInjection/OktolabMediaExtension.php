@@ -35,6 +35,7 @@ class OktolabMediaExtension extends Extension
         $container->setParameter('oktolab_media.origin', $config['origin']);
         $container->setParameter('oktolab_media.posterframe_filesystem', $config['posterframe_filesystem']);
         $container->setParameter('oktolab_media.default_filesystem', $config['default_filesystem']);
+        $container->setParameter('oktolab_media.serializing_schema', $config['serializing_schema']);
 
         $this->addApiUrlParameter($container, $config['api_urls']);
     }

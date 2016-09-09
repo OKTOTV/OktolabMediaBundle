@@ -5,7 +5,7 @@ services:
 
     oktolab_media_helper:
         class:  Oktolab\MediaBundle\Model\MediaHelperService
-        arguments: [ "@doctrine.orm.entity_manager", "@bprs.asset_helper", "@bprs_logbook", "@event_dispatcher"]
+        arguments: [ "@doctrine.orm.entity_manager", "@bprs.asset_helper", "@bprs_logbook", "@event_dispatcher", %bprs_asset.adapters%]
 
     origin:
         class: Oktolab\MediaBundle\Model\OriginService

@@ -70,6 +70,17 @@ class MediaHelperService {
         $this->logbook->info('oktolab_media.logbook_delete_media_end', [], $episode->getUniqID());
     }
 
+    public function deletePosterframe($episode)
+    {
+        $this->logbook->info('oktolab_media.logbook_delete_posterframe_start', [], $episode->getUniqID());
+        if ($episode->getPosterframe()) {
+            $this->em->remove($episode->getPosterframe());
+            $this->asset_helper->deleteAsset($episode->getPosterframe());
+        }
+        $this->em->flush();
+        $this->logbook->info('oktolab_media.logbook_delete_posterframe_end', [], $episode->getUniqID());
+    }
+
     public function getAdapters()
     {
         return $this->adapters;

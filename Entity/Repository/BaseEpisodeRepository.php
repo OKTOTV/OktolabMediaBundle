@@ -16,5 +16,18 @@ class BaseEpisodeRepository extends EntityRepository
         }
         return $query->getResult();
     }
+
+    public function findByUniqID($episode_class, $uniqID, $query_only = false)
+    {
+        $query = $this->getEntityManager()->createQuery(
+                'SELECT e, v, p FROM '.$episode_class.' e LEFT JOIN e.posterframe p LEFT JOIN e.video v WHERE e.uniqID = :uniqID'
+            );
+        $query->setParameter('uniqID', $uniqID);
+
+        if ($query_only) {
+            return $query;
+        }
+        return $query->getSingleResult();
+    }
 }
  ?>

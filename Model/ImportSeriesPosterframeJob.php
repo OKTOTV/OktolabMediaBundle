@@ -10,7 +10,7 @@ class ImportSeriesPosterframeJob extends BprsContainerAwareJob
         $series = $mediaService->getSeries($this->args['uniqID']);
         $keychain = $this->getContainer()->get('bprs_applink')->getKeychain($this->args['keychain']);
         $logbook = $this->getContainer()->get('bprs_logbook');
-        $asset_service = $this->getContainer()->get('bprs_asset');
+        $asset_service = $this->getContainer()->get('bprs.asset');
         $cacheFS = $this->getContainer()->getParameter('oktolab_media.encoding_filesystem');
         $posterframeFS = $this->getContainer()->getParameter('oktolab_media.posterframe_filesystem');
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
@@ -18,7 +18,7 @@ class ImportSeriesPosterframeJob extends BprsContainerAwareJob
         if ($keychain && $episode) {
             $logbook->info('oktolab_media.start_import_series_posterframe', [], $this->args['uniqID']);
 
-            $response = $response = $this->mediaService->getResponse($this->keychain, MediaService::ROUTE_ASSET, ['key' => $this->args['key']]);
+            $response = $response = $mediaService->getResponse($keychain, MediaService::ROUTE_ASSET, ['filekey' => $this->args['key']]);
             if ($response->getStatusCode() == 200) {
                 $remote_asset = json_decode($response->getBody());
                 $asset = $asset_service->createAsset();
@@ -35,7 +35,7 @@ class ImportSeriesPosterframeJob extends BprsContainerAwareJob
                     sprintf('wget --http-user=%s --http-password=%s "%s" --output-document="%s"',
                         $keychain->getUser(),
                         $keychain->getApiKey(),
-                        $applinkservice->getApiUrlsForKey($keychain, 'bprs_asset_api_download').'?'.http_build_query(['key' => $asset->getFilekey()]),
+                        $applinkservice->getApiUrlsForKey($keychain, 'bprs_asset_api_download').'?'.http_build_query(['filekey' => $asset->getFilekey()]),
                         $mediaHelper->getAdapters()[$cacheFS]['path'].'/'.$key
                     )
                 );
@@ -59,4 +59,3 @@ class ImportSeriesPosterframeJob extends BprsContainerAwareJob
         return 'Import Series Posterframe';
     }
 }
-?>

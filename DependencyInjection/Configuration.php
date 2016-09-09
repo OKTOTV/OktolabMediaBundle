@@ -39,6 +39,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('encoding_filesystem')->defaultValue('cache')->end()
                 ->scalarNode('posterframe_filesystem')->defaultValue('posterframe')->end()
                 ->scalarNode('default_filesystem')->defaultValue('video')->end()
+                ->scalarNode('serializing_schema')->end()
                 ->arrayNode('resolutions')
                     ->requiresAtLeastOneElement()
                     ->prototype('array')

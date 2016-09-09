@@ -4,7 +4,7 @@ namespace Oktolab\MediaBundle\Model;
 use Bprs\CommandLineBundle\Model\BprsContainerAwareJob;
 use Oktolab\MediaBundle\Model\MediaService;
 
-class ImportEpisodeJob extends BprsContainerAwareJob
+class ImportEpisodeMetadataJob extends BprsContainerAwareJob
 {
     private $mediaService;
     private $serializer;
@@ -26,30 +26,33 @@ class ImportEpisodeJob extends BprsContainerAwareJob
             $this->defaultFS = $this->getContainer()->getParameter('oktolab_media.default_filesystem');
             $this->posterframeFS = $this->getContainer()->getParameter('oktolab_media.posterframe_filesystem');
 
-            $response = $this->mediaService->getResponse($this->keychain, MediaService::ROUTE_EPISODE, ['uniqID' => $this->args['uniqID']]);
+            $serializing_schema = $this->getContainer()->getParameter('oktolab_media.serializing_schema');
+            if ($serializing_schema) {
+                $response = $this->mediaService->getResponse($this->keychain, MediaService::ROUTE_EPISODE, ['uniqID' => $this->args['uniqID'], 'group' => $serializing_schema]);
+            } else {
+                $response = $this->mediaService->getResponse($this->keychain, MediaService::ROUTE_EPISODE, ['uniqID' => $this->args['uniqID']]);
+            }
             if ($response->getStatusCode() == 200) {
                 $episode = $this->serializer->deserialize($response->getBody(), $episode_class, 'json');
-                $local_episode = $this->mediaService->getEpisode($uniqID);
+                $local_episode = $this->mediaService->getEpisode($this->args['uniqID']);
                 $local_series = $this->mediaService->getSeries($episode->getSeries()->getUniqID());
                 if (!$local_series) {
                     $local_series = $this->importSeries($episode->getSeries()->getUniqID());
                 }
                 if (!$local_episode) {
-                    $local_episode = new $this->episode_class;
+                    $local_episode = new $episode_class;
                 }
                 $local_episode->merge($episode);
                 $local_episode->setSeries($local_series);
                 $local_series->addEpisode($local_episode);
 
-                $this->mediaService->addImportEpisodeVideoJob($this->args['uniqID'], $keychain, $episode->getVideo());
-                $this->mediaService->addImportEpisodePosterframeJob($this->args['uniqID'], $keychain, $episode->getPosterframe());
+                $this->mediaService->addImportEpisodePosterframeJob($this->args['uniqID'], $this->keychain, $episode->getPosterframe());
+                $this->mediaService->addImportEpisodeVideoJob($this->args['uniqID'], $this->keychain, $episode->getVideo());
 
                 $this->em->persist($local_episode);
                 $this->em->persist($local_series);
+                $this->em->flush();
 
-                if ($flush) {
-                    $this->em->flush();
-                }
             } else {
                 $this->mediaService->setEpisodeStatus($uniqID, Episode::STATE_NOT_READY);
                 $this->logbook->error('oktolab_media.episode_metadata_error_end_import', [], $this->args['uniqID']);
@@ -73,7 +76,8 @@ class ImportEpisodeJob extends BprsContainerAwareJob
             ['uniqID' => $uniqID]
         );
         if ($response->getStatusCode() == 200) {
-            $series = $this->serializer->deserialize($response->getBody(), $this->series_class, 'json');
+            $series_class = $this->getContainer()->getParameter('oktolab_media.series_class');
+            $series = $this->serializer->deserialize($response->getBody(), $series_class, 'json');
             $local_series = $this->mediaService->getSeries($uniqID);
             if (!$local_series) {
                 $series_class = $this->getContainer()->getParameter('oktolab_media.series_class');
@@ -82,9 +86,9 @@ class ImportEpisodeJob extends BprsContainerAwareJob
             $local_series->merge($series);
 
             //import Series Posterframe
-            $this->mediaService->addImportSeriesPosterframeJob($local_series->getUniqID(), $keychain, $series->getPosterframe());
+            $this->mediaService->addImportSeriesPosterframeJob($local_series->getUniqID(), $this->keychain, $series->getPosterframe());
             return $series;
         }
         return null;
     }
-?>
+}

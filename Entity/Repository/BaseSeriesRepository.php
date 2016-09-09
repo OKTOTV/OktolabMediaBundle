@@ -16,5 +16,18 @@ class BaseSeriesRepository extends EntityRepository
         }
         return $query->getResult();
     }
+
+    public function findByUniqID($series_class, $uniqID, $query_only = false)
+    {
+        $query = $this->getEntityManager()->createQuery(
+                'SELECT s, p FROM '.$series_class.' s LEFT JOIN s.posterframe p WHERE s.uniqID = :uniqID'
+            );
+        $query->setParameter('uniqID', $uniqID);
+
+        if ($query_only) {
+            return $query;
+        }
+        return $query->getSingleResult();
+    }
 }
  ?>

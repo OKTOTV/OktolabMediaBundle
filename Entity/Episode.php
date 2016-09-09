@@ -129,8 +129,8 @@ class Episode implements EpisodeMergerInterface
 
     /**
     * @JMS\Expose
-    * @JMS\ReadOnly
     * @JMS\Groups({"oktolab"})
+    * @JMS\Type("string")
     * @ORM\OneToOne(targetEntity="Bprs\AssetBundle\Entity\AssetInterface", fetch="EAGER", cascade={"persist", "remove"})
     * @ORM\JoinColumn(name="video_id", referencedColumnName="id")
     */
@@ -138,7 +138,6 @@ class Episode implements EpisodeMergerInterface
 
     /**
     * @JMS\Expose
-    * @JMS\ReadOnly
     * @JMS\Groups({"oktolab"})
     * @ORM\OneToOne(targetEntity="Bprs\AssetBundle\Entity\AssetInterface", fetch="EAGER")
     * @ORM\JoinColumn(name="posterframe_id", referencedColumnName="id")
@@ -162,6 +161,8 @@ class Episode implements EpisodeMergerInterface
         $this->technical_status = $this::STATE_NOT_READY;
         $this->isActive = false;
         $this->uniqID = uniqid();
+        $this->createdAt = new \Datetime();
+        $this->updatedAt = new \Datetime();
     }
 
     public function __toString()
@@ -462,8 +463,6 @@ class Episode implements EpisodeMergerInterface
         $this->isActive = $episode->getIsActive();
         $this->onlineStart = $episode->getOnlineStart();
         $this->onlineEnd = $episode->getOnlineEnd();
-        $this->createdAt = $episode->getCreatedAt();
         $this->firstranAt = $episode->getFirstranAt();
-
     }
 }

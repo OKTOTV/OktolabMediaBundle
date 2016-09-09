@@ -15,14 +15,14 @@ class ImportEpisodeVideoJob extends BprsContainerAwareJob
         $episode = $mediaService->getEpisode($this->args['uniqID']);
         $keychain = $this->getContainer()->get('bprs_applink')->getKeychain($this->args['keychain']);
         $logbook = $this->getContainer()->get('bprs_logbook');
-        $asset_service = $this->getContainer()->get('bprs_asset');
+        $asset_service = $this->getContainer()->get('bprs.asset');
         $cacheFS = $this->getContainer()->getParameter('oktolab_media.encoding_filesystem');
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
 
         if ($keychain && $episode) {
             $logbook->info('oktolab_media.start_import_episode_video', [], $episode->getUniqID());
 
-            $response = $response = $this->mediaService->getResponse($this->keychain, MediaService::ROUTE_ASSET, ['key' => $this->args['key']]);
+            $response = $response = $mediaService->getResponse($keychain, MediaService::ROUTE_ASSET, ['filekey' => $this->args['key']]);
             if ($response->getStatusCode() == 200) {
                 $remote_asset = json_decode($response->getBody());
                 $asset = $asset_service->createAsset();
@@ -39,8 +39,8 @@ class ImportEpisodeVideoJob extends BprsContainerAwareJob
                     sprintf('wget --http-user=%s --http-password=%s "%s" --output-document="%s"',
                         $keychain->getUser(),
                         $keychain->getApiKey(),
-                        $applinkservice->getApiUrlsForKey($keychain, 'bprs_asset_api_download').'?'.http_build_query(['key' => $asset->getFilekey()]),
-                        $mediaHelper->getAdapters()[$cacheFS]['path'].'/'.$key
+                        $applinkservice->getApiUrlsForKey($keychain, 'bprs_asset_api_download').'?'.http_build_query(['filekey' => $asset->getFilekey()]),
+                        $mediaHelper->getAdapters()[$cacheFS]['path'].'/'.$asset->getFilekey()
                     )
                 );
 
@@ -55,7 +55,7 @@ class ImportEpisodeVideoJob extends BprsContainerAwareJob
                 $em->flush();
 
                 //trigger episode encoding
-                $this->addEncodeVideoJob($local_episode->getUniqID());
+                $mediaService->addEncodeVideoJob($episode->getUniqID());
             }
             $logbook->info('oktolab_media.end_import_episode_video', [], $episode->getUniqID());
         }
@@ -66,4 +66,3 @@ class ImportEpisodeVideoJob extends BprsContainerAwareJob
         return 'Import Episode Video';
     }
 }
-?>
