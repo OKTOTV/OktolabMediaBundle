@@ -63,7 +63,7 @@ class MediaApiController extends Controller
         if ($uniqID) {
             $em = $this->getDoctrine()->getManager();
             $series = $this->get('oktolab_media')->getSeries($uniqID);
-            $jsonContent = $this->get('jms_serializer')->serialize($series, $_format);
+            // $jsonContent = $this->get('jms_serializer')->serialize($series, $_format);
             return ['series' => $series, 'serialization_group' => $request->query->get('group')];
         }
         return new Response("", Response::HTTP_BAD_REQUEST);
@@ -101,30 +101,32 @@ class MediaApiController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function showEpisodeAction(Request $request)
+    public function showEpisodeAction(Request $request, $_format)
     {
         $uniqID = $request->query->get('uniqID');
         if ($uniqID) {
             $em = $this->getDoctrine()->getManager();
             $episode = $this->get('oktolab_media')->getEpisode($uniqID);
-            //$jsonContent = $this->get('jms_serializer')->serialize($episode, $format, SerializationContext::create()->setVersion(1)->setGroups(["oktolab"]));
             return ['episode' => $episode, 'serialization_group' => $request->query->get('group')];
-            // return new Response($jsonContent, 200, array('Content-Type' => 'application/json; charset=utf8'));
         }
         return new Response("", Response::HTTP_BAD_REQUEST);
     }
 
     /**
-     * @Route("/asset/{format}/{uniqID}", requirements={"uniqID"=".+","format": "json|xml"}, name="oktolab_media_api_show_asset")
+     * @Route("/asset.{_format}", requirements={"_format": "json|xml"}, name="oktolab_media_api_show_asset")
      * @Security("has_role('ROLE_OKTOLAB_MEDIA_READ')")
      * @Method("GET")
      */
-    public function showAssetAction($_format, $uniqID)
+    public function showAssetAction(Request $request, $_format)
     {
-        $em = $this->getDoctrine()->getManager();
-        $asset = $em->getRepository($this->container->getParameter('bprs_asset.class'))->findOneBy(array('filekey' => $uniqID));
-        $jsonContent = $this->get('jms_serializer')->serialize($asset, $_format);
-        return new Response($jsonContent, 200, array('Content-Type' => 'application/json; charset=utf8'));
+        $filekey = $request->query->get('filekey');
+        if ($filekey) {
+            $em = $this->getDoctrine()->getManager();
+            $asset = $em->getRepository($this->container->getParameter('bprs_asset.class'))->findOneBy(array('filekey' => $filekey));
+            $jsonContent = $this->get('jms_serializer')->serialize($asset, $_format);
+            return new Response($jsonContent, 200, array('Content-Type' => 'application/json; charset=utf8'));
+        }
+        return new Response("", Response::HTTP_BAD_REQUEST);
     }
 
     /**
