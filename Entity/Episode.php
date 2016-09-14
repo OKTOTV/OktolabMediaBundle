@@ -154,7 +154,7 @@ class Episode implements EpisodeMergerInterface
      * @ORM\ManyToOne(targetEntity="Bprs\AppLinkBundle\Entity\Keychain")
      * @ORM\JoinColumn(name="keychain_id", referencedColumnName="id", nullable=true)
      */
-    private $keychain;
+    protected $keychain;
 
     public function __construct()
     {

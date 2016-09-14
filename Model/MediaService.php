@@ -75,7 +75,7 @@ class MediaService
     {
         $this->jobService->addJob(
             "Oktolab\MediaBundle\Model\ImportEpisodeMetadataJob",
-            ['user' => $keychain->getUser(), 'uniqID' => $uniqID]
+            ['keychain' => $keychain->getUniqID(), 'uniqID' => $uniqID]
         );
     }
 
@@ -86,7 +86,7 @@ class MediaService
     {
         $this->jobService->addJob(
             "Oktolab\MediaBundle\Model\ImportSeriesJob",
-            array('user' => $keychain->getUser(), 'uniqID' => $uniqID)
+            array('keychain' => $keychain->getUniqID(), 'uniqID' => $uniqID)
         );
     }
 
@@ -162,7 +162,7 @@ class MediaService
     {
         $this->jobService->addJob(
             "Oktolab\MediaBundle\Model\ImportEpisodePosterframeJob",
-            ['uniqID' => $uniqID, 'keychain' => $keychain->getUser(), 'key' => $filekey]
+            ['uniqID' => $uniqID, 'keychain' => $keychain->getUniqID(), 'key' => $filekey]
         );
     }
 
@@ -170,7 +170,7 @@ class MediaService
     {
         $this->jobService->addJob(
             "Oktolab\MediaBundle\Model\ImportSeriesPosterframeJob",
-            ['uniqID' => $uniqID, 'keychain' => $keychain->getUser(), 'key' => $filekey]
+            ['uniqID' => $uniqID, 'keychain' => $keychain->getUniqID(), 'key' => $filekey]
         );
     }
 
@@ -178,7 +178,7 @@ class MediaService
     {
         $this->jobService->addJob(
             "Oktolab\MediaBundle\Model\ImportEpisodeVideoJob",
-            ['uniqID' => $uniqID, 'keychain' => $keychain->getUser(), 'key' => $filekey]
+            ['uniqID' => $uniqID, 'keychain' => $keychain->getUniqID(), 'key' => $filekey]
         );
     }
 
