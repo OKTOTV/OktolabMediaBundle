@@ -34,9 +34,32 @@ class KeychainController extends Controller
      * @Route("/show_keychain/{keychain}", name="oktolab_media_show_keychain")
      * @Template()
      */
-    public function showKeychainAction(Keychain $keychain)
+    public function showKeychainAction(Request $request, Keychain $keychain)
     {
-        return array('keychain' => $keychain);
+        // TODO: decode series info and reduce javascript
+        $url = $request->query->get('url', null);
+        $response = $this->get('oktolab_keychain')->getSeriess($keychain, $url);
+        return ['keychain' => $keychain, 'response' => $response];
+    }
+
+    /**
+     * @Route("/show_keychain/{keychain}/series/{uniqID}", name="oktolab_media_show_keychain_series")
+     * @Template()
+     */
+    public function showSeriesAction(Keychain $keychain, $uniqID)
+    {
+        $series = $this->get('oktolab_keychain')->getSeries($keychain, $uniqID);
+        return ['keychain' => $keychain, 'series' => $series];
+    }
+
+    /**
+     * @Route("/show_keychain/{keychain}/episode/{uniqID}", name="oktolab_media_show_keychain_episode")
+     * @Template()
+     */
+    public function showEpisodeAction(Keychain $keychain, $uniqID)
+    {
+        $episode = $this->get('oktolab_keychain')->getEpisode($keychain, $uniqID);
+        return  ['keychain' => $keychain, 'episode' => $episode];
     }
 
     /**

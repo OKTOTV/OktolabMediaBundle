@@ -15,14 +15,13 @@ class ImportSeriesPosterframeJob extends BprsContainerAwareJob
         $posterframeFS = $this->getContainer()->getParameter('oktolab_media.posterframe_filesystem');
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
 
-        if ($keychain && $episode) {
+        if ($keychain && $series) {
             $logbook->info('oktolab_media.start_import_series_posterframe', [], $this->args['uniqID']);
 
             $response = $response = $mediaService->getResponse($keychain, MediaService::ROUTE_ASSET, ['filekey' => $this->args['key']]);
             if ($response->getStatusCode() == 200) {
                 $remote_asset = json_decode($response->getBody());
                 $asset = $asset_service->createAsset();
-                $asset->setFilekey($this->args['key']);
                 $asset->setAdapter($cacheFS);
                 $asset->setName($remote_asset->name);
                 $asset->setMimetype($remote_asset->mimetype);

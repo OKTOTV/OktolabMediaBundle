@@ -96,7 +96,6 @@ class Series implements SeriesMergerInterface
 
     /**
     * @JMS\Expose
-    * @JMS\ReadOnly
     * @JMS\Type("string")
     * @JMS\Groups({"oktolab"})
     * @ORM\OneToOne(targetEntity="Bprs\AssetBundle\Entity\AssetInterface", fetch="EAGER")

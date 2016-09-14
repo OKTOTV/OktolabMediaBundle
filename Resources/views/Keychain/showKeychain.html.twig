@@ -10,16 +10,35 @@
         <h1>{{ keychain.url }}</h1>
         <p><a href="{{ path('oktolab_media_list_keychains') }}">{{ 'oktolab_media_show_keychain.back_to_keychains'|trans }}</a></p>
     </div>
-    <div class="form-group">
-        <input class="typeahead form-control" type="text" placeholder="{{ 'oktolab_media.show_keychain.placeholder'|trans }}">
-    </div>
-    <div class="results">
+    {% for name, link in response.navigation %}
+        <a href="{{ path('oktolab_media_show_keychain', {'keychain': keychain.id, 'url': link}) }}">{{ name }}</a>
+    {% endfor %}
+    <row>
+        {% for series in response.seriess %}
+        <div class="col-md-2">
+            <!-- image -->
+        </div>
+        <div class="col-md-8">
+            <div class="col-md-12">
+                <a href="{{ path('oktolab_media_show_keychain_series', {'keychain': keychain.id, 'uniqID': series.uniqID}) }}">{{ series.name}}</a>
+            </div>
+            <div class="col-md-12">
+                {{ series.description }}
+            </div>
+        </div>
+        <div class="col-md-2">
+
+        </div>
+        {% endfor %}
+    </row>
+
+    <div class="results" data-row="<a href='{{ keychain|keychain_url(constant('Oktolab\\MediaBundle\\Model\\MediaService::ROUTE_SERIES'))}}?uniqID=__link__' class='list-group-item'>__seriesname__</a>" class="list-group">
     </div>
 {% endblock %}
 
 {% block javascripts %}
 {{ parent() }}
-<script src="{{ asset('bundles/bprsstyle/js/typeahead.js')}}"></script>
+{# <script src="{{ asset('bundles/bprsstyle/js/typeahead.js')}}"></script>
 <script type="text/javascript">
     $(document).ready(function() {
         // import button for episode
@@ -39,9 +58,10 @@
         });
 
         console.log('start loading episodes');
+        console.log("{{ keychain|keychain_url(constant('Oktolab\\MediaBundle\\Model\\MediaService::ROUTE_LIST_SERIES'))}}");
         $.ajax({
             type: "GET",
-            url: "{{ keychain.url~'/api/oktolab_media/series.json'}}",
+            url: "{{ keychain|keychain_url(constant('Oktolab\\MediaBundle\\Model\\MediaService::ROUTE_LIST_SERIES'))}}",
             headers: {
                 "Authorization": "Basic " + btoa("{{ keychain.user }}" + ":" + "{{ keychain.apiKey }}")
             },
@@ -49,75 +69,26 @@
             username: '{{ keychain.user }}',
             password: '{{ keychain.apiKey }}',
             success: function (data){
-                var dataset = [];
-                for ( series in data) {
-                    dataset.push({name: data[series].name, id:data[series].uniqID });
-                }
-                console.log('loaded series');
-                var episodes = new Bloodhound({
-                    datumTokenizer:Bloodhound.tokenizers.obj.whitespace('name'),
-                    queryTokenizer: Bloodhound.tokenizers.whitespace,
-                    local: dataset
-                });
-                $('.typeahead').typeahead({
-                  minLength: 3,
-                },
-                {
-                  name: 'dataset-episodes',
-                  display: 'name',
-                  source: episodes,
-                  templates: {
-                    empty: [
-                      '<li class="list-group-item">',
-                        '{{ 'oktolab_media.show_keychain.no_matches'|trans }}',
-                      '</li>'
-                    ].join('\n'),
-                    suggestion: function(data) { return '<li class="list-group-item">' + data.name + '</li>'; }
-                  }
-              }).bind('typeahead:select', function(ev, suggestion) {
-                  console.log(suggestion);
-                  $.ajax({
-                      type: "GET",
-                      url: "{{ keychain.url~'/api/oktolab_media/series/'}}" + suggestion.id + ".json",
-                      headers: {
-                          "Authorization": "Basic " + btoa("{{ keychain.user }}" + ":" + "{{ keychain.apiKey }}")
-                      },
-                      dataType: 'json',
-                      username: '{{ keychain.user }}',
-                      password: '{{ keychain.apiKey }}',
-                      success: function (data){
-                          var content = '<div class="results"><h2>' +
-                          data.name +
-                          '<a href="#" data-id="'+
-                          data.uniqID +
-                          '" class="btn btn-default series_import pull-right"><span class="glyphicon glyphicon-transfer"></span>' +
-                          "{{ 'oktolab_media.show_series.import_series'|trans}}"+
-                          '</a></h2><ul class="list-group">';
-                          for (episode in data.episodes) {
-                              content = content +
-                              '<li class="list-group-item"><h4>' +
-                              data.episodes[episode].name +
-                              '</h4><p>'+data.episodes[episode].description +
-                              '</p><a href="#" data-id="'+
-                              data.episodes[episode].uniqID +
-                              '" class="btn btn-default episode_import"><span class="glyphicon glyphicon-transfer"></span>' +
-                              "{{ 'oktolab_media.show_series.import_episode'|trans}}"+
-                              '</a></span></li>';
-                          }
-                          content = content + '</ul></div>';
-                          $('.results').replaceWith(content);
-                      },
-                      fail: function() {
-                          console.log('failure while loading series' + suggestion.id);
-                      }
-                  });
-              });
-            },
-            fail: function() {
-                console.log('lol bro, no. failure while loading seriess');
+                // console.log(data);
+                renderNavigation(data.navigation);
+                renderSeries(data.seriess);
             }
         });
     });
+
+    function renderNavigation(nav) {
+        console.log("renderNav");
+    };
+
+    function renderSeries(seriess) {
+        var results = $('.results');
+        $.each(seriess, function(key, series) {
+            row = results.data('row');
+            row = row.replace(/__link__/g, series.uniqID);
+            row = row.replace(/__seriesname__/g, series.name);
+            results.append(row);
+        });
+    };
 
     $(document).on("click", ".episode_import", function (e) {
         // import button for series
@@ -158,5 +129,5 @@
             }
         });
     });
-</script>
+</script> #}
 {% endblock %}

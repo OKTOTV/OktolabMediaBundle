@@ -49,6 +49,7 @@ class ImportEpisodePosterframeJob extends BprsContainerAwareJob
                 $this->getContainer()->get('bprs.asset_job')->addMoveAssetJob($asset, $posterframeFS);
             }
             $logbook->info('oktolab_media.end_import_episode_posterframe', [], $episode->getUniqID());
+            $this->mediaService->dispatchImportedEpisodePosterframeEvent($this->args['uniqID']);
         }
     }
 

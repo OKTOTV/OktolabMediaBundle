@@ -1,0 +1,83 @@
+{# show keychain and implement typeahead search for api #}
+{% extends "BprsStyleBundle::layout.html.twig" %}
+
+{% block nav_head%}
+    {% include 'BprsStyleBundle::menu.html.twig' with {'selected': 'delorian', 'dropdown': ''} %}
+{% endblock %}
+
+{% block body_main %}
+    <div class="page-header">
+        <h1>{{ keychain.url }}</h1>
+        <p><a href="{{ path('oktolab_media_list_keychains') }}">{{ 'oktolab_media_show_keychain.back_to_keychains'|trans }}</a></p>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-4">
+                <img src="{{ keychain|keychain_url('bprs_asset_api_download', {'filekey': series.posterframe}) }}" class="img img-responsive" />
+            </div>
+            <div class="cold-md-8">
+                <h1>{{ series.name }}</h1>
+                <p>{{ series.description }}</p>
+                <a href="" class="btn btn-default series_import" data-uniqid="{{ series.uniqID }}">Sendereihe Importieren</a>
+            </div>
+        </div>
+        {% for episode in series.episodes %}
+            <div class="col-md-12">
+                <div class="col-md-4">
+                    <img src="{{ keychain|keychain_url('bprs_asset_api_download', {'filekey': episode.posterframe}) }}" class="img img-responsive" />
+                </div>
+                <div class="col-md-8">
+                    <p>{{ episode.name }}</p>
+                    <p>
+                        {{ episode.description }}
+                    </p>
+                    <a href="" class="btn btn-default episode_import" data-uniqid="{{ episode.uniqID }}">Importieren</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script type="text/javascript">
+    $(document).on("click", ".episode_import", function (e) {
+        // import button for episode
+        e.preventDefault();
+        var uniqID = $(this).data('uniqid');
+        $.ajax({
+            url: "{{ url('oktolab_media_import_remote_episode', {'keychain': keychain.id}) }}",
+            data: {'uniqID': uniqID},
+            statusCode: {
+                202: function () {
+                    console.log('added episode job.');
+                    $(this).addClass("disabled");
+                },
+                400: function () {
+                    console.log('bad request');
+                }
+            }
+        });
+    });
+
+    $(document).on("click", ".series_import", function (e) {
+        // import button for series
+        e.preventDefault();
+        var uniqID = $(this).data('uniqid');
+        $.ajax({
+            url: "{{ url('oktolab_media_import_remote_series', {'keychain': keychain.id}) }}",
+            data: {'uniqID': uniqID },
+            type: 'GET',
+            statusCode: {
+                202: function () {
+                    console.log('added series job.');
+                    $(this).addClass("disabled");
+                },
+                400: function () {
+                    console.log('bad request');
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

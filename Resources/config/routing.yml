@@ -73,6 +73,14 @@ oktolab_media_show_keychain:
     path:       /oktolab_media/show_keychain/{keychain}
     defaults:   { _controller: OktolabMediaBundle:Keychain:showKeychain }
 
+oktolab_media_show_keychain_series:
+    path:       /show_keychain/{keychain}/series/{uniqID}
+    defaults:   { _controller: OktolabMediaBundle:Keychain:showSeries }
+
+oktolab_media_show_keychain_episode:
+    path:       /show_keychain/{keychain}/episode/{uniqID}
+    defaults:   { _controller: OktolabMediaBundle:Keychain:showEpisode }
+
 oktolab_media_local_import_episode:
     path:       /oktolab_media/import/episode
     defaults:   { _controller: OktolabMediaBundle:Keychain:importEpisode }

@@ -1,7 +1,7 @@
 services:
     oktolab_media:
         class:  Oktolab\MediaBundle\Model\MediaService
-        arguments: [ "@bprs_jobservice", "@doctrine.orm.entity_manager", "@jms_serializer", %oktolab_media.episode_class%, %oktolab_media.series_class%, %bprs_asset.class%, %bprs_asset.adapters%, "@bprs_applink", "@bprs_logbook" ]
+        arguments: [ "@bprs_jobservice", "@doctrine.orm.entity_manager", "@jms_serializer", %oktolab_media.episode_class%, %oktolab_media.series_class%, %bprs_asset.class%, %bprs_asset.adapters%, "@bprs_applink", "@bprs_logbook", "@event_dispatcher" ]
 
     oktolab_media_helper:
         class:  Oktolab\MediaBundle\Model\MediaHelperService
@@ -25,6 +25,10 @@ services:
         class: Oktolab\MediaBundle\Routing\AdvancedLoader
         tags:
             - { name: routing.loader }
+
+    oktolab_keychain:
+        class:      Oktolab\MediaBundle\Model\KeychainService
+        arguments:  [ "@bprs_applink", "@jms_serializer", "%oktolab_media.serializing_schema%", "%oktolab_media.series_class%", "%oktolab_media.episode_class%"]
 
     # TWIG Extension
     oktolab_media.twig_extension:

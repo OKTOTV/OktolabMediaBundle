@@ -10,54 +10,39 @@ class ImportEpisodeMetadataJob extends BprsContainerAwareJob
     private $serializer;
     private $logbook;
     private $keychain;
-    private $em;
     private $defaultFS;
     private $posterframeFS;
 
     public function perform() {
         $this->logbook = $this->getContainer()->get('bprs_logbook');
         $this->logbook->info('oktolab_media.episode_metadata_start_import', [], $this->args['uniqID']);
-        $this->keychain = $this->getContainer()->get('doctrine.orm.entity_manager')->getRepository('BprsAppLinkBundle:Keychain')->findOneBy(array('user' => $this->args['user']));
+        $this->keychain = $this->getContainer()->get('bprs_applink')->getKeychain($this->args['keychain']);
         if ($this->keychain) {
             $this->mediaService = $this->getContainer()->get('oktolab_media');
-            $this->serializer =   $this->getContainer()->get('jms_serializer');
+            $this->serializer = $this->getContainer()->get('jms_serializer');
             $episode_class = $this->getContainer()->getParameter('oktolab_media.episode_class');
-            $this->em = $this->getContainer()->get('doctrine.orm.entity_manager');
             $this->defaultFS = $this->getContainer()->getParameter('oktolab_media.default_filesystem');
             $this->posterframeFS = $this->getContainer()->getParameter('oktolab_media.posterframe_filesystem');
 
-            $serializing_schema = $this->getContainer()->getParameter('oktolab_media.serializing_schema');
-            if ($serializing_schema) {
-                $response = $this->mediaService->getResponse($this->keychain, MediaService::ROUTE_EPISODE, ['uniqID' => $this->args['uniqID'], 'group' => $serializing_schema]);
-            } else {
-                $response = $this->mediaService->getResponse($this->keychain, MediaService::ROUTE_EPISODE, ['uniqID' => $this->args['uniqID']]);
-            }
+            $response = $this->mediaService->getResponse($this->keychain, MediaService::ROUTE_EPISODE, ['uniqID' => $this->args['uniqID']]);
             if ($response->getStatusCode() == 200) {
                 $episode = $this->serializer->deserialize($response->getBody(), $episode_class, 'json');
                 $local_episode = $this->mediaService->getEpisode($this->args['uniqID']);
-                $local_series = $this->mediaService->getSeries($episode->getSeries()->getUniqID());
-                if (!$local_series) {
-                    $local_series = $this->importSeries($episode->getSeries()->getUniqID());
-                }
-                if (!$local_episode) {
-                    $local_episode = new $episode_class;
-                }
                 $local_episode->merge($episode);
-                $local_episode->setSeries($local_series);
-                $local_series->addEpisode($local_episode);
 
                 $this->mediaService->addImportEpisodePosterframeJob($this->args['uniqID'], $this->keychain, $episode->getPosterframe());
                 $this->mediaService->addImportEpisodeVideoJob($this->args['uniqID'], $this->keychain, $episode->getVideo());
 
-                $this->em->persist($local_episode);
-                $this->em->persist($local_series);
-                $this->em->flush();
+                $em = $this->getContainer()->get('doctrine.orm.entity_manager');
+                $em->persist($local_episode);
+                $em->flush();
 
             } else {
                 $this->mediaService->setEpisodeStatus($uniqID, Episode::STATE_NOT_READY);
                 $this->logbook->error('oktolab_media.episode_metadata_error_end_import', [], $this->args['uniqID']);
             }
             $this->logbook->info('oktolab_media.episode_metadata_end_import', [], $this->args['uniqID']);
+            $this->mediaService->dispatchImportedEpisodeMetadataEvent($this->args['uniqID']);
         } else{
             $this->logbook->warning('oktolab_media.episode_metadata_import_no_keychain', [], $this->args['uniqID']);
         }
@@ -66,29 +51,5 @@ class ImportEpisodeMetadataJob extends BprsContainerAwareJob
     public function getName()
     {
         return 'Import Episode Metadata';
-    }
-
-    private function importSeries($uniqID)
-    {
-        $response = $this->mediaService->getResponse(
-            $this->keychain,
-            mediaService::ROUTE_SERIES,
-            ['uniqID' => $uniqID]
-        );
-        if ($response->getStatusCode() == 200) {
-            $series_class = $this->getContainer()->getParameter('oktolab_media.series_class');
-            $series = $this->serializer->deserialize($response->getBody(), $series_class, 'json');
-            $local_series = $this->mediaService->getSeries($uniqID);
-            if (!$local_series) {
-                $series_class = $this->getContainer()->getParameter('oktolab_media.series_class');
-                $local_series = new $series_class;
-            }
-            $local_series->merge($series);
-
-            //import Series Posterframe
-            $this->mediaService->addImportSeriesPosterframeJob($local_series->getUniqID(), $this->keychain, $series->getPosterframe());
-            return $series;
-        }
-        return null;
     }
 }

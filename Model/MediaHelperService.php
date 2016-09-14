@@ -77,7 +77,7 @@ class MediaHelperService {
             $video = $episode->getVideo();
             $can_delete_video = true;
             foreach($episode->getMedia() as $media) {
-                if ($media == $video) {
+                if ($media->getAsset() == $video) {
                     $can_delete_video = false;
                 }
             }

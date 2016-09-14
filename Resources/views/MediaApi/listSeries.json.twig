@@ -1,7 +1,7 @@
 {% spaceless %}
 {% set groups = ['oktolab']|merge([serialization_group]) %}
 {
-    "seriess": {{ seriess.items | serialize('json', serialization_context().setGroups(groups)) }},
-    "navigation": {{ knp_pagination_render(seriess, "OktolabMediaBundle:MediaApi:jsonPagination.html.twig")}}
+    "seriess": {{ seriess.items | serialize('json', serialization_context().setGroups(groups))|raw }},
+    "navigation": {{ knp_pagination_render(seriess, "OktolabMediaBundle:MediaApi:jsonPagination.html.twig")|raw }}
 }
 {% endspaceless %}

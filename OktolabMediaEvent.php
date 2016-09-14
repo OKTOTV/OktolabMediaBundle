@@ -5,6 +5,7 @@ namespace Oktolab\MediaBundle;
 final class OktolabMediaEvent
 {
     /**
+     * TODO: throw event
      * The oktolab_media.encoded_episode event is thrown each time after all episode medias are encoded.
      *
      * The event listener receives an
@@ -13,6 +14,30 @@ final class OktolabMediaEvent
      * @var string
      */
     const ENCODED_EPISODE = 'oktolab_media.encoded_episode';
+
+    /**
+     * The oktolab_media.imported_episode_metadata event is thrown each time the metadata of an episode was imported.
+     * the event listener receives the uniqID of the imported episode.
+     */
+    const IMPORTED_EPISODE_METADATA = 'oktolab_media.imported_episode_metadata';
+
+    /**
+     * the oktolab_media.imported_episode_posterframe event is thrown each time the posterframe of an episode was imported.
+     * the event listener receives the uniqID of the imported episode.
+     */
+    const IMPORTED_EPISODE_POSTERFRAME = 'oktolab_media.imported_episode_posterframe';
+
+    /**
+     * The oktolab_media.imported_series_metadata event is thrown each time the metadata of an series was imported.
+     * the event listener receives the uniqID of the imported series.
+     */
+    const IMPORTED_SERIES_METADATA = 'oktolab_media.imported_series_metadata';
+
+    /**
+    * TODO: throw event
+    * The oktolab_media.delete_episode event is thrown each time before an episode gets deleted.
+    */
+    const DELETE_EPISODE = 'oktolab_media.delete_episode';
 
     /**
     * The oktolab_media.delete_series event is thrown each time a series gets deleted.

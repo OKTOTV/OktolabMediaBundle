@@ -63,7 +63,6 @@ class MediaApiController extends Controller
         if ($uniqID) {
             $em = $this->getDoctrine()->getManager();
             $series = $this->get('oktolab_media')->getSeries($uniqID);
-            // $jsonContent = $this->get('jms_serializer')->serialize($series, $_format);
             return ['series' => $series, 'serialization_group' => $request->query->get('group')];
         }
         return new Response("", Response::HTTP_BAD_REQUEST);
@@ -137,7 +136,7 @@ class MediaApiController extends Controller
     public function importSeriesAction(Request $request)
     {
         //get usertoken, get url, use url + uniqid
-        $uniqID = $request->request->get('id');
+        $uniqID = $request->request->get('uniqID');
         if ($uniqID) {
             $apiuser = $this->get('security.context')->getToken()->getUser();
             $this->get('oktolab_media')->addSeriesJob($apiuser, $uniqID);
@@ -154,7 +153,7 @@ class MediaApiController extends Controller
      */
     public function importEpisodeAction(Request $request)
     {
-        $uniqID = $request->request->get('id');
+        $uniqID = $request->request->get('uniqID');
         if ($uniqID) {
             $apiuser = $this->get('security.context')->getToken()->getUser();
             $this->get('oktolab_media')->addEpisodeJob($apiuser, $uniqID);
