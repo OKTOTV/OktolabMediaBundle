@@ -44,16 +44,18 @@
     $(document).on("click", ".episode_import", function (e) {
         // import button for episode
         e.preventDefault();
-        var uniqID = $(this).data('uniqid');
+        var button = $(this);
+        var uniqID = button.data('uniqid');
         $.ajax({
             url: "{{ url('oktolab_media_import_remote_episode', {'keychain': keychain.id}) }}",
             data: {'uniqID': uniqID},
             statusCode: {
                 202: function () {
                     console.log('added episode job.');
-                    $(this).addClass("disabled");
+                    button.addClass("disabled");
                 },
                 400: function () {
+                    button.addClass("danger");
                     console.log('bad request');
                 }
             }
@@ -63,7 +65,8 @@
     $(document).on("click", ".series_import", function (e) {
         // import button for series
         e.preventDefault();
-        var uniqID = $(this).data('uniqid');
+        var button = $(this);
+        var uniqID = button.data('uniqid');
         $.ajax({
             url: "{{ url('oktolab_media_import_remote_series', {'keychain': keychain.id}) }}",
             data: {'uniqID': uniqID },
@@ -71,9 +74,10 @@
             statusCode: {
                 202: function () {
                     console.log('added series job.');
-                    $(this).addClass("disabled");
+                    button.addClass("disabled");
                 },
                 400: function () {
+                    button.addClass("danger");
                     console.log('bad request');
                 }
             }
