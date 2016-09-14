@@ -1,6 +1,6 @@
 {% if player_type == 'jwplayer' %}
     {
-        {% if origin.logo is empty %}
+        {% if origin.logo is empty or origin.logo is null %}
         "file": "{{ absolute_url(asset('bundles/oktolabmedia/img/logo.png')) }}",
         {% else %}
         "file": "{{ absolute_url(asset(origin.logo)) }}",

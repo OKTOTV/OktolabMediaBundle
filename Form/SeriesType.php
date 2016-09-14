@@ -4,7 +4,11 @@ namespace Oktolab\MediaBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Bprs\AssetBundle\Form\Type\AssetType;
 
 class SeriesType extends AbstractType
 {
@@ -15,14 +19,14 @@ class SeriesType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-        ->add('name', 'text',
+        ->add('name', TextType::class,
             ['label' => 'oktolab_media.series_name_label']
         )
 
-        ->add('webtitle', 'text',
+        ->add('webtitle', TextType::class,
             ['label' => 'oktolab_media.series_webtitle_label']
         )
-        ->add('description', 'textarea',
+        ->add('description', TextareaType::class,
             [
                 'label' => 'oktolab_media.description_label',
                 'attr' => [
@@ -31,32 +35,25 @@ class SeriesType extends AbstractType
                 ]
             ]
         )
-        ->add('isActive', 'checkbox',
+        ->add('isActive', CheckboxType::class,
             ['label' => 'oktolab_media.series_isActive_label']
         )
-        ->add('uniqID', 'text',
+        ->add('uniqID', TextType::class,
             ['label' => 'oktolab_media.series_uniqID_label']
         )
-        ->add('posterframe', 'asset',
+        ->add('posterframe', AssetType::class,
             ['label' => 'oktolab_media.series_posterframe_label']
-        )
-        ;
+        );
     }
 
-    /**
-     * @param OptionsResolverInterface $resolver
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Oktolab\MediaBundle\Entity\Series'
         ));
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'oktolab_mediabundle_series';
     }

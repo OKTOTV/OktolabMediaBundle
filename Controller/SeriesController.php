@@ -13,6 +13,7 @@ use Oktolab\MediaBundle\Entity\Series;
 use Oktolab\MediaBundle\Form\SeriesType;
 use Bprs\AppLinkBundle\Entity\Keychain;
 use GuzzleHttp\Client;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /**
  * Series controller.
@@ -53,8 +54,8 @@ class SeriesController extends Controller
     public function newAction(Request $request)
     {
         $series = new Series();
-        $form = $this->createForm(new SeriesType(), $series);
-        $form->add('submit', 'submit', ['label' => 'oktolab_media.new_series_button', 'attr' => ['class' => 'btn btn-primary']]);
+        $form = $this->createForm(SeriesType::class, $series);
+        $form->add('submit', SubmitType::class, ['label' => 'oktolab_media.new_series_button', 'attr' => ['class' => 'btn btn-primary']]);
 
         if ($request->getMethod() == "POST") { //sends form
             $form->handleRequest($request);
@@ -97,9 +98,9 @@ class SeriesController extends Controller
      */
     public function editAction(Request $request, $series)
     {
-        $form = $this->createForm(new SeriesType(), $series);
-        $form->add('submit', 'submit', ['label' => 'oktolab_media.edit_series_button', 'attr' => ['class' => 'btn btn-primary']]);
-        $form->add('delete', 'submit', ['label' => 'oktolab_media.delete_series_button', 'attr' => ['class' => 'btn btn-danger']]);
+        $form = $this->createForm(SeriesType::class, $series);
+        $form->add('submit', SubmitType::class, ['label' => 'oktolab_media.edit_series_button', 'attr' => ['class' => 'btn btn-primary']]);
+        $form->add('delete', SubmitType::class, ['label' => 'oktolab_media.delete_series_button', 'attr' => ['class' => 'btn btn-danger']]);
 
         if ($request->getMethod() == "POST") { //sends form
             $form->handleRequest($request);

@@ -3,7 +3,7 @@
     $(document).ready(function() {
         var playerInstance = jwplayer("{{ player_id }}");
         playerInstance.setup({
-            logo:   {{ origin(episode)|raw }},
+            {# logo:   {{ origin(episode)|raw }}, #}
             playlist: "{{ url('oktolab_media_player_for_episode', {'uniqID': episode.uniqID, 'player_type': 'jwplayer', '_format': 'json'})}}"
         });
     });
