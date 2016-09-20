@@ -50,4 +50,17 @@ class PublicApiController extends Controller
         $origin = $this->getParameter('oktolab_media.origin');
         return ['origin' => $origin, 'player_type' => $player_type];
     }
+
+    /**
+     * TODO: oneOrNone result, respond with empy embed
+     * @Route("/embed/episode", name="oktolab_media_embed_episode")
+     * @Method("GET")
+     * @Template()
+     */
+    public function embedEpisodeAction(Request $request)
+    {
+        $uniqID = $request->query->get('uniqID');
+        $episode = $this->get('oktolab_media')->getEpisode($uniqID);
+        return ['episode' => $episode];
+    }
 }

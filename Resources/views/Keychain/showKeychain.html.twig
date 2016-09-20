@@ -13,10 +13,9 @@
     {% for name, link in response.navigation %}
         <a href="{{ path('oktolab_media_show_keychain', {'keychain': keychain.id, 'url': link}) }}">{{ name }}</a>
     {% endfor %}
-    <row>
         {% for series in response.seriess %}
-        <div class="col-md-2">
-            <!-- image -->
+        <div class="row">
+        <div class="col-md-4">
         </div>
         <div class="col-md-8">
             <div class="col-md-12">
@@ -26,11 +25,8 @@
                 {{ series.description }}
             </div>
         </div>
-        <div class="col-md-2">
-
         </div>
         {% endfor %}
-    </row>
 
     <div class="results" data-row="<a href='{{ keychain|keychain_url(constant('Oktolab\\MediaBundle\\Model\\MediaService::ROUTE_SERIES'))}}?uniqID=__link__' class='list-group-item'>__seriesname__</a>" class="list-group">
     </div>

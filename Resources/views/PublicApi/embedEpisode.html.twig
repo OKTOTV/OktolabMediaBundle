@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="{{ asset('bundles/bprsstyle/js/jquery2.1.4.js') }}"></script>
+    {{ player(episode)|raw }}
+<title>{{ episode.name|default(name|default(''))}}</title>
+</head>
+<body>
+<figure id="player">
+    {% if episode.video is empty %}
+        <img src="{{ episode.posterframe|path }}" class="img-responsive" />
+    {% endif %}
+</figure>

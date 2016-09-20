@@ -29,6 +29,8 @@ class MediaService
     const ROUTE_LIST_SERIES = "oktolab_media_api_list_series";
     const ROUTE_ASSET = "oktolab_media_api_show_asset";
 
+    const ROUTE_EMBED_EPISODE = 'oktolab_media_embed_episode';
+
     private $jobService; // triggers jobs for the workers
     private $em; // entity manager
     private $serializer; // json -> object

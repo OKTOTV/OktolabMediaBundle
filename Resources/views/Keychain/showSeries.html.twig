@@ -24,7 +24,9 @@
         {% for episode in series.episodes %}
             <div class="col-md-12">
                 <div class="col-md-4">
-                    <img src="{{ keychain|keychain_url('bprs_asset_api_download', {'filekey': episode.posterframe}) }}" class="img img-responsive" />
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <iframe class="embed-responsive-item" src="{{ keychain|keychain_url('Oktolab\\MediaBundle\\Model\\MediaService::ROUTE_EMBED_EPISODE', {'uniqID': episode.uniqID})}}"></iframe>
+                    </div>
                 </div>
                 <div class="col-md-8">
                     <p>{{ episode.name }}</p>

@@ -138,3 +138,7 @@ oktolab_media_origin_for_episode:
     defaults:   { _controller: OktolabMediaBundle:PublicApi:origin, _format: json }
     requirements:
         _format: json
+
+oktolab_media_embed_episode:
+    path:       /oktolab_media/public_api/embed/episode
+    defaults:   { _controller: OktolabMediaBundle:PublicApi:embedEpisode }
