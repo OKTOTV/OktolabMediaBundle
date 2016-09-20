@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-
+use Bprs\AssetBundle\Form\Type\AssetType;
 
 class MediaType extends AbstractType
 {
@@ -22,7 +22,7 @@ class MediaType extends AbstractType
             ->add('quality', TextType::class, ['label' => 'oktolab_media_quality_label'])
             ->add('public', CheckboxType::class, ['label' => 'oktolab_media_public_label'])
             ->add('sortNumber', IntegerType::class, ['label' => 'oktolab_media_sortNumber_label'])
-            ->add('asset', 'asset', ['label' => 'oktolab_media_asset_label']);
+            ->add('asset', AssetType::class, ['label' => 'oktolab_media_asset_label']);
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

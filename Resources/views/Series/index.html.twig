@@ -25,9 +25,9 @@
         {% for series in seriess %}
             <tr>
                 <td>
-                    <a href="{{ path('oktolab_series_show', { 'series': series.id }) }}"><img src="{{ series.posterframe|thumb(80,120) }}" class="img-responsive" /></a>
+                    <a href="{{ path('oktolab_series_show', { 'series': series.uniqID }) }}"><img src="{{ series.posterframe|thumb(80,120) }}" class="img-responsive" /></a>
                 </td>
-                <td><a href="{{ path('oktolab_series_show', { 'series': series.id }) }}">{{ series.name }}</a></td>
+                <td><a href="{{ path('oktolab_series_show', { 'series': series.uniqID }) }}">{{ series.name }}</a></td>
                 <td>{{ series.webtitle }}</td>
                 <td>{{ series.uniqID }}</td>
             </tr>

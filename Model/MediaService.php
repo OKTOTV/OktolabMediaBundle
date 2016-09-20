@@ -148,6 +148,11 @@ class MediaService
         return $this->em->getRepository($this->episode_class)->findByUniqID($this->episode_class, $uniqID);
     }
 
+    public function createEpisode()
+    {
+        return new $this->episode_class;
+    }
+
     public function getSeries($uniqID)
     {
         return $this->em->getRepository($this->series_class)->findByUniqID($this->series_class, $uniqID);
