@@ -158,6 +158,11 @@ class MediaService
         return $this->em->getRepository($this->series_class)->findByUniqID($this->series_class, $uniqID);
     }
 
+    public function createSeries()
+    {
+        return new $this->series_class;
+    }
+
     public function getAvailableRoles()
     {
         return [$this::ROLE_READ, $this::ROLE_WRITE];

@@ -32,7 +32,8 @@ class SeriesController extends Controller
     public function indexAction($page)
     {
         $em = $this->getDoctrine()->getManager();
-        $dql = "SELECT s, p FROM OktolabMediaBundle:Series s LEFT JOIN s.posterframe p";
+        $class = $this->container->getParameter("oktolab_media.series_class");
+        $dql = "SELECT s, p FROM ".$class." s LEFT JOIN s.posterframe p";
         $query = $em->createQuery($dql);
         $paginator  = $this->get('knp_paginator');
         $seriess = $paginator->paginate(
@@ -53,7 +54,7 @@ class SeriesController extends Controller
      */
     public function newAction(Request $request)
     {
-        $series = new Series();
+        $series = $this->get('oktolab_media')->createSeries();
         $form = $this->createForm(SeriesType::class, $series);
         $form->add('submit', SubmitType::class, ['label' => 'oktolab_media.new_series_button', 'attr' => ['class' => 'btn btn-primary']]);
 
@@ -92,12 +93,13 @@ class SeriesController extends Controller
     /**
      * Displays a form to edit an existing Series entity.
      *
-     * @ParamConverter("series", class="OktolabMediaBundle:Series")
+     * @ ParamConverter("series", class="OktolabMediaBundle:Series")
      * @Method({"GET", "POST"})
      * @Template()
      */
     public function editAction(Request $request, $series)
     {
+        $series = $this->get('oktolab_media')->getSeries($series);
         $form = $this->createForm(SeriesType::class, $series);
         $form->add('submit', SubmitType::class, ['label' => 'oktolab_media.edit_series_button', 'attr' => ['class' => 'btn btn-primary']]);
         $form->add('delete', SubmitType::class, ['label' => 'oktolab_media.delete_series_button', 'attr' => ['class' => 'btn btn-danger']]);

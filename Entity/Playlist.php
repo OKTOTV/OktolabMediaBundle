@@ -16,7 +16,7 @@ interface PlaylistInterface {
  * Playlist
  *
  * @ORM\Table()
- * @ORM\MappedSuperClass()
+ * @ORM\MappedSuperclass()
  * @JMS\ExclusionPolicy("all")
  * @ORM\HasLifecycleCallbacks()
  * JMS\AccessType("public_method")
