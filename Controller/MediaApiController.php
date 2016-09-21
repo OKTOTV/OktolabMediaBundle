@@ -20,7 +20,7 @@ use Oktolab\MediaBundle\Entity\Episode;
 /**
  * Handles all remote incoming actions and requests this application to provide.
  * You'll need an keychain with at least ROLE_OKTOLAB_MEDIA_READ to do anything here.
- * @Route("/api/oktolab_media")
+ * @Route("/api/private/oktolab_media")
  */
 class MediaApiController extends Controller
 {

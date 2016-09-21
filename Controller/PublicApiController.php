@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -62,5 +63,29 @@ class PublicApiController extends Controller
         $uniqID = $request->query->get('uniqID');
         $episode = $this->get('oktolab_media')->getEpisode($uniqID);
         return ['episode' => $episode];
+    }
+
+    /**
+     * @Route("/posterframe/series", name="oktolab_media_series_show_posterframe")
+     * @Method("GET")
+     * @Template()
+     */
+    public function showSeriesPosterframeAction(Request $request)
+    {
+        $uniqID = $request->query->get('uniqID');
+        if ($uniqID) {
+            $series = $this->get('oktolab_media')->getSeries($uniqID);
+            if ($series) {
+                if ($series->getPosterframe()) {
+                    return new RedirectResponse(
+                        $this->get('bprs.asset_helper')->getAbsoluteUrl($series->getPosterframe())
+                    );
+                }
+                return new RedirectResponse(
+                    $this->get('bprs.asset_helper')->get404()
+                );
+            }
+        }
+        return new Response("", Response::HTTP_BAD_REQUEST);
     }
 }

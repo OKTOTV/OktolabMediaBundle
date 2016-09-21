@@ -27,7 +27,7 @@ class BaseSeriesRepository extends EntityRepository
         if ($query_only) {
             return $query;
         }
-        return $query->getSingleResult();
+        return $query->getOneOrNullResult();
     }
 }
  ?>

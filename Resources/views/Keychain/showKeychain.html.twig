@@ -10,23 +10,31 @@
         <h1>{{ keychain.url }}</h1>
         <p><a href="{{ path('oktolab_media_list_keychains') }}">{{ 'oktolab_media_show_keychain.back_to_keychains'|trans }}</a></p>
     </div>
-    {% for name, link in response.navigation %}
-        <a href="{{ path('oktolab_media_show_keychain', {'keychain': keychain.id, 'url': link}) }}">{{ name }}</a>
-    {% endfor %}
-        {% for series in response.seriess %}
-        <div class="row">
-        <div class="col-md-4">
-        </div>
-        <div class="col-md-8">
-            <div class="col-md-12">
-                <a href="{{ path('oktolab_media_show_keychain_series', {'keychain': keychain.id, 'uniqID': series.uniqID}) }}">{{ series.name}}</a>
+    {% if response.navigation.prev is defined %}
+        <a href="{{ path('oktolab_media_show_keychain', {'keychain': keychain.id, 'url': response.navigation.prev}) }}" class="btn btn-default">{{ 'oktolab_media.keychain_show_prev_results'|trans }}</a>
+    {% endif %}
+    {% if response.navigation.next is defined %}
+        <a href="{{ path('oktolab_media_show_keychain', {'keychain': keychain.id, 'url': response.navigation.next}) }}" class="btn btn-default">{{ 'oktolab_media.keychain_show_next_results'|trans }}</a>
+    {% endif %}
+        {% if response.seriess is defined %}
+            {% for series in response.seriess %}
+            <div class="row">
+            <div class="col-md-4">
+                {% if series.posterframe is defined %}
+                    <img src="{{ keychain|keychain_url('bprs_asset_download', {'filekey': series.posterframe}) }}"  />
+                {% endif %}
             </div>
-            <div class="col-md-12">
-                {{ series.description }}
+            <div class="col-md-8">
+                <div class="col-md-12">
+                    <a href="{{ path('oktolab_media_show_keychain_series', {'keychain': keychain.id, 'uniqID': series.uniqID}) }}">{{ series.name}}</a>
+                </div>
+                <div class="col-md-12">
+                    {{ series.description }}
+                </div>
             </div>
-        </div>
-        </div>
-        {% endfor %}
+            </div>
+            {% endfor %}
+        {% endif %}
 
     <div class="results" data-row="<a href='{{ keychain|keychain_url(constant('Oktolab\\MediaBundle\\Model\\MediaService::ROUTE_SERIES'))}}?uniqID=__link__' class='list-group-item'>__seriesname__</a>" class="list-group">
     </div>

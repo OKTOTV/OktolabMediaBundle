@@ -8,6 +8,8 @@ oktolab_media.show_keychain.no_matches: Keine Übereinstimmung
 oktolab_media.list_keychains.header: Schlüsselkasten
 oktolab_media.keychain:              OktolabMedia Api
 
+oktolab_media.keychain_show_prev_results:   Vorherige
+oktolab_media.keychain_show_next_results:   Nächste
 
 # episode ----------------------------------------------------------------------
 ## episode new.html.twig
