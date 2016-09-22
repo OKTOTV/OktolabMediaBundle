@@ -16,7 +16,7 @@ use Oktolab\MediaBundle\Entity\Episode;
 
 
 /**
- * @Route("/oktolab_media/public_api")
+ * @Route("/oktolab_media/api/public")
  */
 class PublicApiController extends Controller
 {

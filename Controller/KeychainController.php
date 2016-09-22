@@ -25,7 +25,7 @@ class KeychainController extends Controller
     public function listKeychainsAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $keys = $em->getRepository('BprsAppLinkBundle:Key')->findBy(array('role' => MediaService::ROLE_READ));
+        $keys = $em->getRepository('BprsAppLinkBundle:Key')->findBy(['role' => MediaService::ROLE_READ]);
 
         return array('keys' => $keys);
     }

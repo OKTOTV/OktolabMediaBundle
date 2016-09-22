@@ -28,6 +28,9 @@ class ImportEpisodeMetadataJob extends BprsContainerAwareJob
             if ($response->getStatusCode() == 200) {
                 $episode = $this->serializer->deserialize($response->getBody(), $episode_class, 'json');
                 $local_episode = $this->mediaService->getEpisode($this->args['uniqID']);
+                if (!$local_episode) {
+                    $local_episode = $this->mediaService->createEpisode();
+                }
                 $local_episode->merge($episode);
                 $local_episode->setKeychain($this->keychain);
 

@@ -21,7 +21,7 @@
             <div class="row">
             <div class="col-md-4">
                 {% if series.posterframe is defined %}
-                    <img src="{{ keychain|keychain_url('bprs_asset_download', {'filekey': series.posterframe}) }}"  />
+                    <img src="{{ keychain|keychain_url('bprs_asset_download', {'filekey': series.posterframe}) }}" class="img img-responsive"  />
                 {% endif %}
             </div>
             <div class="col-md-8">

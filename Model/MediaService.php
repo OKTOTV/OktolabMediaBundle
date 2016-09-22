@@ -9,6 +9,7 @@ use Oktolab\MediaBundle\Entity\Episode;
 
 use Oktolab\MediaBundle\OktolabMediaEvent;
 use Oktolab\MediaBundle\Event\ImportedEpisodeMetadataEvent;
+use Oktolab\MediaBundle\Event\ImportedEpisodePosterframeEvent;
 
 /**
  * TODO: use standardized links with applinkbundle (applink_helperservice)
@@ -29,7 +30,7 @@ class MediaService
     const ROUTE_LIST_SERIES = "oktolab_media_api_list_series";
     const ROUTE_ASSET = "oktolab_media_api_show_asset";
 
-    const ROUTE_EMBED_EPISODE = 'oktolab_media_embed_episode';
+    const ROUTE_EMBED_EPISODE = "oktolab_media_embed_episode";
 
     private $jobService; // triggers jobs for the workers
     private $em; // entity manager
