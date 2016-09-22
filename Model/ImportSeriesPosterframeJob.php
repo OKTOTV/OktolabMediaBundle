@@ -47,7 +47,7 @@ class ImportSeriesPosterframeJob extends BprsContainerAwareJob
                 $em->persist($asset);
                 $em->flush();
                 //move to posterframeFS to correct destination
-                $this->getContainer()->get('asset_jobservice')->addMoveAssetJob($asset, $posterframeFS);
+                $this->getContainer()->get('bprs.asset_job')->addMoveAssetJob($asset, $posterframeFS);
             }
             $logbook->info('oktolab_media.end_import_series_posterframe', [], $this->args['uniqID']);
         }
