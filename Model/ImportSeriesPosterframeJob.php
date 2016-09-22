@@ -35,7 +35,7 @@ class ImportSeriesPosterframeJob extends BprsContainerAwareJob
                         $keychain->getUser(),
                         $keychain->getApiKey(),
                         $applinkservice->getApiUrlsForKey($keychain, 'bprs_asset_api_download').'?'.http_build_query(['filekey' => $this->args['key']]),
-                        $mediaHelper->getAdapters()[$cacheFS]['path'].'/'.$key
+                        $mediaHelper->getAdapters()[$cacheFS]['path'].'/'.$asset->getFilekey()
                     )
                 );
                 //remove any previous attached posterframes
