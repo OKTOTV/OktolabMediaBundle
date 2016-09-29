@@ -21,7 +21,9 @@
             <div class="row">
             <div class="col-md-4">
                 {% if series.posterframe is defined %}
-                    <img src="{{ keychain|keychain_url('bprs_asset_download', {'filekey': series.posterframe}) }}" class="img img-responsive"  />
+                    <a href="{{ path('oktolab_media_show_keychain_series', {'keychain': keychain.id, 'uniqID': series.uniqID}) }}">
+                        <img src="{{ keychain|keychain_url('bprs_asset_api_show', {'filekey': series.posterframe, 'width': 240, 'height': 135}) }}" class="img-responsive" />
+                    </a>
                 {% endif %}
             </div>
             <div class="col-md-8">

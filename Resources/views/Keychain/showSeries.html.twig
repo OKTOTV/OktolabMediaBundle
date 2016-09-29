@@ -12,20 +12,23 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <div class="col-md-4">
-                <img src="{{ keychain|keychain_url('bprs_asset_api_download', {'filekey': series.posterframe}) }}" class="img img-responsive" />
+            <div class="col-md-6">
+                <img src="{{ keychain|keychain_url('bprs_asset_api_show', {'filekey': series.posterframe, 'width': 550, 'height': 309}) }}" class="img img-responsive" />
             </div>
-            <div class="cold-md-8">
+            <div class="cold-md-6">
                 <h1>{{ series.name }}</h1>
                 <p>{{ series.description }}</p>
                 <a href="" class="btn btn-default series_import" data-uniqid="{{ series.uniqID }}">Sendereihe Importieren</a>
             </div>
         </div>
+        <div class="col-md-12">
+            <h2>Episoden</h2>
+        </div>
         {% for episode in series.episodes %}
             <div class="col-md-12">
                 <div class="col-md-4">
                     <div class="embed-responsive embed-responsive-16by9">
-                        <iframe class="embed-responsive-item" src="{{ keychain|keychain_url(constant('Oktolab\\MediaBundle\\Model\\MediaService::ROUTE_EMBED_EPISODE'), {'uniqID': episode.uniqID})}}"></iframe>
+                        <iframe width="240" height="135" allowfullscreen frameBorder="0" class="embed-responsive-item" src="{{ keychain|keychain_url(constant('Oktolab\\MediaBundle\\Model\\MediaService::ROUTE_EMBED_EPISODE'), {'uniqID': episode.uniqID})}}"></iframe>
                     </div>
                 </div>
                 <div class="col-md-8">
