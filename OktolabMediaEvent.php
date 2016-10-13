@@ -28,6 +28,11 @@ final class OktolabMediaEvent
     const IMPORTED_EPISODE_POSTERFRAME = 'oktolab_media.imported_episode_posterframe';
 
     /**
+     * Is thrown each time an episode is finalized.
+     */
+    const FINALIZED_EPISODE = 'oktolab_media.finalized_episode';
+
+    /**
      * The oktolab_media.imported_series_metadata event is thrown each time the metadata of an series was imported.
      * the event listener receives the uniqID of the imported series.
      */

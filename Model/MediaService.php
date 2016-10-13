@@ -206,4 +206,10 @@ class MediaService
         $event = new ImportedEpisodePosterframeEvent($uniqID);
         $this->dispatcher->dispatch(OktolabMediaEvent::IMPORTED_EPISODE_POSTERFRAME, $event);
     }
+
+    public function dispatchFinalizedEpisodeEvent($uniqID)
+    {
+        $event = new FinalizeEpisodeEvent($uniqID);
+        $this->dispatcher->dispatch(OktolabMediaEvent::FINALIZED_EPISODE, $event);
+    }
 }

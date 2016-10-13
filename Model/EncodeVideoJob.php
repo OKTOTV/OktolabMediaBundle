@@ -7,7 +7,6 @@ use Oktolab\MediaBundle\Entity\Episode;
 use Oktolab\MediaBundle\Event\EncodedEpisodeEvent;
 use Oktolab\MediaBundle\OktolabMediaEvent;
 //TODO: flexibility to encode audio only too!
-//TODO: only works with local files at this moment
 
 /**
  * checks original video and starts encoding according to configurated resolutions.

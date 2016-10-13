@@ -182,7 +182,6 @@ class Playlist
      */
     public function __construct()
     {
-        $this->items = new \Doctrine\Common\Collections\ArrayCollection();
         $this->uniqID = uniqid();
     }
 
