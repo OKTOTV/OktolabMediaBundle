@@ -10,6 +10,7 @@ use Oktolab\MediaBundle\Entity\Episode;
 use Oktolab\MediaBundle\OktolabMediaEvent;
 use Oktolab\MediaBundle\Event\ImportedEpisodeMetadataEvent;
 use Oktolab\MediaBundle\Event\ImportedEpisodePosterframeEvent;
+use Oktolab\MediaBundle\Event\FinalizeEpisodeEvent;
 
 /**
  * TODO: use standardized links with applinkbundle (applink_helperservice)
