@@ -18,7 +18,7 @@ class ImportSeriesMetadataJob extends BprsContainerAwareJob
             [],
             $this->args['uniqID']
         );
-        $this->keychain = $this->getContainer()->get('doctrine.orm.entity_manager')->getRepository('BprsAppLinkBundle:Keychain')->findOneBy(array('user' => $this->args['user']));
+        $this->keychain = $this->getContainer()->get('bprs_applink')->getKeychain($this->args['keychain']);
         if ($this->keychain) {
             $this->media_service = $this->getContainer()->get('oktolab_media');
             $this->jms_serializer = $this->getContainer()->get('jms_serializer');

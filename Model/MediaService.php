@@ -91,7 +91,7 @@ class MediaService
     {
         $this->jobService->addJob(
             "Oktolab\MediaBundle\Model\ImportSeriesMetadataJob",
-            array('keychain' => $keychain->getUniqID(), 'uniqID' => $uniqID)
+            ['keychain' => $keychain->getUniqID(), 'uniqID' => $uniqID]
         );
     }
 
