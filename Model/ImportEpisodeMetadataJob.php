@@ -10,8 +10,6 @@ class ImportEpisodeMetadataJob extends BprsContainerAwareJob
     private $serializer;
     private $logbook;
     private $keychain;
-    private $defaultFS;
-    private $posterframeFS;
 
     public function perform() {
         $this->logbook = $this->getContainer()->get('bprs_logbook');
@@ -21,8 +19,6 @@ class ImportEpisodeMetadataJob extends BprsContainerAwareJob
             $this->mediaService = $this->getContainer()->get('oktolab_media');
             $this->serializer = $this->getContainer()->get('jms_serializer');
             $episode_class = $this->getContainer()->getParameter('oktolab_media.episode_class');
-            $this->defaultFS = $this->getContainer()->getParameter('oktolab_media.default_filesystem');
-            $this->posterframeFS = $this->getContainer()->getParameter('oktolab_media.posterframe_filesystem');
 
             $response = $this->mediaService->getResponse($this->keychain, MediaService::ROUTE_EPISODE, ['uniqID' => $this->args['uniqID']]);
             if ($response->getStatusCode() == 200) {

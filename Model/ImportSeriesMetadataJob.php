@@ -48,7 +48,6 @@ class ImportSeriesMetadataJob extends BprsContainerAwareJob
                 [],
                 $this->args['uniqID']
             );
-            // TODO: dispatch import series metadata event
             $this->mediaService->dispatchImportedSeriesMetadataEvent($this->args['uniqID']);
         } else {
             $this->getContainer()->get('bprs_logbook')->warning('oktolab_media.series_import_no_keychain', [], $this->args['uniqID']);
