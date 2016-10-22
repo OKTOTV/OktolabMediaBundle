@@ -50,7 +50,6 @@ oktolab_media.description_placeholder: Inhaltsbeschreibung. Zeichenbegrenzung un
 ## episode messages
 oktolab_media.error_create_episode:     Die Episode konnte nicht angelegt werden
 oktolab_media.success_create_episode:   Episode erfolgreich angelegt
-oktolab_media.success_delete_episode:   Episode erfolgreich gelöscht
 oktolab_media.success_edit_episode:     Änderungen erfolgreich gespeichert
 oktolab_media.error_edit_episode:       Änderungen konnten nicht übernommen werden
 oktothek.success_delete_episode:        Episode erfolgreich gelöscht
@@ -88,8 +87,6 @@ oktolab_media.series_add_new_episode: <span class="glyphicon glyphicon-plus" ari
 oktolab_media.series_description_placeholder: Sendereihenbeschreibung. Zeichenbegrenzung unter der Box.
 
 ## series messages
-oktolab_media.success_create_series:    Sendereihe erfolgreich angelegt
-
 oktolab_media.success_edit_series: Änderungen erfolgreich gespeichert
 oktolab_media.error_edit_series: Änderungen konnten nicht übernommen werden
 oktolab_media.success_delete_series: Sendereihe erfolgreich gelöscht

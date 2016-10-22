@@ -11,6 +11,7 @@ use Oktolab\MediaBundle\OktolabMediaEvent;
 use Oktolab\MediaBundle\Event\ImportedEpisodeMetadataEvent;
 use Oktolab\MediaBundle\Event\ImportedEpisodePosterframeEvent;
 use Oktolab\MediaBundle\Event\FinalizeEpisodeEvent;
+use Oktolab\MediaBundle\Event\ImportedSeriesMetadataEvent;
 
 /**
  * TODO: use standardized links with applinkbundle (applink_helperservice)
@@ -89,7 +90,7 @@ class MediaService
     public function addSeriesJob(Keychain $keychain, $uniqID)
     {
         $this->jobService->addJob(
-            "Oktolab\MediaBundle\Model\ImportSeriesJob",
+            "Oktolab\MediaBundle\Model\ImportSeriesMetadataJob",
             array('keychain' => $keychain->getUniqID(), 'uniqID' => $uniqID)
         );
     }
@@ -200,6 +201,12 @@ class MediaService
     {
         $event = new ImportedEpisodeMetadataEvent($uniqID);
         $this->dispatcher->dispatch(OktolabMediaEvent::IMPORTED_EPISODE_METADATA, $event);
+    }
+
+    public function dispatchImportedSeriesMetadataEvent($uniqID)
+    {
+        $event = new ImportedSeriesMetadataEvent($uniqID);
+        $this->dispatcher->dispatch(OktolabMediaEvent::IMPORTED_SERIES_METADATA, $event);
     }
 
     public function dispatchImportedEpisodePosterframeEvent($uniqID)
