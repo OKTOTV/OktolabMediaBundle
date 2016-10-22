@@ -22,7 +22,6 @@ class ImportSeriesMetadataJob extends BprsContainerAwareJob
         if ($this->keychain) {
             $this->media_service = $this->getContainer()->get('oktolab_media');
             $this->jms_serializer = $this->getContainer()->get('jms_serializer');
-            $this->media_service->importSeries($keychain, $this->args['uniqID']);
             $series_class = $this->getContainer()->get('oktolab_media.series_class');
 
             $response = $this->mediaService->getResponse($this->keychain, MediaService::ROUTE_SERIES, ['uniqID' => $this->args['uniqID']]);
@@ -34,11 +33,11 @@ class ImportSeriesMetadataJob extends BprsContainerAwareJob
                 }
                 $local_series->merge($series);
 
+                $em = $this->getContainer()->get('doctrine.orm.entity_manager');
+                $em->persist($local_series);
+                $em->flush();
                 $this->mediaService->addImportSeriesPosterframeJob($this->args['uniqID'], $this->keychain, $series->getPosterframe());
-
-                $this->em->persist($local_series);
-                $this->em->flush();
-
+                $this->mediaService->dispatchImportedSeriesMetadataEvent($this->args['uniqID']);
             } else {
                 $this->logbook->error('oktolab_media.series_metadata_error_end_import', [], $this->args['uniqID']);
             }
@@ -48,7 +47,6 @@ class ImportSeriesMetadataJob extends BprsContainerAwareJob
                 [],
                 $this->args['uniqID']
             );
-            $this->mediaService->dispatchImportedSeriesMetadataEvent($this->args['uniqID']);
         } else {
             $this->getContainer()->get('bprs_logbook')->warning('oktolab_media.series_import_no_keychain', [], $this->args['uniqID']);
         }
