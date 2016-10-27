@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Oktolab\MediaBundle\Model\MediaService;
 
 use Bprs\AppLinkBundle\Entity\Keychain;
@@ -15,6 +16,7 @@ use Bprs\AppLinkBundle\Entity\Keychain;
  * Keychain controller. Allows backend importing onsite.
  *
  * @Route("/oktolab_media")
+ * @Security("has_role('ROLE_OKTOLAB_MEDIA_READ')")
  */
 class KeychainController extends Controller
 {
@@ -36,7 +38,6 @@ class KeychainController extends Controller
      */
     public function showKeychainAction(Request $request, Keychain $keychain)
     {
-        // TODO: decode series info and reduce javascript
         $url = $request->query->get('url', null);
         $response = $this->get('oktolab_keychain')->getSeriess($keychain, $url);
         return ['keychain' => $keychain, 'response' => $response];

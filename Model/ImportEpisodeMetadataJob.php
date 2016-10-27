@@ -3,6 +3,7 @@ namespace Oktolab\MediaBundle\Model;
 
 use Bprs\CommandLineBundle\Model\BprsContainerAwareJob;
 use Oktolab\MediaBundle\Model\MediaService;
+use Oktolab\MediaBundle\Entity\Episode;
 
 class ImportEpisodeMetadataJob extends BprsContainerAwareJob
 {
