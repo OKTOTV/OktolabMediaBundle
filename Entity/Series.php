@@ -103,6 +103,12 @@ class Series implements SeriesMergerInterface
     */
     private $posterframe;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Bprs\AppLinkBundle\Entity\Keychain")
+     * @ORM\JoinColumn(name="keychain_id", referencedColumnName="id", nullable=true)
+     */
+    protected $keychain;
+
     public function __construct() {
         $this->uniqID = uniqid();
         $this->isActive = true;
@@ -305,6 +311,17 @@ class Series implements SeriesMergerInterface
     public function getPosterframe()
     {
         return $this->posterframe;
+    }
+
+    public function getKeychain()
+    {
+        return $this->keychain;
+    }
+
+    public function setKeychain($keychain)
+    {
+        $this->keychain = $keychain;
+        return $this;
     }
 
     public function merge(Series $series)

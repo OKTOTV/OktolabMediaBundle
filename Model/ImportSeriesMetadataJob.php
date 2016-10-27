@@ -32,6 +32,7 @@ class ImportSeriesMetadataJob extends BprsContainerAwareJob
                     $local_series = new $series_class;
                 }
                 $local_series->merge($series);
+                $local_series->setKeychain($this->keychain);
 
                 $em = $this->getContainer()->get('doctrine.orm.entity_manager');
                 $em->persist($local_series);
