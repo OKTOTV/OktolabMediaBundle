@@ -221,7 +221,7 @@ class EncodeVideoJob extends BprsContainerAwareJob
                         $best_media = $media;
                     }
                 }
-                $this->getContainer()->get('bprs.asset_helper')->deleteAsset($episode->getVideo());
+                $this->getContainer()->get('bprs.asset')->deleteAsset($episode->getVideo());
                 $episode->setVideo($best_media->getAsset());
                 $this->em->persist($episode);
                 $this->em->flush();

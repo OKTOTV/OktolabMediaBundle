@@ -5,6 +5,8 @@ namespace Oktolab\MediaBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 interface SeriesMergerInterface
 {
@@ -19,6 +21,7 @@ interface SeriesMergerInterface
  * @ORM\HasLifecycleCallbacks()
  * @JMS\ExclusionPolicy("all")
  * @JMS\AccessType("public_method")
+ * @UniqueEntity("webtitle")
  */
 class Series implements SeriesMergerInterface
 {
@@ -90,7 +93,7 @@ class Series implements SeriesMergerInterface
      * @JMS\SerializedName("uniqID")
      * @JMS\Groups({"search", "oktolab"})
      * @var string
-     * @ORM\Column(name="uniqID", type="string", length=13)
+     * @ORM\Column(name="uniqID", type="string", length=13, unique=true)
      */
     private $uniqID;
 
@@ -98,8 +101,9 @@ class Series implements SeriesMergerInterface
     * @JMS\Expose
     * @JMS\Type("string")
     * @JMS\Groups({"oktolab"})
-    * @ORM\OneToOne(targetEntity="Bprs\AssetBundle\Entity\AssetInterface", fetch="EAGER")
+    * @ORM\OneToOne(targetEntity="Bprs\AssetBundle\Entity\AssetInterface", fetch="EAGER", cascade={"remove"})
     * @ORM\JoinColumn(name="posterframe_id", referencedColumnName="id")
+    * @Assert\NotNull()
     */
     private $posterframe;
 

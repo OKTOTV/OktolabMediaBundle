@@ -35,7 +35,7 @@ class Playlistitem
     private $playlist;
 
     /**
-    * @ORM\ManyToOne(targetEntity="Oktolab\MediaBundle\Entity\EpisodeInterface")
+    * @ORM\ManyToOne(targetEntity="Oktolab\MediaBundle\Entity\EpisodeInterface", inversedBy="playlistitems")
     * @ORM\JoinColumn(name="episode_id", referencedColumnName="id")
     */
     private $episode;

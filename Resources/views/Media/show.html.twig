@@ -35,5 +35,19 @@
             <td>{{'oktolab_media_public_label'|trans}}</td>
             <td>{{ 'oktolab_media_public_choice'|transchoice(media.public) }}</td>
         </tr>
+        <tr>
+            <td>{{ 'oktolab_media_asset'|trans }}</td>
+            <td>{{ media.asset }}</td>
+        </tr>
+        <tr>
+            <td>
+                {{ 'oktolab_media_asset_adapter'|trans }}
+            </td>
+            <td>
+                {% if media.asset is not empty %}
+                    {{ media.asset.adapter }}
+                {% endif %}
+            </td>
+        </tr>
     </table>
 {% endblock %}

@@ -131,7 +131,7 @@ class Episode implements EpisodeMergerInterface
     * @JMS\Expose
     * @JMS\Groups({"oktolab"})
     * @JMS\Type("string")
-    * @ORM\OneToOne(targetEntity="Bprs\AssetBundle\Entity\AssetInterface", fetch="EAGER", cascade={"persist", "remove"})
+    * @ORM\OneToOne(targetEntity="Bprs\AssetBundle\Entity\AssetInterface", fetch="EAGER", cascade={"remove"})
     * @ORM\JoinColumn(name="video_id", referencedColumnName="id")
     */
     private $video;
@@ -139,7 +139,7 @@ class Episode implements EpisodeMergerInterface
     /**
     * @JMS\Expose
     * @JMS\Groups({"oktolab"})
-    * @ORM\OneToOne(targetEntity="Bprs\AssetBundle\Entity\AssetInterface", fetch="EAGER")
+    * @ORM\OneToOne(targetEntity="Bprs\AssetBundle\Entity\AssetInterface", fetch="EAGER", cascade={"remove"})
     * @ORM\JoinColumn(name="posterframe_id", referencedColumnName="id")
     * @JMS\Type("string")
     */

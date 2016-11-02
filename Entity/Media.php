@@ -59,7 +59,7 @@ class Media
     /**
     * @JMS\Expose
     * @JMS\ReadOnly
-    * @ORM\OneToOne(targetEntity="Bprs\AssetBundle\Entity\AssetInterface", fetch="EAGER")
+    * @ORM\OneToOne(targetEntity="Bprs\AssetBundle\Entity\AssetInterface", fetch="EAGER", cascade={"remove", "persist"})
     */
     private $asset;
 
