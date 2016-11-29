@@ -3,7 +3,33 @@
     $(document).ready(function() {
         var playerInstance = jwplayer("{{ player_id }}");
         playerInstance.setup({
-            playlist: "{{ url('oktothek_show_playlist', {'uniqID': playlist.uniqID, '_format': 'json'})}}"
+            {# playlist: "{{ url('oktothek_show_playlist', {'uniqID': playlist.uniqID, '_format': 'json'})}}" #}
+            playlist: [
+                {% for playlistitem in playlist.items %}
+                {
+                    image: "{{ playlistItem.episode.posterframe(true)|thumb(720,1280)}}",
+                    title: "{{ playlistItem.episode.name }}",
+                    sources: [
+                        {% for media in playlistItem.episode.media %}
+                                {
+                                    file: "{{ media.asset|link }}",
+                                    label: "{{ media.quality }}",
+                                    type: "mp4"
+                                }{% if not loop.last %},{% endif %}
+                        {% endfor %}
+                    ],
+                    tracks: [
+                        {% for caption in playlistitem.episode.captions %}
+                            {
+                                file: "{{ url('oktolab_media_caption_for_episode', {'uniqID': caption.uniqID}) }}",
+                                label: "{{ caption.label }}",
+                                kind: "{{ caption.kind }}"
+                            }{% if not loop.last %},{% endif %}
+                        {% endfor %}
+                    ]
+                }{% if not loop.last%},{% endfor %}
+                {% endfor %}
+            ]
         });
     });
 </script>
