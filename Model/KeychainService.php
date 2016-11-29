@@ -31,7 +31,6 @@ class KeychainService {
                 'auth' => [$keychain->getUser(), $keychain->getApiKey()]
             ]
         );
-        // die(var_dump(json_decode($response->getBody())));
         return json_decode($response->getBody());
     }
 
@@ -66,9 +65,4 @@ class KeychainService {
         $episode = $this->jms_serializer->deserialize($response->getBody(), $this->series_class, 'json');
         return $episode;
     }
-
-    // public function getAsset($keychain, $filekey)
-    // {
-    //     # code...
-    // }
 }

@@ -163,6 +163,12 @@ class MediaService
         return $this->em->getRepository($this->series_class)->findByUniqID($this->series_class, $uniqID);
     }
 
+    public function getCaption($uniqID)
+    {
+        return $this->em->getRepository('OktolabMediaBundle:Caption')
+            ->findOneBy(['uniqID' => $uniqID]);
+    }
+
     public function createSeries()
     {
         return new $this->series_class;

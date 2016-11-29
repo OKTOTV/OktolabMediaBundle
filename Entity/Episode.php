@@ -156,6 +156,11 @@ class Episode implements EpisodeMergerInterface
      */
     protected $keychain;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Oktolab\MediaBundle\Entity\Caption", mappedBy="episode", cascade={"remove"})
+     */
+    protected $captions;
+
     public function __construct()
     {
         $this->technical_status = $this::STATE_NOT_READY;
@@ -452,6 +457,30 @@ class Episode implements EpisodeMergerInterface
     public function setKeychain($keychain)
     {
         $this->keychain = $keychain;
+        return $this;
+    }
+
+    public function getCaptions()
+    {
+        return $this->captions;
+    }
+
+    public function setCaptions($captions)
+    {
+        $this->captions = $captions;
+    }
+
+    public function addCaption($caption)
+    {
+        $this->captions[] = $caption;
+        $caption->setEpisode($this);
+        return $this;
+    }
+
+    public function removeCaption($caption)
+    {
+        $this->captions->removeElement($caption);
+        $caption->setEpisode(null);
         return $this;
     }
 

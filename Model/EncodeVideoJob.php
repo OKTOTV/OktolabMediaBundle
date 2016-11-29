@@ -78,7 +78,7 @@ class EncodeVideoJob extends BprsContainerAwareJob
                         $this->saveMedia($format, $resolution, $asset, $episode);
                     }
                 }
-
+                $this->deleteOriginalIfConfigured();
                 $this->finalizeEpisode($episode);
                 $this->logbook->info('oktolab_media.episode_end_encodevideo', [], $this->args['uniqID']);
             }
@@ -124,8 +124,6 @@ class EncodeVideoJob extends BprsContainerAwareJob
         $this->em->persist($episode);
         $this->em->flush();
 
-        // TODO: we created a new asset. inform the AssetBundle! (send event)
-
         // move encoded media from "cache" to adapter of the original file
         $this->getContainer()->get('bprs_jobservice')->addJob(
         'Bprs\AssetBundle\Model\MoveAssetJob',
@@ -138,8 +136,6 @@ class EncodeVideoJob extends BprsContainerAwareJob
 
     private function finalizeEpisode($episode)
     {
-        $this->deleteOriginalIfConfigured($episode);
-
         $event = new EncodedEpisodeEvent($episode);
         $this->getContainer()->get('event_dispatcher')->dispatch(OktolabMediaEvent::ENCODED_EPISODE, $event);
         $this->getContainer()->get('oktolab_media')->setEpisodeStatus($episode->getUniqID(), Episode::STATE_IN_FINALIZE_QUEUE);
@@ -153,15 +149,12 @@ class EncodeVideoJob extends BprsContainerAwareJob
 
     private function purgeEpisodeMedias($episode)
     {
-
         foreach($episode->getMedia() as $media) {
             $this->em->remove($media);
             $episode->removeMedia($media);
-            $this->em->persist($episode);
-            if ($media->getAsset() != $episode->getVideo()) { //don't delete the video asset
-                if ($media->getAsset()) {
-                    $this->getContainer()->get('bprs.asset_helper')->deleteAsset($media->getAsset());
-                }
+            $this->em->flush();
+            if ($media->getAsset() && $media->getAsset() != $episode->getVideo()) {
+                $this->getContainer()->get('bprs.asset_helper')->deleteAsset($media->getAsset());
             }
         }
         $this->em->flush();
@@ -210,8 +203,9 @@ class EncodeVideoJob extends BprsContainerAwareJob
         return $asset;
     }
 
-    private function deleteOriginalIfConfigured($episode)
+    private function deleteOriginalIfConfigured()
     {
+        $episode = $this->getContainer()->get('oktolab_media')->getEpisode($this->args['uniqID']);
         if (!$this->getContainer()->getParameter('oktolab_media.keep_original')) {
             $this->logbook->info('oktolab_media.episode_encode_remove_old_media', [], $this->args['uniqID']);
             if (count($episode->getMedia())) {
@@ -221,8 +215,10 @@ class EncodeVideoJob extends BprsContainerAwareJob
                         $best_media = $media;
                     }
                 }
-                $this->getContainer()->get('bprs.asset')->deleteAsset($episode->getVideo());
+                $origin = $episode->getVideo();
                 $episode->setVideo($best_media->getAsset());
+                $this->getContainer()->get('bprs.asset')->deleteAsset($origin);
+
                 $this->em->persist($episode);
                 $this->em->flush();
             }

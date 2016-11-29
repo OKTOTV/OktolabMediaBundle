@@ -1,8 +1,3 @@
-# oktolab_media:
-#     resource: "__DIR__.'/OktolabMediaBundle/Controller/'"
-#     type:     annotation
-#     prefix:   /
-
 # Series
 oktolab_series:
     path:      /oktolab_media/series/{page}
@@ -63,6 +58,20 @@ oktolab_media_show_media:
 oktolab_media_edit_media:
     path:       /oktolab_media/media/{media}/edit
     defaults:   { _controller: OktolabMediaBundle:Media:edit }
+
+# Caption
+oktolab_caption_index:
+    path:       /oktolab_media/caption/
+    defaults:   { _controller: OktolabMediaBundle:Caption:index }
+oktolab_caption_show:
+    path:       /oktolab_media/caption/show/{caption}
+    defaults:   { _controller: OktolabMediaBundle:Caption:show }
+oktolab_caption_edit:
+    path:       /oktolab_media/caption/edit/{caption}
+    defaults:   { _controller: OktolabMediaBundle:Caption:edit }
+oktolab_caption_new:
+    path:       /oktolab_media/caption/new/{uniqID}
+    defaults:   { _controller: OktolabMediaBundle:Caption:new }
 
 # keychain
 oktolab_media_list_keychains:
@@ -134,8 +143,14 @@ oktolab_media_player_for_episode:
     path:       /oktolab_media/api/public/episode/{uniqID}/{player_type}.{_format}
     defaults:   { _controller: OktolabMediaBundle:PublicApi:episode }
 
+oktolab_media_caption_for_episode:
+    path:       /oktolab_media/api/public/caption/{uniqID}.{_format}
+    defaults:   { _controller: OktolabMediaBundle:PublicApi:caption, _format: vtt }
+    requirements:
+        _format: vtt
+
 oktolab_media_origin_for_episode:
-    path:       /oktolab_media/api/public/origin/{player_type}.{_format}
+    path:       /oktolab_media/api/public/origin.{_format}
     defaults:   { _controller: OktolabMediaBundle:PublicApi:origin, _format: json }
     requirements:
         _format: json

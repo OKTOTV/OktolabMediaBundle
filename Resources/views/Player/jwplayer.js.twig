@@ -3,8 +3,29 @@
     $(document).ready(function() {
         var playerInstance = jwplayer("{{ player_id }}");
         playerInstance.setup({
-            {# logo:   {{ origin(episode)|raw }}, #}
-            playlist: "{{ url('oktolab_media_player_for_episode', {'uniqID': episode.uniqID, 'player_type': 'jwplayer', '_format': 'json'})}}"
+            logo:   {{ origin(episode)|raw }},
+            playlist: [{
+                image: "{{ episode.posterframe|thumb(720,1280) }}",
+                title: "{{ episode.name }}",
+                sources: [
+                    {% for media in episode.media %}
+                        {
+                            file: "{{ media.asset|link }}",
+                            label: "{{ media.quality }}",
+                            type: "mp4"
+                        }{% if not loop.last %},{% endif %}
+                    {% endfor %}
+                ],
+                tracks: [
+                    {% for caption in episode.captions %}
+                        {
+                            file: "{{ url('oktolab_media_caption_for_episode', {'uniqID': caption.uniqID}) }}",
+                            label: "{{ caption.label }}",
+                            kind: "{{ caption.kind }}"
+                        }{% if not loop.last %},{% endif %}
+                    {% endfor %}
+                ]
+            }]
         });
     });
 </script>

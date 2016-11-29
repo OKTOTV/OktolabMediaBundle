@@ -1,0 +1,15 @@
+{% extends "BprsStyleBundle::layout.html.twig" %}
+
+{% block nav_head%}
+    {% include 'BprsStyleBundle::menu.html.twig' with {'selected': 'oktolab_media', 'dropdown': ''} %}
+{% endblock %}
+
+{% block body_main %}
+    <div class="page-header">
+        <h1>{{ 'oktolab_media.edit_caption_header'|trans }}</h1>
+        <a href="{{ path('oktolab_caption_show', {'caption': form.vars.value.id }) }}" class="btn btn-default">{{ 'oktolab_media.edit_caption_cancel'|trans|raw }}</a>
+    </div>
+
+    {{ form(form) }}
+
+{% endblock %}

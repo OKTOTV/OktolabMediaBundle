@@ -7,7 +7,9 @@
         {
             "image": "{{ episode.posterframe|thumb(720,1280)}}",
             "title": "{{ episode.name }}",
-            "sources": [
+            "file": "{{public_medias[0].asset|link}}",
+            "tracks": [{ "file": "http://localhost/FLUX2/web/example.vtt", "label": "German", "kind": "caption"}]
+            {# "sources": [
                 {% for media in public_medias %}
                         {
                             "file": "{{ media.asset|link }}",
@@ -15,6 +17,16 @@
                             "type": "mp4"
                         }{% if not loop.last %},{% endif %}
                 {% endfor %}
-            ]
+            ], #}
+            {#
+            "tracks": [
+                {% for caption in episode.captions %}
+                    {
+                        "file": "{{ url('oktolab_media_caption_for_episode', {'uniqID': caption.uniqID}) }}",
+                        "label": "{{ caption.label }}",
+                        "kind": "{{ caption.kind }}"
+                    }{% if not loop.last %},{% endif %}
+                {% endfor %}
+            ] #}
         }
 ]

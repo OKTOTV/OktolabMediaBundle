@@ -18,36 +18,30 @@ class OriginService {
         $this->router = $router;
     }
 
-    public function getOrigin($uniqID, $player_type)
+    public function getOrigin($uniqID, $player_type = 'jwplayer')
     {
-        // get keychain api url f.e. http://www.tidenet.de/asdf/ like
         $episode = $this->media_service->getEpisode($uniqID);
-        $api_url = $this->router->generate('oktolab_media_origin_for_episode',
-            [
-                'player_type' => $player_type,
-                '_format' => 'json'
-            ],
-            UrlGeneratorInterface::ABSOLUTE_URL
-        );
-        if ($episode->getKeychain()) {
-            $roles = $this->media_service->getAvailableRoles();
-            $api_url = $this->applink->getApiUrlForKey($episode->getKeychain(), $roles);
-            $api_url = $api_url.$this->router->generate(
-                'oktolab_media_origin_for_episode',
-                [
-                    'player_type' => $player_type,
-                    '_format' => 'json'
-                ]
+        $url = null;
+        if ($episode->getKeychain()) { // episode is remote
+            $url = $this->applink->getApiUrlsForKey(
+                $episode->getKeychain(),
+                'oktolab_media_origin_for_episode'
+            );
+        } else {
+            $url = $this->router->generate(
+                'oktolab_media_origin_for_episode', 
+                [],
+                UrlGeneratorInterface::ABSOLUTE_URL
             );
         }
-
         $client = new Client();
-        $response = $client->request('GET',
-            $api_url
+        $response = $client->request(
+            'GET',
+            $url
         );
-        if ($response->getStatusCode() == 200) {
-            return json_decode($response->getBody());
-        }
+
+        $origin = json_decode($response->getBody());
+        return $origin;
     }
 }
 

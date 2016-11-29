@@ -140,6 +140,26 @@ oktolab_media_create_new_media:         Neues Media anlegen
 oktolab_media_media_for_episode_header: Episodenformate
 oktolab_media_media_fore_episode_empty: Derzeit keine Formate vorhanden
 
+# caption ----------------------------------------------------------------------
+oktolab_media.caption_new_button:       '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Neue Textspur'
+oktolab_media.new_caption_header:       "Neue Textspur"
+oktolab_media.caption_name_label:       "Label"
+oktolab_media.caption_label_placeholder:    "Label im Player"
+oktolab_media.caption_content_placeholder:  "Inhalt der Textspur"
+description:                            "Beschreibung"
+chapters:                               "Kapitel"
+captions:                               "Untertitel"
+subtitles:                              "Übersetzung"
+oktolab_media.caption_content_label:    "Inhalt"
+oktolab_media.caption_kind_label:       "Art"
+oktolab_media.update_caption_button:    '<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Aktualisieren'
+
+oktolab_media.caption_edit_button:      '<span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Bearbeiten'
+oktolab_media.edit_caption_header:      "Textspur bearbeiten"
+oktolab_media.delete_caption_button:    '<span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Löschen'
+oktolab_media.edit_caption_cancel:      "Abbrechen"
+
+oktolab_media.caption_back_to_episode:  "Zur Episode"
 
 # Logbook messages -------------------------------------------------------------
 oktolab_media.episode_start_encodevideo:    "Episode wird nun Encodiert"

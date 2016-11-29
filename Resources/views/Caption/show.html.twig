@@ -1,0 +1,20 @@
+{% extends "BprsStyleBundle::layout.html.twig" %}
+
+{% block nav_head%}
+    {% include 'BprsStyleBundle::menu.html.twig' with {'selected': '', 'dropdown': ''} %}
+{% endblock %}
+
+{% block body_main %}
+    <div class="page-header">
+        <h1>{{ caption.label }}</h1>
+        <a href="{{ path('oktolab_episode_show', {'uniqID': caption.episode.uniqID}) }}" class="btn btn-default">{{ 'oktolab_media.caption_back_to_episode'|trans|raw }}</a>
+        <a href="{{ path('oktolab_caption_edit', {'caption': caption.id}) }}" class="btn btn-default">{{ 'oktolab_media.caption_edit_button'|trans|raw }}</a>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">{{ caption.kind }}</div>
+        <div class="panel-body">
+            {{ caption.content|nl2br }}
+        </div>
+    </div>
+{% endblock %}

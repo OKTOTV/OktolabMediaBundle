@@ -33,23 +33,45 @@ class PublicApiController extends Controller
     }
 
     /**
-     * @TODO: migrate playlist functionality
+     * @Route(
+     *     "/caption/{uniqID}.{_format}",
+     *     defaults={"_format": "vtt"},
+     *     requirements={"_format": "vtt"},
+     *     name="oktolab_media_caption_for_episode"
+     * )
+     * @Method("GET")
      */
-    // public function playlistAction($uniqID, $player_type)
-    // {
-    //     return [];
-    // }
+    public function captionAction($uniqID)
+    {
+        $caption = $this->get('oktolab_media')->getCaption($uniqID);
+
+        $response = new Response();
+        $response->headers->set('Content-Type', "text/vtt");
+        $response->headers->set(
+            'Content-Disposition',
+            'attachment; filename="'.$caption->getLabel().'.vtt"'
+        );
+        $response->sendHeaders();
+        $response->setContent($caption->getContent());
+        return $response;
+    }
 
     /**
-    * @Route("/origin/{player_type}.{_format}", defaults={"_format": "json"}, requirements={"_format": "json"}, name="oktolab_media_origin_for_episode")
+    * @Route("/origin.{_format}",
+    *   defaults={"_format": "json"},
+    *   requirements={"_format": "json"},
+    *   name="oktolab_media_origin_for_episode"
+    *   )
     * @Method("GET")
-    * Cache(expires="+1 day", public="yes")
     * @Template()
     */
-    public function originAction($player_type)
+    public function originAction(Request $request)
     {
         $origin = $this->getParameter('oktolab_media.origin');
-        return ['origin' => $origin, 'player_type' => $player_type];
+        return [
+            'origin' => $origin,
+            'player_type' => $request->query->get('player_type', 'jwplayer')
+        ];
     }
 
     /**
@@ -65,27 +87,27 @@ class PublicApiController extends Controller
         return ['episode' => $episode];
     }
 
-    /**
-     * @Route("/posterframe/series", name="oktolab_media_series_show_posterframe")
-     * @Method("GET")
-     * @Template()
-     */
-    public function showSeriesPosterframeAction(Request $request)
-    {
-        $uniqID = $request->query->get('uniqID');
-        if ($uniqID) {
-            $series = $this->get('oktolab_media')->getSeries($uniqID);
-            if ($series) {
-                if ($series->getPosterframe()) {
-                    return new RedirectResponse(
-                        $this->get('bprs.asset_helper')->getAbsoluteUrl($series->getPosterframe())
-                    );
-                }
-                return new RedirectResponse(
-                    $this->get('bprs.asset_helper')->get404()
-                );
-            }
-        }
-        return new Response("", Response::HTTP_BAD_REQUEST);
-    }
+    // /**
+    //  * @Route("/posterframe/series", name="oktolab_media_series_show_posterframe")
+    //  * @Method("GET")
+    //  * @Template()
+    //  */
+    // public function showSeriesPosterframeAction(Request $request)
+    // {
+    //     $uniqID = $request->query->get('uniqID');
+    //     if ($uniqID) {
+    //         $series = $this->get('oktolab_media')->getSeries($uniqID);
+    //         if ($series) {
+    //             if ($series->getPosterframe()) {
+    //                 return new RedirectResponse(
+    //                     $this->get('bprs.asset_helper')->getAbsoluteUrl($series->getPosterframe())
+    //                 );
+    //             }
+    //             return new RedirectResponse(
+    //                 $this->get('bprs.asset_helper')->get404()
+    //             );
+    //         }
+    //     }
+    //     return new Response("", Response::HTTP_BAD_REQUEST);
+    // }
 }

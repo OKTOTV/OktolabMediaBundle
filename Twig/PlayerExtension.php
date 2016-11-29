@@ -71,7 +71,7 @@ class PlayerExtension extends \Twig_Extension
         }
     }
 
-    private function getPlaylistPlayerForType($playlist, $player_id, $player_type)
+    private function getPlaylistPlayerForType($playlist, $player_id, $player_type = 'jwplayer')
     {
         switch ($player_type) {
             case 'jwplayer':
@@ -93,12 +93,15 @@ class PlayerExtension extends \Twig_Extension
         }
     }
 
-    private function getOriginForType($episode, $player_type)
+    private function getOriginForType($episode, $player_type = 'jwplayer')
     {
         switch ($player_type) {
             case 'jwplayer':
                 $origin = $this->origin->getOrigin($episode->getUniqID(), $player_type);
-                return $this->twig->render('OktolabMediaBundle:PublicApi:origin_jwplayer.json.twig', ['origin' => $origin]);
+                return $this->twig->render(
+                    'OktolabMediaBundle:PublicApi:origin_jwplayer.json.twig',
+                    ['origin' => $origin]
+                );
         }
     }
 
