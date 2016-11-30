@@ -138,7 +138,7 @@ class CaptionController extends Controller
                 $this
                     ->get('session')
                     ->getFlashBag()
-                    ->add('success', 'oktolab_media.success_update_caption');
+                    ->add('success', 'oktolab_media.success_create_caption');
                 return $this->redirect(
                     $this->generateUrl(
                         'oktolab_caption_show',

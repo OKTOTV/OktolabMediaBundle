@@ -161,6 +161,11 @@ oktolab_media.edit_caption_cancel:      "Abbrechen"
 
 oktolab_media.caption_back_to_episode:  "Zur Episode"
 
+oktolab_media.success_create_caption:   "Textspur erfolgreich angelegt"
+oktolab_media.success_update_caption:   "Textspur erfolgreich aktualisiert"
+oktolab_media.success_delete_caption:   "Textspur erfolgreich gelöscht"
+oktolab_media.error_edit_caption:       "Änderungen konnten nicht übernommen werden"
+
 # Logbook messages -------------------------------------------------------------
 oktolab_media.episode_start_encodevideo:    "Episode wird nun Encodiert"
 oktolab_media.episode_end_encodevideo:      "Episode encodierung beendet"
