@@ -38,13 +38,17 @@ class Caption {
      * @JMS\Expose
      * @JMS\Type("string")
      * @JMS\SerializedName("uniqID")
-     * @JMS\Groups({"search", "oktolab"})
+     * @JMS\Groups({"oktolab"})
      * @ORM\Column(name="uniqID", type="string", length=13)
      */
     private $uniqID;
 
     /**
      * shown text for capture selection
+     *
+     * @JMS\Expose
+     * @JMS\Type("string")
+     * @JMS\Groups({"oktolab"})
      * @Assert\NotBlank()
      * @ORM\Column(type="string", length=20)
      */
@@ -52,6 +56,9 @@ class Caption {
 
     /**
      * the webVTT formatted caption.
+     * @JMS\Expose
+     * @JMS\Type("string")
+     * @JMS\Groups({"search", "oktolab"})
      * @Assert\NotBlank()
      * @ORM\Column(type="text")
      */
@@ -65,7 +72,6 @@ class Caption {
     private $kind;
 
     /**
-     * @JMS\Expose
      * @ORM\ManyToOne(targetEntity="Oktolab\MediaBundle\Entity\EpisodeInterface", inversedBy="captions")
      * @ORM\JoinColumn(name="episode_id", referencedColumnName="id")
      */

@@ -34,15 +34,14 @@ class PublicApiController extends Controller
 
     /**
      * @Route(
-     *     "/caption/{uniqID}.{_format}",
-     *     defaults={"_format": "vtt"},
-     *     requirements={"_format": "vtt"},
+     *     "/caption",
      *     name="oktolab_media_caption_for_episode"
      * )
      * @Method("GET")
      */
-    public function captionAction($uniqID)
+    public function captionAction(Request $request)
     {
+        $uniqID = $request->query->get('uniqID');
         $caption = $this->get('oktolab_media')->getCaption($uniqID);
 
         $response = new Response();

@@ -157,6 +157,9 @@ class Episode implements EpisodeMergerInterface
     protected $keychain;
 
     /**
+     * @JMS\Expose
+     * @JMS\Groups({"oktolab"})
+     * @JMS\Type("ArrayCollection<Oktolab\MediaBundle\Entity\Caption>")
      * @ORM\OneToMany(targetEntity="Oktolab\MediaBundle\Entity\Caption", mappedBy="episode", cascade={"remove"})
      */
     protected $captions;

@@ -50,7 +50,9 @@ class OktolabMediaExtension extends Extension
             'oktolab_media_api_show_asset',
             'oktolab_media_api_import_series',
             'oktolab_media_api_import_episode',
-            'oktolab_media_embed_episode'
+            'oktolab_media_embed_episode',
+            'oktolab_media_caption_for_episode',
+            'oktolab_media_origin_for_episode'
         ];
 
         $urls = array_merge($default_urls, $urls);

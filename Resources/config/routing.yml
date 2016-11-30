@@ -144,10 +144,8 @@ oktolab_media_player_for_episode:
     defaults:   { _controller: OktolabMediaBundle:PublicApi:episode }
 
 oktolab_media_caption_for_episode:
-    path:       /oktolab_media/api/public/caption/{uniqID}.{_format}
-    defaults:   { _controller: OktolabMediaBundle:PublicApi:caption, _format: vtt }
-    requirements:
-        _format: vtt
+    path:       /oktolab_media/api/public/caption
+    defaults:   { _controller: OktolabMediaBundle:PublicApi:caption }
 
 oktolab_media_origin_for_episode:
     path:       /oktolab_media/api/public/origin.{_format}

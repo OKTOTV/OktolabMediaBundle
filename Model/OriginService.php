@@ -29,7 +29,7 @@ class OriginService {
             );
         } else {
             $url = $this->router->generate(
-                'oktolab_media_origin_for_episode', 
+                'oktolab_media_origin_for_episode',
                 [],
                 UrlGeneratorInterface::ABSOLUTE_URL
             );

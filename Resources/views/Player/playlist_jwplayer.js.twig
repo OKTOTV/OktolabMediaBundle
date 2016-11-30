@@ -3,7 +3,6 @@
     $(document).ready(function() {
         var playerInstance = jwplayer("{{ player_id }}");
         playerInstance.setup({
-            {# playlist: "{{ url('oktothek_show_playlist', {'uniqID': playlist.uniqID, '_format': 'json'})}}" #}
             playlist: [
                 {% for playlistitem in playlist.items %}
                 {
