@@ -88,7 +88,7 @@ class CaptionController extends Controller
                             )
                         );
                 } else {
-                    $uniqID = $caption->getEpisode()->getUniqd();
+                    $uniqID = $caption->getEpisode()->getUniqID();
                     $em->remove($caption);
                     $em->flush();
                     $this
