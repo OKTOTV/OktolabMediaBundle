@@ -82,6 +82,11 @@ class Caption {
         return $this->label;
     }
 
+    public function __construct()
+    {
+        $this->uniqID = uniqid();
+    }
+
     public function getId()
     {
         return $this->id;
