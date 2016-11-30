@@ -88,12 +88,19 @@ class CaptionController extends Controller
                             )
                         );
                 } else {
+                    $uniqID = $caption->getEpisode()->getUniqd();
                     $em->remove($caption);
                     $em->flush();
                     $this
                         ->get('session')
                         ->getFlashBag()
                         ->add('success', 'oktolab_media.success_delete_caption');
+                    return $this->redirect(
+                        $this->generateUrl(
+                            'oktolab_episode_show',
+                            ['uniqID' => $uniqID]
+                            )
+                        );
                 }
             }
             $this->get('session')->getFlashBag()->add('error', 'oktolab_media.error_edit_caption');
