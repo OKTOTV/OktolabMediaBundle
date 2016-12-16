@@ -14,8 +14,10 @@
             Sortieren <span class="caret"></span>
           </button>
           <ul class="dropdown-menu">
-            <li><a href="#"{% if episodes.isSorted('e.name') %} class="active"{% endif %}>{{ knp_pagination_sortable(episodes, 'Name', 'e.name') }}</a></li>
-            <li><a href="#"{% if episodes.isSorted('e.uniqID') %} class="active"{% endif %}>{{ knp_pagination_sortable(episodes, 'UniqID', 'e.uniqID') }}</a></li>
+            <li{% if episodes.isSorted('e.name') %} class="active"{% endif %}>{{ knp_pagination_sortable(episodes, 'Name', 'e.name') }}</li>
+            <li{% if episodes.isSorted('e.firstranAt') %} class="active"{% endif %}>{{ knp_pagination_sortable(episodes, 'oktolab_media.episode_index_firstranAt'|trans, 'e.firstranAt') }}</li>
+            <li{% if episodes.isSorted('e.updatedAt') %} class="active"{% endif %}>{{ knp_pagination_sortable(episodes, 'oktolab_media.episode_index_updatedAt'|trans, 'e.updatedAt') }}</li>
+            <li{% if episodes.isSorted('e.uniqID') %} class="active"{% endif %}>{{ knp_pagination_sortable(episodes, 'UniqID', 'e.uniqID') }}</li>
           </ul>
         </div>
     </div>
