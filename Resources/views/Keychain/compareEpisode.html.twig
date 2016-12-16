@@ -1,0 +1,102 @@
+{% extends "BprsStyleBundle::layout.html.twig" %}
+
+{% block nav_head%}
+    {% include 'BprsStyleBundle::menu.html.twig' with {'selected': '', 'dropdown': ''} %}
+{% endblock %}
+
+{% block body_main %}
+    <div class="page-header">
+        <h1>{{ 'oktolab_media.keychain_compare_episode'|trans }}</h1>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h2>{{ 'oktolab_media.keychain_compare_local'|trans }}</h2>
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <td>{{'oktolab_media.episode_info_uniqID'|trans}}</td>
+                        <td>{{ episode.uniqID }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{'oktolab_media.episode_info_isActive'|trans}}</td>
+                        <td>{{ episode.isActive }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{'oktolab_media.episode_info_createdAt'|trans}}</td>
+                        <td>{{ episode.createdAt|date("d.m.Y H:i") }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{'oktolab_media.episode_info_updatedAt'|trans}}</td>
+                        <td>{{ episode.updatedAt|date("d.m.Y H:i") }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{'oktolab_media.episode_info_onlineStart'|trans}}</td>
+                        <td>{{ episode.onlineStart|date("d.m.Y H:i") }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{'oktolab_media.episode_info_onlineEnd'|trans}}</td>
+                        <td>
+                            {% if episode.onlineEnd is not empty %}
+                                {{ episode.onlineEnd|date("d.m.Y H:i") }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{{'oktolab_media.episode_info_firstranAt'|trans}}</td>
+                        <td>{{ episode.firstranAt|date("d.m.Y H:i") }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'oktolab_media.show_episode_technical_state'|trans }}</td>
+                        <td>{{ 'oktolab_media.show_episode_technical_state_choice'|transchoice(episode.technicalStatus)}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <h2>{{ 'oktolab_media.keychain_compare_remote'|trans }}</h2>
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <td>{{'oktolab_media.episode_info_uniqID'|trans}}</td>
+                        <td>{{ remote_episode.uniqID }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{'oktolab_media.episode_info_isActive'|trans}}</td>
+                        <td>{{ remote_episode.isActive }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{'oktolab_media.episode_info_createdAt'|trans}}</td>
+                        <td>{{ remote_episode.createdAt|date("d.m.Y H:i") }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{'oktolab_media.episode_info_updatedAt'|trans}}</td>
+                        <td>{{ remote_episode.updatedAt|date("d.m.Y H:i") }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{'oktolab_media.episode_info_onlineStart'|trans}}</td>
+                        <td>{{ remote_episode.onlineStart|date("d.m.Y H:i") }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{'oktolab_media.episode_info_onlineEnd'|trans}}</td>
+                        <td>
+                            {% if remote_episode.onlineEnd is not empty %}
+                                {{ remote_episode.onlineEnd|date("d.m.Y H:i") }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{{'oktolab_media.episode_info_firstranAt'|trans}}</td>
+                        <td>{{ remote_episode.firstranAt|date("d.m.Y H:i") }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'oktolab_media.show_episode_technical_state'|trans }}</td>
+                        <td>{{ 'oktolab_media.show_episode_technical_state_choice'|transchoice(remote_episode.technicalStatus)}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

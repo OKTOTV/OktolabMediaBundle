@@ -29,5 +29,17 @@ class BaseEpisodeRepository extends EntityRepository
         }
         return $query->getOneOrNullResult();
     }
+
+    public function findAllForClass($episode_class, $query_only = false)
+    {
+        $query = $this->getEntityManager()->createQuery(
+                sprintf("SELECT e, p FROM %s e LEFT JOIN e.posterframe p", $episode_class)
+            );
+
+        if ($query_only) {
+            return $query;
+        }
+        return $query->getResult();
+    }
 }
  ?>

@@ -11,7 +11,22 @@ oktolab_media.keychain:              OktolabMedia Api
 oktolab_media.keychain_show_prev_results:   Vorherige
 oktolab_media.keychain_show_next_results:   Nächste
 
+# keychain ---------------------------------------------------------------------
+oktolab_media.keychain_compare_episode:    Episode Vergleichen
+oktolab_media.keychain_compare_local:      Lokal
+oktolab_media.keychain_compare_remote:     Remote
+
 # episode ----------------------------------------------------------------------
+## episode index.html.twig
+oktolab_media.episode_index_header:         Episoden
+oktolab_media.episodes_index_total:         "%episodes% Episoden vorhanden"
+oktolab_media.episode_index_new:            <span class="glyphicon glyphicon-plus"> Neue Episode</span>
+oktolab_media.episode_index_name:           Folgenname
+oktolab_media.episode_index_series_name:    Sendereihe
+oktolab_media.episode_index_firstranAt:     Erstausstrahlung
+oktolab_media.episode_index_updatedAt:      Aktualisiert
+oktolab_media.episode_index_description:    Beschreibung
+
 ## episode new.html.twig
 oktolab_media.new_episode_header: Neue Episode
 oktolab_media.new_episode_back_to_list: Zurück zu Sendereihen

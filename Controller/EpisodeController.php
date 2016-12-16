@@ -13,6 +13,7 @@ use Oktolab\MediaBundle\Entity\Episode;
 use Oktolab\MediaBundle\Form\EpisodeType;
 use Bprs\AppLinkBundle\Entity\Keychain;
 use GuzzleHttp\Client;
+use Oktolab\MediaBundle\Model\MediaService;
 
 /**
  * Episode controller.
@@ -49,6 +50,24 @@ class EpisodeController extends Controller
             'entity' => $entity,
             'form'   => $form->createView(),
         );
+    }
+
+    /**
+     * @Route("s", name="oktolab_episode_index")
+     * @Method("GET")
+     * @Template()
+     */
+    public function indexAction(Request $request)
+    {
+        $page = $request->query->get('page', 1);
+        $results = $request->query->get('results', 10);
+        $em = $this->getDoctrine()->getManager();
+        $class = $this->container->getParameter('oktolab_media.episode_class');
+        $query = $em->getRepository($class)->findAllForClass($class, true);
+        $paginator = $this->get('knp_paginator');
+        $episodes = $paginator->paginate($query, $page, $results);
+
+        return ['episodes' => $episodes];
     }
 
     /**
@@ -272,5 +291,17 @@ class EpisodeController extends Controller
             return new Response('', Response::HTTP_ACCEPTED);
         }
         return new Response('', Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * @Route("/{uniqID}/push", name="oktolab_media_episode_push")
+     * @Template()
+     * @Method("GET")
+     */
+    public function pushAction($uniqID)
+    {
+        $keychains = $this->get('bprs_applink')
+            ->getKeychainsWithRole(MediaService::ROLE_WRITE);
+        return ['keychains' => $keychains];
     }
 }

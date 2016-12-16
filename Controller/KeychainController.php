@@ -98,4 +98,11 @@ class KeychainController extends Controller
         }
         return new Response("", Response::HTTP_BAD_REQUEST);
     }
+
+    public function compareEpisode($uniqID)
+    {
+        $episode = $this->get('oktolab_media')->getEpisode($uniqID);
+        $remote_episode = $this->get('oktolab_keychain')->getEpisode($keychain, $uniqID);
+        return ['episode' => $episode, 'remote_episode' => $remote_episode];
+    }
 } ?>

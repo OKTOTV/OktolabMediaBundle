@@ -131,7 +131,7 @@ class MediaApiController extends Controller
     /**
      * @Route("/import/series", name="oktolab_media_api_import_series")
      * @Security("has_role('ROLE_OKTOLAB_MEDIA_WRITE')")
-     * @Method("POST")
+     * @Method("GET")
      */
     public function importSeriesAction(Request $request)
     {
@@ -149,7 +149,7 @@ class MediaApiController extends Controller
     /**
      * @Route("/import/episode", name="oktolab_media_api_import_episode")
      * @Security("has_role('ROLE_OKTOLAB_MEDIA_WRITE')")
-     * @Method("POST")
+     * @Method("GET")
      */
     public function importEpisodeAction(Request $request)
     {
