@@ -42,6 +42,10 @@ oktolab_media_remote_episodes:
     path:       /oktolab_media/episode/remote/{keychain}
     defaults:   { _controller: OktolabMediaBundle:Episode:listRemoteEpisodes }
 
+oktolab_episode_index:
+    path:       /oktolab_media/episodes
+    defaults:   { _controller: OktolabMediaBundle:Episode:index }
+
 # Media
 oktolab_media_media_for_episode:
     path:       /oktolab_media/media/media_for_episode/{uniqID}
