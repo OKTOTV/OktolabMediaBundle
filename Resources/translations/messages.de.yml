@@ -22,6 +22,7 @@ oktolab_media.episode_index_header:         Episoden
 oktolab_media.episodes_index_total:         "%episodes% Episoden vorhanden"
 oktolab_media.episode_index_new:            <span class="glyphicon glyphicon-plus"> Neue Episode</span>
 oktolab_media.episode_index_name:           Folgenname
+oktolab_media.episode_index_uniqID:         UniqID
 oktolab_media.episode_index_series_name:    Sendereihe
 oktolab_media.episode_index_firstranAt:     Erstausstrahlung
 oktolab_media.episode_index_updatedAt:      Aktualisiert
