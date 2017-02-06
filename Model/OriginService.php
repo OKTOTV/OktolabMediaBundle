@@ -23,7 +23,6 @@ class OriginService {
         $episode = $this->media_service->getEpisode($uniqID);
         $url = null;
         if ($episode->getKeychain()) { // episode is remote
-
             $url = $this->applink->getApiUrlsForKey(
                 $episode->getKeychain(),
                 'oktolab_media_origin_for_episode'

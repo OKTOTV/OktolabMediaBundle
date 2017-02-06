@@ -16,7 +16,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     {% if episode.video is not empty %}
-                        <div id="video">
+                        <div id="player">
                         </div>
                     {% elseif episode.posterframe is not empty %}
                         <img src="{{ episode.posterframe|path }}" class="img-responsive"/>
@@ -69,10 +69,10 @@
                 </tbody>
             </table>
             {% if episode.video is not empty %}
-                <a href="{{ path('bprs_asset_download', {'key': episode.video.filekey}) }}" class="btn btn-default">{{ 'oktolab_media.episode_download_video_button'|trans|raw }}</a>
+                <a href="{{ path('bprs_asset_download', {'filekey': episode.video.filekey}) }}" class="btn btn-default">{{ 'oktolab_media.episode_download_video_button'|trans|raw }}</a>
             {% endif %}
             {% if episode.posterframe is not empty %}
-                <a href="{{ path('bprs_asset_download', {'key': episode.posterframe.filekey}) }}" class="btn btn-default">{{ 'oktolab_media.episode_download_posterframe_button'|trans|raw }}</a>
+                <a href="{{ path('bprs_asset_download', {'filekey': episode.posterframe.filekey}) }}" class="btn btn-default">{{ 'oktolab_media.episode_download_posterframe_button'|trans|raw }}</a>
             {% endif %}
         </div>
     </div>
@@ -80,16 +80,5 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="http://content.jwplatform.com/libraries/qecJHTsP.js"></script>
-    {% if episode.video is not empty %}
-        <script type="text/javascript">
-            $(document).ready(function(){
-                var playerInstance = jwplayer("video");
-                playerInstance.setup({
-                    image: "{{ episode.posterframe|path }}",
-                    sources: [{% for media in episode.media %}{file: "{{ media.asset|path }}", label: "{{ media.quality }}", type: "mp4"}{% if not loop.last %},{% endif %}{% endfor %}]
-                });
-            });
-        </script>
-    {% endif %}
+    {{ player(episode)|raw }}
 {% endblock %}
