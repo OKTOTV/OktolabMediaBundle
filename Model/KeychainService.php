@@ -3,6 +3,7 @@
 namespace Oktolab\MediaBundle\Model;
 
 use GuzzleHttp\Client;
+use Symfony\Component\HttpFoundation\Response;
 
 class KeychainService {
 
@@ -64,5 +65,43 @@ class KeychainService {
 
         $episode = $this->jms_serializer->deserialize($response->getBody(), $this->series_class, 'json');
         return $episode;
+    }
+
+    public function exportSeries($keychain, $uniqID)
+    {
+        $client = new Client();
+        $response = $client->request(
+            'GET',
+            $this->applink_service->getApiUrlsForKey($keychain, 'oktolab_media_api_import_series'),
+            [
+                'auth' => [$keychain->getUser(), $keychain->getApiKey()],
+                'query' => ['uniqID' => $uniqID]
+            ]
+        );
+
+        if ($response->getStatusCode() == Response::HTTP_ACCEPTED) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function exportEpisode($keychain, $uniqID)
+    {
+        $client = new Client();
+        $response = $client->request(
+            'GET',
+            $this->applink_service->getApiUrlsForKey($keychain, 'oktolab_media_api_import_episode'),
+            [
+                'auth' => [$keychain->getUser(), $keychain->getApiKey()],
+                'query' => ['uniqID' => $uniqID]
+            ]
+        );
+
+        if ($response->getStatusCode() == Response::HTTP_ACCEPTED) {
+            return true;
+        }
+
+        return false;
     }
 }

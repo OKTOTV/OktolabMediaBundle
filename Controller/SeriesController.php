@@ -9,9 +9,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Oktolab\MediaBundle\Entity\Series;
 use Oktolab\MediaBundle\Form\SeriesType;
 use Bprs\AppLinkBundle\Entity\Keychain;
+use Oktolab\MediaBundle\Model\MediaService;
 use GuzzleHttp\Client;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
@@ -126,6 +128,31 @@ class SeriesController extends Controller
         }
 
         return ['form' => $form->createView()];
+    }
+
+    /**
+    * @Route("/{series}/export", name="oktolab_media_export_series")
+    * @Method("GET")
+    * @Template()
+    * @Security("has_role('ROLE_OKTOLAB_MEDIA_READ')")
+    */
+    public function exportAction(Request $request, $series)
+    {
+        $send = $request->query->get('keychain', false);
+        if ($send) { // clicked send to remote application
+            $keychain = $this->get('bprs_applink')->getKeychain($send);
+            $success = $this->get('oktolab_keychain')->exportSeries($keychain, $series);
+            if ($success) {
+                $this->get('session')->getFlashBag()->add('success', 'oktolab_media.success_export_series');
+                return $this->redirect($this->generateUrl('oktolab_media_export_series', ['series' => $uniqID]));
+            } else {
+                $this->get('session')->getFlashBag()->add('error', 'oktolab_media.error_export_series');
+            }
+        }
+
+        $keychains = $this->get('bprs_applink')->getKeychainsWithRole(MediaService::ROLE_WRITE);
+        $series = $this->get('oktolab_media')->getSeries($series);
+        return ['series' => $series, 'keychains' => $keychains];
     }
 
     /**

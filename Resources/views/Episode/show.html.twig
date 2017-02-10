@@ -12,7 +12,7 @@
         <a href="{{ path('oktolab_episode_encode', {'uniqID': episode.uniqID}) }}" class="btn btn-danger">{{ 'oktolab_media.show_episode_add_to_encode_queue'|trans|raw }}</a>
     </div>
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-7">
             <div class="panel panel-default">
                 <div class="panel-body">
                     {% if episode.video is not empty %}
@@ -23,51 +23,34 @@
                     {% endif %}
                 </div>
                 <div class="panel-footer">
-                    {{ episode.description|default('oktolab_media.show_episode_description_missing'|trans) }}
+                    {{ episode.description|default('oktolab_media.show_episode_description_missing'|trans)|nl2br }}
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <table class="table table-bordered">
-                <tbody>
-                    <tr>
-                        <td>{{'oktolab_media.episode_info_uniqID'|trans}}</td>
-                        <td>{{ episode.uniqID }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{'oktolab_media.episode_info_isActive'|trans}}</td>
-                        <td>{{ episode.isActive }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{'oktolab_media.episode_info_createdAt'|trans}}</td>
-                        <td>{{ episode.createdAt|date("d.m.Y H:i") }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{'oktolab_media.episode_info_updatedAt'|trans}}</td>
-                        <td>{{ episode.updatedAt|date("d.m.Y H:i") }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{'oktolab_media.episode_info_onlineStart'|trans}}</td>
-                        <td>{{ episode.onlineStart|date("d.m.Y H:i") }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{'oktolab_media.episode_info_onlineEnd'|trans}}</td>
-                        <td>
-                            {% if episode.onlineEnd is not empty %}
-                                {{ episode.onlineEnd|date("d.m.Y H:i") }}
-                            {% endif %}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>{{'oktolab_media.episode_info_firstranAt'|trans}}</td>
-                        <td>{{ episode.firstranAt|date("d.m.Y H:i") }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ 'oktolab_media.show_episode_technical_state'|trans }}</td>
-                        <td>{{ 'oktolab_media.show_episode_technical_state_choice'|transchoice(episode.technicalStatus)}}</td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="col-md-5">
+            <dl class="dl-horizontal">
+                <dt>{{ 'oktolab_media.episode_info_isActive'|trans }}</dt>
+                <dd>{{ 'oktolab_media.episode_info_isActive_choice'|transchoice( episode.isActive ) }}</dd>
+
+                <dt>{{ 'oktolab_media.episode_info_createdAt'|trans }}</dt>
+                <dd>{{ episode.createdAt|date("d.m.Y H:i") }}</dd>
+
+                <dt>{{ 'oktolab_media.episode_info_updatedAt'|trans }}</dt>
+                <dd>{{ episode.updatedAt|date("d.m.Y H:i") }}</dd>
+
+                <dt>{{ 'oktolab_media.episode_info_onlineStart'|trans }}</dt>
+                <dd>{{ episode.onlineStart|date("d.m.Y H:i") }}</dd>
+
+                <dt>{{ 'oktolab_media.episode_info_onlineEnd'|trans}}</dt>
+                <dd>{% if episode.onlineEnd %}{{ episode.onlineEnd|date("d.m.Y H:i") }}{% endif %}</dd>
+
+                <dt>{{ 'oktolab_media.episode_info_firstranAt'|trans }}</dt>
+                <dd>{{ episode.firstranAt|date("d.m.Y H:i") }}</dd>
+
+                <dt>{{ 'oktolab_media.episode_info_uniqID'|trans}}</dt>
+                <dd>{{ episode.uniqID }}</dd>
+            </dl>
+
             {% if episode.video is not empty %}
                 <a href="{{ path('bprs_asset_download', {'filekey': episode.video.filekey}) }}" class="btn btn-default">{{ 'oktolab_media.episode_download_video_button'|trans|raw }}</a>
             {% endif %}

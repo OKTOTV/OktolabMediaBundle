@@ -1,0 +1,65 @@
+{% extends "BprsStyleBundle::layout.html.twig" %}
+
+{% block nav_head%}
+    {% include 'BprsStyleBundle::menu.html.twig' with {'selected': '', 'dropdown': ''} %}
+{% endblock %}
+
+{% block body_main -%}
+    <div class="page-header">
+        <h1>{{ series.name }}</h1>
+        <a href="{{ path('oktolab_series_show', { 'series': series.uniqID }) }}" class="btn btn-default">{{ 'oktolab_media.series_show_button'|trans|raw }}</a>
+        <a href="{{ path('oktolab_media_api_show_series', {'uniqID': series.uniqID }) }}" class="btn btn-default">{{ 'oktolab_media.series_show_api'|trans|raw }}</a>
+    </div>
+    <p>{{ 'oktolab_media.series_export_desc'|trans }}</p>
+    {% for keychain in keychains %}
+        <div class="panel panel-default">
+            <div class="panel-body">
+                {{ keychain.url }}
+            </div>
+            <div class="panel-footer">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal{{ loop.index }}">{{ 'oktolab_media.series_export_modal'|trans }}</button>
+                <!-- Modal -->
+                <div class="modal fade" id="myModal{{ loop.index }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">{{ 'oktolab_media.episode_export_modal_header'|trans }}</h4>
+                      </div>
+                      <div class="modal-body">
+                           <p>
+                               {{ 'oktolab_media.series_export_modal_desc'|trans({'%series%': series, '%url%': keychain.url}) }}
+                           </p>
+                            <a href="{{ path('oktolab_media_export_series', {'series': series.uniqID, 'keychain': keychain.uniqID}) }}"><img src="{{ asset('bundles/oktolabmedia/img/green_arrow.png') }}" class="img img-responsive pulse export" /></a>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'oktolab_media.series_export_modal_cancel'|trans }}</button>
+                        <a href="{{ path('oktolab_media_export_series', {'series': series.uniqID, 'keychain': keychain.uniqID}) }}" class="btn btn-primary export">{{ 'oktolab_media.series_export_modal_export'|trans|raw }}</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent()}}
+    <style>
+    @keyframes pulse_animation {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.08); }
+        100% { transform: scale(1); }
+    }
+
+    .pulse:hover {
+        animation-name: pulse_animation;
+        animation-duration: 2000ms;
+        transform-origin:70% 70%;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+    }
+    </style>
+{% endblock %}

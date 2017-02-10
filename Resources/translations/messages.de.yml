@@ -34,10 +34,13 @@ oktolab_media.new_episode_back_to_list: Zurück zu Sendereihen
 oktolab_media.new_episode_create_button: Episode anlegen
 
 ## episode show.html.twig
+oktolab_media.episode_show_actions: 'Aktionen<span class="caret"></span>'
 oktolab_media.episode_show_api: <span class="glyphicon glyphicon-link" aria-hidden="true"></span> API zugriff
 oktolab_media.episode_edit_button: <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Bearbeiten
+oktolab_media.show_episode_export: '<span class="glyphicon glyphicon-export" aria-hidden="true"></span> Exportieren'
 oktolab_media.episode_download_video_button: <span class="glyphicon glyphicon-film" aria-hidden="true"></span> Video
 oktolab_media.episode_download_posterframe_button: <span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Posterframe
+oktolab_media_info_for_episode_header:  Informationen
 oktolab_media.episode_info_uniqID: Episoden ID
 oktolab_media.episode_info_isActive: Verfügbarkeit
 oktolab_media.episode_info_isActive_choice: "{0} Inaktiv|{1} Aktiv"
@@ -46,7 +49,17 @@ oktolab_media.episode_info_updatedAt: Aktualisiert am
 oktolab_media.episode_info_onlineStart: Verfügbar von
 oktolab_media.episode_info_onlineEnd: Verfügbar bis
 oktolab_media.episode_info_firstranAt: Erstausstrahlung
+oktolab_media.episode_show_captions_header: "Textspuren"
+oktolab_media.episode_add_new_media:    "<span class='glyphicon glyphicon-plus' aria-hidden='true'></span> Episodenformat hinzufügen"
 
+## episode export.html.twig
+oktolab_media.episode_export_show_button:   "<span class='glyphicon glyphicon-arrow-left'></span> Zurück zur Ansicht"
+oktolab_media.episode_export_description:   "Hier kannst du die Episode an externe Programme exportieren. Übertragen werden alles Metadaten der Sendereihe, Posterframe sowie diese Episode."
+oktolab_media.episode_export_modal:         "Exportieren"
+oktolab_media.episode_export_modal_header:  "Episode exportieren"
+oktolab_media.episode_export_modal_desc:    "Möchtest du Episode %uniqID% an %url% senden? Die dortige Episode wird überschrieben, die Aktion kann nicht rückgänging gemacht werden."
+oktolab_media.episode_export_modal_cancel:  "Abbrechen"
+oktolab_media.episode_export_modal_export:  "<span class='glyphicon glyphicon-export' aria-hidden='true'></span> Exportieren"
 
 ## episode form labels
 oktolab_media.name_label: Folgenname
@@ -117,8 +130,11 @@ oktolab_media.edit_series_button:  <span class="glyphicon glyphicon-floppy-disk"
 oktolab_media.delete_series_button: <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Sendereihe löschen
 
 ## series show.html.twig
+oktolab_media.series_show_actions: 'Aktionen<span class="caret"></span>'
+oktolab_media.series_export_button: '<span class="glyphicon glyphicon-export" aria-hidden="true"></span> Exportieren'
 oktolab_media.series_show_api: <span class="glyphicon glyphicon-link" aria-hidden="true"></span> API zugriff
 oktolab_media.series_edit_button: <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Bearbeiten
+oktolab_media_info_for_series_header:   "Informationen"
 oktolab_media.series_info_isActive_choice: "{0} Inaktiv|{1} Aktiv"
 oktolab_media.series_info_isActive: Verfügbarkeit
 oktolab_media.series_info_uniqID: Sendereihen ID
@@ -127,6 +143,15 @@ oktolab_media.series_info_createdAt: Angelegt
 oktolab_media.series_info_updatedAt: Aktualisiert
 oktolab_media.series_download_posterframe_button: <span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Posterframe
 oktolab_first_runs:                     Erstausstrahlungsdatum als CSV
+
+## series export.html.twig
+oktolab_media.series_show_button:   '<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Zurück zur Ansicht'
+oktolab_media.series_export_desc:   'Hier kannst du die Sendereihe an externe Programme exportieren. Übertragen werden alles Metadaten der Sendereihe, Posterframe sowie alle zugehörigen Episoden.'
+oktolab_media.series_export_modal:  'Exportieren'
+oktolab_media.series_export_modal_desc: 'Möchtest du die Sendereihe "%series%" mitsamt allen verknüpften Episoden an %url% exportieren? Diese Aktion kann abhängig von größe der Sendereihe, länge der Episoden, verfügbarer Serverleistung und Bandbreite mehrere Tage dauern. Existierende Informationen mit selber uniqID werden überschrieben. Diese Aktion kann nicht rückgängig gemacht werden.'
+oktolab_media.series_export_modal_cancel: 'Abbrechen'
+oktolab_media.series_export_modal_export: '<span class="glyphicon glyphicon-export" aria-hidden="true"></span> Exportieren'
+
 ## series index.html.twig
 oktolab_media.series_index_total_series_choice: "{0} Derzeit ist keine Sendereihe vorhanden|{1} Derzeit ist %count% Sendereihe vorhanden|]1,Inf]Derzeit sind %count% Sendereihen vorhanden"
 

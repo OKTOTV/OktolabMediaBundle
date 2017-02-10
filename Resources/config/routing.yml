@@ -23,7 +23,11 @@ oktolab_media_remote_seriess:
 
 oktolab_media_import_remote_series:
     path:       /oktolab_media/series/import/{keychain}
-    defaults:   { _controller: OktolabMediaBundle:Series_importRemoteSeriess }
+    defaults:   { _controller: OktolabMediaBundle:Series:importRemoteSeriess }
+
+oktolab_media_export_series:
+    path:       /oktolab_media/series/export/{series}
+    defaults:   { _controller: OktolabMediaBundle:Series:export }
 
 # Episodes
 oktolab_episode_show:
@@ -45,6 +49,10 @@ oktolab_media_remote_episodes:
 oktolab_episode_index:
     path:       /oktolab_media/episodes
     defaults:   { _controller: OktolabMediaBundle:Episode:index }
+
+oktolab_media_export_episode:
+    path:       /oktolab_media/episode/{uniqID}/export
+    defaults:   { _controller: OktolabMediaBundle:Episode:export }
 
 # Media
 oktolab_media_media_for_episode:

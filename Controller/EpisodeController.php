@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Oktolab\MediaBundle\Entity\Episode;
 use Oktolab\MediaBundle\Form\EpisodeType;
 use Bprs\AppLinkBundle\Entity\Keychain;
@@ -257,6 +258,31 @@ class EpisodeController extends Controller
         $this->get('oktolab_media')->addEncodeVideoJob($episode->getUniqID());
         $this->get('session')->getFlashBag()->add('info', 'oktolab_media.episode_encode_info');
         return $this->redirect($request->headers->get('referer'));
+    }
+
+    /**
+    * @Route("/{uniqID}/export", name="oktolab_media_export_episode")
+    * @Method("GET")
+    * @Template()
+    * @Security("has_role('ROLE_OKTOLAB_MEDIA_READ')")
+    */
+    public function exportAction(Request $request, $uniqID)
+    {
+        $send = $request->query->get('keychain', false);
+        if ($send) { // clicked send to remote application
+            $keychain = $this->get('bprs_applink')->getKeychain($send);
+            $success = $this->get('oktolab_keychain')->exportEpisode($keychain, $uniqID);
+            if ($success) {
+                $this->get('session')->getFlashBag()->add('success', 'oktolab_media.success_export_episode');
+                return $this->redirect($this->generateUrl('oktolab_media_export_episode', ['uniqID' => $uniqID]));
+            } else {
+                $this->get('session')->getFlashBag()->add('error', 'oktolab_media.error_export_episode');
+            }
+        }
+
+        $keychains = $this->get('bprs_applink')->getKeychainsWithRole(MediaService::ROLE_WRITE);
+        $episode = $this->get('oktolab_media')->getEpisode($uniqID);
+        return ['episode' => $episode, 'keychains' => $keychains];
     }
 
     /**
