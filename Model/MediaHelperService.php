@@ -4,6 +4,7 @@ namespace Oktolab\MediaBundle\Model;
 
 use Oktolab\MediaBundle\OktolabMediaEvent;
 use Oktolab\MediaBundle\Event\DeleteSeriesEvent;
+use Oktolab\MediaBundle\Event\DeleteEpisodeEvent;
 
 class MediaHelperService {
 
@@ -25,6 +26,10 @@ class MediaHelperService {
     public function deleteEpisode($episode)
     {
         $this->logbook->info('oktolab_media.logbook_delete_episode_start', [], $episode->getUniqID());
+
+        $event = new DeleteEpisodeEvent($series);
+        $this->dispatcher->dispatch(OktolabMediaEvent::DELETE_EPISODE, $event);
+
         $this->em->remove($episode);
         $this->deleteMedia($episode, true);
         if ($episode->getPosterframe()) {

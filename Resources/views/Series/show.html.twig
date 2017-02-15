@@ -11,7 +11,7 @@
         <a href="{{ path('oktolab_media_api_show_series', {'uniqID': series.uniqID }) }}" class="btn btn-default">{{ 'oktolab_media.series_show_api'|trans|raw }}</a>
     </div>
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-7">
             <div class="panel panel-default">
                 <div class="panel-body">
                     {% if series.posterframe is not empty %}
@@ -23,31 +23,24 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <table class="table table-bordered">
-                <tbody>
-                    <tr>
-                        <td>{{'oktolab_media.series_info_isActive'|trans}}</td>
-                        <td>{{ series.isActive }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{'oktolab_media.series_info_uniqID'|trans}}</td>
-                        <td>{{ series.uniqID }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{'oktolab_media.series_info_webtitle'|trans}}</td>
-                        <td>{{ series.webtitle }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{'oktolab_media.series_info_createdAt'|trans}}</td>
-                        <td>{{ series.createdAt|date('Y-m-d H:i:s') }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{'oktolab_media.series_info_updatedAt'|trans}}</td>
-                        <td>{{ series.updatedAt|date('Y-m-d H:i:s') }}</td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="col-md-5">
+            <h4>{{ 'oktolab_media_info_for_series_header'|trans }}</h4>
+            <dl class="dl-horizontal">
+                <dt>{{ 'oktolab_media.series_info_isActive'|trans }}</dt>
+                <dd>{{ 'oktolab_media.series_info_isActive_choice'|transchoice( series.isActive ) }}</dd>
+
+                <dt>{{ 'oktolab_media.series_info_createdAt'|trans }}</dt>
+                <dd>{{ series.createdAt|date("d.m.Y H:i") }}</dd>
+
+                <dt>{{ 'oktolab_media.series_info_updatedAt'|trans }}</dt>
+                <dd>{{ series.updatedAt|date("d.m.Y H:i") }}</dd>
+
+                <dt>{{ 'oktolab_media.series_info_uniqID'|trans}}</dt>
+                <dd>{{ series.uniqID }}</dd>
+
+                <dt>{{ 'oktolab_media.series_info_webtitle'|trans}}</dt>
+                <dd>{{ series.webtitle }}</dd>
+            </dl>
         </div>
     </div>
 {% endblock %}
