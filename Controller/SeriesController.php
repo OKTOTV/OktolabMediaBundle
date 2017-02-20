@@ -28,11 +28,14 @@ class SeriesController extends Controller
     /**
      * Lists all Series entities.
      *
-     * @Route("/{page}", name="oktolab_series", defaults={"page" = 1}, requirements={"page": "\d+"})
+     * @Route("/index", name="oktolab_series")
      * @Template()
      */
-    public function indexAction($page)
+    public function indexAction(Request $request)
     {
+        $page = $request->query->get('page', 1);
+        $results = $request->query->get('results', 20);
+
         $em = $this->getDoctrine()->getManager();
         $class = $this->container->getParameter("oktolab_media.series_class");
         $dql = "SELECT s, p FROM ".$class." s LEFT JOIN s.posterframe p";
@@ -41,7 +44,7 @@ class SeriesController extends Controller
         $seriess = $paginator->paginate(
             $query,
             $page,
-            5
+            $results
         );
 
         return array('seriess' => $seriess);

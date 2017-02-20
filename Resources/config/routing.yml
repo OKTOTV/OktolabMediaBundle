@@ -1,9 +1,7 @@
 # Series
 oktolab_series:
-    path:      /oktolab_media/series/{page}
-    defaults:  { _controller: OktolabMediaBundle:Series:index, page:1 }
-    requirements:
-        page:  \d+
+    path:      /oktolab_media/series/index
+    defaults:  { _controller: OktolabMediaBundle:Series:index }
 
 oktolab_series_show:
     path:       /oktolab_media/series/show/{series}

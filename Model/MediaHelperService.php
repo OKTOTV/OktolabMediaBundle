@@ -23,6 +23,24 @@ class MediaHelperService {
         $this->adapters = $adapters;
     }
 
+    public function persistEpisode($episode, $and_flush = true)
+    {
+        // TODO: dispatch event
+        $this->em->persist($episode);
+        if ($and_flush) {
+            $this->em->flush();
+        }
+    }
+
+    public function persistSeries($series, $and_flush = true)
+    {
+        // TODO: dispatch event
+        $this->em->persist($series);
+        if ($and_flush) {
+            $this->em->flush();
+        }
+    }
+
     public function deleteEpisode($episode)
     {
         $this->logbook->info('oktolab_media.logbook_delete_episode_start', [], $episode->getUniqID());
