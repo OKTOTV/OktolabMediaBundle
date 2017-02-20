@@ -66,12 +66,14 @@ oktolab_media.name_label: Folgenname
 oktolab_media.description_label: Beschreibung
 oktolab_media.video_label: Videodatei
 oktolab_media.posterframe_label: Posterframe
+oktolab_media.firstRanAt_label:  Erstausstrahlung
 oktolab_media.onlineStart_label: Öffentlich verfügbar ab
 oktolab_media.onlineEnd_label: Öffentlich verfügbar bis
 oktolab_media.isActive_label: Ist Verfügbar
 oktolab_media.uniqID_label: Global einzigartige ID der Episode
 
 ## placeholder
+oktolab_media.firstRanAt_placeholder:  28.11.2005 11:00
 oktolab_media.onlineStart_placeholder: 28.11.2005 12:00
 oktolab_media.onlineEnd_placeholder: 01.01.2007 20:10
 oktolab_media.description_placeholder: Inhaltsbeschreibung. Zeichenbegrenzung unter der Box.
