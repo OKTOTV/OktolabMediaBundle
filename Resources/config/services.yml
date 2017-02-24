@@ -42,3 +42,12 @@ services:
     oktolab_media_api:
         class: Oktolab\MediaBundle\Model\ApiUrlService
         arguments: [ "@router", %oktolab_media.api_urls%]
+
+# LifecycleEvents
+# cant inject specifig needed services due to
+# https://github.com/doctrine/DoctrineBundle/issues/300
+    oktolab_media_episode_lifecycle:
+        class: Oktolab\MediaBundle\Event\EpisodeLifecycleListener
+        arguments:  [ "@service_container" ]
+        tags:
+            - { name: doctrine.orm.entity_listener }

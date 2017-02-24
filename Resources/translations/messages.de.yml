@@ -83,7 +83,8 @@ oktolab_media.error_create_episode:     Die Episode konnte nicht angelegt werden
 oktolab_media.success_create_episode:   Episode erfolgreich angelegt
 oktolab_media.success_edit_episode:     Änderungen erfolgreich gespeichert
 oktolab_media.error_edit_episode:       Änderungen konnten nicht übernommen werden
-oktothek.success_delete_episode:        Episode erfolgreich gelöscht
+oktolab_media.success_delete_episode:   Episode erfolgreich gelöscht
+oktolab_media.error_delete_episode:     Episode konnte nicht gelöscht werden oder ein Fehler ist während dem Löschen aufgetreten.
 
 # episode new.html.twig
 oktolab_media.create_episode_button:    <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Episode anlegen

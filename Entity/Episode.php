@@ -18,6 +18,7 @@ interface EpisodeMergerInterface
  * @ORM\Table()
  * @ORM\MappedSuperclass()
  * @ORM\HasLifecycleCallbacks()
+ * @ORM\EntityListeners({"Oktolab\MediaBundle\Event\EpisodeLifecycleListener"})
  * @JMS\ExclusionPolicy("all")
  * @JMS\AccessType("public_method")
  */

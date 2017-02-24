@@ -28,6 +28,12 @@ final class OktolabMediaEvent
     const IMPORTED_EPISODE_POSTERFRAME = 'oktolab_media.imported_episode_posterframe';
 
     /**
+     * the oktolab_media.created_episode event is fired each time a new episode was persisted in the database.
+     * See the EpisodeLifecycleListener for more info
+     */
+    const CREATED_EPISODE = 'oktolab_media.created_episode';
+
+    /**
      * Is thrown each time an episode is finalized.
      */
     const FINALIZED_EPISODE = 'oktolab_media.finalized_episode';
