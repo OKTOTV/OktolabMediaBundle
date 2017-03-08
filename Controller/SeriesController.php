@@ -144,18 +144,37 @@ class SeriesController extends Controller
         $send = $request->query->get('keychain', false);
         if ($send) { // clicked send to remote application
             $keychain = $this->get('bprs_applink')->getKeychain($send);
-            $success = $this->get('oktolab_keychain')->exportSeries($keychain, $series);
+            $success = $this->get('oktolab_keychain')->exportSeries(
+                $keychain,
+                $series,
+                $request->query->get('overwrite', false)
+            );
             if ($success) {
-                $this->get('session')->getFlashBag()->add('success', 'oktolab_media.success_export_series');
-                return $this->redirect($this->generateUrl('oktolab_media_export_series', ['series' => $uniqID]));
+                $this->get('session')->getFlashBag()->add(
+                    'success',
+                    'oktolab_media.success_export_series'
+                );
+
+                return $this->redirect(
+                    $this->generateUrl(
+                        'oktolab_media_export_series',
+                        ['series' => $uniqID]
+                    )
+                );
             } else {
-                $this->get('session')->getFlashBag()->add('error', 'oktolab_media.error_export_series');
+                $this->get('session')->getFlashBag()->add(
+                    'error',
+                    'oktolab_media.error_export_series'
+                );
             }
         }
 
         $keychains = $this->get('bprs_applink')->getKeychainsWithRole(MediaService::ROLE_WRITE);
         $series = $this->get('oktolab_media')->getSeries($series);
-        return ['series' => $series, 'keychains' => $keychains];
+        return [
+            'series' => $series,
+            'keychains' => $keychains
+        ];
     }
 
     /**
@@ -186,7 +205,11 @@ class SeriesController extends Controller
     {
         $uniqID = $request->query->get('uniqID');
         if ($uniqID) {
-            $this->get('oktolab_media')->addSeriesJob($keychain, $uniqID);
+            $this->get('oktolab_media')->addSeriesJob(
+                $keychain,
+                $uniqID,
+                $request->query->get('overwrite', false)
+            );
             return new Response('', Response::HTTP_ACCEPTED);
         }
         return new Response('', Response::HTTP_BAD_REQUEST);

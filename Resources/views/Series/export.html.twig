@@ -31,11 +31,18 @@
                            <p>
                                {{ 'oktolab_media.series_export_modal_desc'|trans({'%series%': series, '%url%': keychain.url}) }}
                            </p>
-                            <a href="{{ path('oktolab_media_export_series', {'series': series.uniqID, 'keychain': keychain.uniqID}) }}"><img src="{{ asset('bundles/oktolabmedia/img/green_arrow.png') }}" class="img img-responsive pulse export" /></a>
+                            <a href="{{ path('oktolab_media_export_series', {'series': series.uniqID, 'keychain': keychain.uniqID}) }}">
+                                <img src="{{ asset('bundles/oktolabmedia/img/green_arrow.png') }}" class="img img-responsive pulse export" />
+                            </a>
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'oktolab_media.series_export_modal_cancel'|trans }}</button>
-                        <a href="{{ path('oktolab_media_export_series', {'series': series.uniqID, 'keychain': keychain.uniqID}) }}" class="btn btn-primary export">{{ 'oktolab_media.series_export_modal_export'|trans|raw }}</a>
+                        <a href="{{ path('oktolab_media_export_series', {'series': series.uniqID, 'keychain': keychain.uniqID}) }}" class="btn btn-primary export">
+                            {{ 'oktolab_media.series_export_modal_export'|trans|raw }}
+                        </a>
+                        <a href="{{ path('oktolab_media_export_series', {'series': series.uniqID, 'keychain': keychain.uniqID, 'overwrite': "true"}) }}" class="btn btn-primary export">
+                            {{ 'oktolab_media.series_export_modal_overwrite'|trans|raw }}
+                        </a>
                       </div>
                     </div>
                   </div>

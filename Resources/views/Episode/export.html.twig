@@ -7,38 +7,59 @@
 {% block body_main -%}
     <div class="page-header">
         <h1>{{ episode.name }}</h1>
-        <a href="{{ path('oktolab_episode_show', { 'uniqID': episode.uniqID }) }}" class="btn btn-default">{{ 'oktolab_media.episode_export_show_button'|trans|raw }}</a>
-        <a href="{{ path('oktolab_media_api_show_episode', {'uniqID': episode.uniqID }) }}" class="btn btn-default">{{ 'oktolab_media.episode_show_api'|trans|raw }}</a>
+        <a href="{{ path('oktolab_episode_show', { 'uniqID': episode.uniqID }) }}" class="btn btn-default">
+            {{ 'oktolab_media.episode_export_show_button'|trans|raw }}
+        </a>
+        <a href="{{ path('oktolab_media_api_show_episode', {'uniqID': episode.uniqID }) }}" class="btn btn-default">
+            {{ 'oktolab_media.episode_show_api'|trans|raw }}
+        </a>
     </div>
-    <p>{{ 'oktolab_media.episode_export_description'|trans }}</p>
+    <p>
+        {{ 'oktolab_media.episode_export_description'|trans }}
+    </p>
     {% for keychain in keychains %}
         <div class="panel panel-default">
             <div class="panel-body">
-                {{ keychain.url }}
+            {{ keychain.url }}
             </div>
             <div class="panel-footer">
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal{{ loop.index }}">{{ 'oktolab_media.episode_export_modal'|trans }}</button>
+                <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal{{ loop.index }}">
+                {{ 'oktolab_media.episode_export_modal'|trans }}
+                </button>
                 <!-- Modal -->
                 <div class="modal fade" id="myModal{{ loop.index }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                  <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">{{ 'oktolab_media.episode_export_modal_header'|trans }}</h4>
-                      </div>
-                      <div class="modal-body">
-                           <p>
-                               {{ 'oktolab_media.episode_export_modal_desc'|trans({'%uniqID%': episode.uniqID, '%url%': keychain.url}) }}
-                           </p>
-                            <a href="{{ path('oktolab_media_export_episode', {'uniqID': episode.uniqID, 'keychain': keychain.uniqID}) }}"><img src="{{ asset('bundles/oktolabmedia/img/green_arrow.png') }}" class="img img-responsive pulse export" /></a>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'oktolab_media.episode_export_modal_cancel'|trans }}</button>
-                        <a href="{{ path('oktolab_media_export_episode', {'uniqID': episode.uniqID, 'keychain': keychain.uniqID}) }}" class="btn btn-primary">{{ 'oktolab_media.episode_export_modal_export'|trans|raw }}</a>
-                      </div>
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel">
+                                {{ 'oktolab_media.episode_export_modal_header'|trans }}
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>
+                                {{ 'oktolab_media.episode_export_modal_desc'|trans({'%uniqID%': episode.uniqID, '%url%': keychain.url}) }}
+                            </p>
+                            <a href="{{ path('oktolab_media_export_episode', {'uniqID': episode.uniqID, 'keychain': keychain.uniqID}) }}">
+                                <img src="{{ asset('bundles/oktolabmedia/img/green_arrow.png') }}" class="img img-responsive pulse export" />
+                            </a>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">
+                                {{ 'oktolab_media.episode_export_modal_cancel'|trans }}
+                            </button>
+                            <a href="{{ path('oktolab_media_export_episode', {'uniqID': episode.uniqID, 'keychain': keychain.uniqID}) }}" class="btn btn-primary">
+                                {{ 'oktolab_media.episode_export_modal_export'|trans|raw }}
+                            </a>
+                            <a href="{{ path('oktolab_media_export_episode', {'uniqID': episode.uniqID, 'keychain': keychain.uniqID, 'overwrite': "true"}) }}" class="btn btn-primary">
+                                {{ 'oktolab_media.episode_export_modal_overwrite'|trans|raw }}
+                            </a>
+                        </div>
+                        </div>
                     </div>
-                  </div>
                 </div>
             </div>
         </div>

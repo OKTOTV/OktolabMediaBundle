@@ -49,7 +49,10 @@ class KeychainController extends Controller
      */
     public function showSeriesAction(Keychain $keychain, $uniqID)
     {
-        $series = $this->get('oktolab_keychain')->getSeries($keychain, $uniqID);
+        $series = $this->get('oktolab_keychain')->getSeries(
+            $keychain,
+            $uniqID
+        );
         return ['keychain' => $keychain, 'series' => $series];
     }
 
@@ -59,7 +62,10 @@ class KeychainController extends Controller
      */
     public function showEpisodeAction(Keychain $keychain, $uniqID)
     {
-        $episode = $this->get('oktolab_keychain')->getEpisode($keychain, $uniqID);
+        $episode = $this->get('oktolab_keychain')->getEpisode(
+            $keychain,
+            $uniqID
+        );
         return  ['keychain' => $keychain, 'episode' => $episode];
     }
 
@@ -69,13 +75,17 @@ class KeychainController extends Controller
      */
     public function importEpisodeAction(Request $request)
     {
-        $uniqID = $request->request->get('uniqID');
-        if ($uniqID) {
+        if ($request->request->get('uniqID')) {
             $user = $request->request->get('user');
             $em = $this->getDoctrine()->getManager();
-            $apiuser = $em->getRepository('BprsAppLinkBundle:Keychain')->findOneBy(array('user'=> $user));
+            $apiuser = $em->getRepository('BprsAppLinkBundle:Keychain')
+                ->findOneBy(['user'=> $user]);
 
-            $this->get('oktolab_media')->addEpisodeJob($apiuser, $uniqID);
+            $this->get('oktolab_media')->addEpisodeJob(
+                $apiuser,
+                $request->request->get('uniqID'),
+                $request->request->get('overwrite', false)
+            );
             return new Response("", Response::HTTP_ACCEPTED);
         }
         return new Response("", Response::HTTP_BAD_REQUEST);
@@ -87,13 +97,17 @@ class KeychainController extends Controller
      */
     public function importSeriesAction(Request $request)
     {
-        $uniqID = $request->request->get('uniqID');
-        if ($uniqID) {
+        if ($request->request->get('uniqID')) {
             $user = $request->request->get('user');
             $em = $this->getDoctrine()->getManager();
-            $apiuser = $em->getRepository('BprsAppLinkBundle:Keychain')->findOneBy(array('user'=> $user));
+            $apiuser = $em->getRepository('BprsAppLinkBundle:Keychain')
+                ->findOneBy(['user'=> $user]);
 
-            $this->get('oktolab_media')->addSeriesJob($apiuser, $uniqID);
+            $this->get('oktolab_media')->addSeriesJob(
+                $apiuser,
+                $request->request->get('uniqID'),
+                $request->request->get('overwrite', false)
+            );
             return new Response("", Response::HTTP_ACCEPTED);
         }
         return new Response("", Response::HTTP_BAD_REQUEST);
@@ -102,7 +116,10 @@ class KeychainController extends Controller
     public function compareEpisode($uniqID)
     {
         $episode = $this->get('oktolab_media')->getEpisode($uniqID);
-        $remote_episode = $this->get('oktolab_keychain')->getEpisode($keychain, $uniqID);
+        $remote_episode = $this->get('oktolab_keychain')->getEpisode(
+            $keychain,
+            $uniqID
+        );
         return ['episode' => $episode, 'remote_episode' => $remote_episode];
     }
 } ?>

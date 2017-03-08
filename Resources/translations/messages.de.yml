@@ -1,7 +1,6 @@
 # api  -------------------------------------------------------------------------
 oktolab_media.show_series.import_episode: Folge Importieren
 oktolab_media.show_series.import_series: Sendereihe Importieren
-oktolab_media_show_keychain.back_to_keychains: Zurück zum Schlüsselkasten
 oktolab_media.show_keychain.placeholder: Suche nach Sendereihen
 oktolab_media.show_keychain.no_matches: Keine Übereinstimmung
 
@@ -15,6 +14,11 @@ oktolab_media.keychain_show_next_results:   Nächste
 oktolab_media.keychain_compare_episode:    Episode Vergleichen
 oktolab_media.keychain_compare_local:      Lokal
 oktolab_media.keychain_compare_remote:     Remote
+
+# Oktolab/MediaBundle/Resources/views/Keychain/showSeries.html.twig
+oktolab_media_show_keychain.back_to_keychains:  '<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Zurück zum Schlüsselkasten'
+oktolab_media.keychain_import_series:           '<span class="glyphicon glyphicon-import" aria-hidden="true"></span> Sendereihe Importieren'
+oktolab_media.keychain_import_series_overwrite: '<span class="glyphicon glyphicon-fire" aria-hidden="true"></span> Sendereihe überschreiben'
 
 # episode ----------------------------------------------------------------------
 ## episode index.html.twig
@@ -211,6 +215,13 @@ oktolab_media.success_delete_caption:   "Textspur erfolgreich gelöscht"
 oktolab_media.error_edit_caption:       "Änderungen konnten nicht übernommen werden"
 
 # Logbook messages -------------------------------------------------------------
+# Oktolab/MediaBundle/Model/ImportEpisodeMetadataJob.php
+oktolab_media.episode_metadata_start_import: "Beginne Episoden Metadatenimport"
+oktolab_media.episode_metadata_error_end_import: "Beim Import ist ein Fehler aufgetreten"
+oktolab_media.episode_overwrite_not_allowed: "Der Importauftrag durfte die Episode nicht überschreiben"
+oktolab_media.episode_metadata_end_import:  "Episoden Metadatenimport beendet"
+oktolab_media.episode_metadata_import_no_keychain: "Kein Schlüsselbund gefunden"
+
 oktolab_media.episode_start_encodevideo:    "Episode wird nun Encodiert"
 oktolab_media.episode_end_encodevideo:      "Episode encodierung beendet"
 oktolab_media.episode_encode_media_start:   "Episode Media %media% wird encodiert"

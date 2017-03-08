@@ -41,16 +41,28 @@ class EpisodeController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            $this->get('session')->getFlashBag()->add('success', 'oktolab_media.success_create_episode');
-            return $this->redirect($this->generateUrl('oktolab_episode_show', array('uniqID' => $entity->getUniqID())));
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                'oktolab_media.success_create_episode'
+            );
+
+            return $this->redirect(
+                $this->generateUrl(
+                    'oktolab_episode_show',
+                    ['uniqID' => $entity->getUniqID()]
+                )
+            );
         } else {
-            $this->get('session')->getFlashBag()->add('error', 'oktolab_media.error_create_episode');
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                'oktolab_media.error_create_episode'
+            );
         }
 
-        return array(
+        return [
             'entity' => $entity,
             'form'   => $form->createView(),
-        );
+        ];
     }
 
     /**
@@ -85,7 +97,14 @@ class EpisodeController extends Controller
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', ['label' => 'oktolab_media.new_episode_create_button', 'attr' => ['class' => 'btn btn-primary']]);
+        $form->add(
+            'submit',
+            'submit',
+            [
+                'label' => 'oktolab_media.new_episode_create_button',
+                'attr' => ['class' => 'btn btn-primary']
+            ]
+        );
 
         return $form;
     }
@@ -102,10 +121,10 @@ class EpisodeController extends Controller
         $entity = new Episode();
         $form   = $this->createCreateForm($entity);
 
-        return array(
+        return [
             'entity' => $entity,
             'form'   => $form->createView(),
-        );
+        ];
     }
 
     /**
@@ -118,7 +137,9 @@ class EpisodeController extends Controller
     public function showAction($uniqID)
     {
         $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository($this->container->getParameter('oktolab_media.episode_class'))->findOneBy(array('uniqID' => $uniqID));
+        $entity = $em->getRepository(
+            $this->container->getParameter('oktolab_media.episode_class')
+        )->findOneBy(array('uniqID' => $uniqID));
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Episode entity.');
@@ -142,11 +163,11 @@ class EpisodeController extends Controller
         $editForm = $this->createEditForm($entity);
         $deleteForm = $this->createDeleteForm($id);
 
-        return array(
-            'entity'      => $entity,
-            'form'   => $editForm->createView(),
+        return [
+            'entity' => $entity,
+            'form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
-        );
+        ];
     }
 
     /**
@@ -158,12 +179,23 @@ class EpisodeController extends Controller
     */
     private function createEditForm(Episode $entity)
     {
-        $form = $this->createForm(new EpisodeType(), $entity, array(
-            'action' => $this->generateUrl('oktolab_episode_update', array('id' => $entity->getId())),
-            'method' => 'POST',
-        ));
+        $form = $this->createForm(
+            new EpisodeType(),
+            $entity,
+            [
+                'action' => $this->generateUrl(
+                    'oktolab_episode_update',
+                    ['id' => $entity->getId()]
+                ),
+                'method' => 'POST'
+            ]
+        );
 
-        $form->add('submit', 'submit', array('label' => 'oktolab_media.edit_episode_button'));
+        $form->add(
+            'submit',
+            'submit',
+            ['label' => 'oktolab_media.edit_episode_button']
+        );
 
         return $form;
     }
@@ -191,10 +223,23 @@ class EpisodeController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            $this->get('session')->getFlashBag()->add('success', 'oktolab_media.success_edit_episode');
-            return $this->redirect($this->generateUrl('oktolab_episode_show', array('uniqID' => $entity->getUniqID())));
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                'oktolab_media.success_edit_episode'
+            );
+
+            return $this->redirect(
+                $this->generateUrl(
+                    'oktolab_episode_show',
+                    ['uniqID' => $entity->getUniqID()]
+                )
+            );
+
         } else {
-            $this->get('session')->getFlashBag()->add('error', 'oktolab_media.error_edit_episode');
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                'oktolab_media.error_edit_episode'
+            );
         }
 
         return array(
@@ -238,9 +283,16 @@ class EpisodeController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('oktolab_episode_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('oktolab_episode_delete', ['id' => $id]))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'oktolab_media.delete_episode_button', 'attr' => ['class' => 'btn btn-danger']))
+            ->add(
+                'submit',
+                'submit',
+                [
+                    'label' => 'oktolab_media.delete_episode_button',
+                    'attr' => ['class' => 'btn btn-danger']
+                ]
+            )
             ->getForm()
         ;
     }
@@ -253,10 +305,16 @@ class EpisodeController extends Controller
     public function encodeVideoAction(Request $request, $uniqID)
     {
         $em = $this->getDoctrine()->getManager();
-        $episode = $em->getRepository($this->container->getParameter('oktolab_media.episode_class'))->findOneBy(array('uniqID' => $uniqID));
+        $episode = $em->getRepository(
+            $this->container->getParameter('oktolab_media.episode_class')
+            )->findOneBy(array('uniqID' => $uniqID));
 
         $this->get('oktolab_media')->addEncodeVideoJob($episode->getUniqID());
-        $this->get('session')->getFlashBag()->add('info', 'oktolab_media.episode_encode_info');
+        $this->get('session')->getFlashBag()->add(
+            'info',
+            'oktolab_media.episode_encode_info'
+        );
+
         return $this->redirect($request->headers->get('referer'));
     }
 
@@ -271,16 +329,34 @@ class EpisodeController extends Controller
         $send = $request->query->get('keychain', false);
         if ($send) { // clicked send to remote application
             $keychain = $this->get('bprs_applink')->getKeychain($send);
-            $success = $this->get('oktolab_keychain')->exportEpisode($keychain, $uniqID);
+            $success = $this->get('oktolab_keychain')->exportEpisode(
+                $keychain,
+                $uniqID,
+                $request->query->get('overwrite', false)
+            );
+
             if ($success) {
-                $this->get('session')->getFlashBag()->add('success', 'oktolab_media.success_export_episode');
-                return $this->redirect($this->generateUrl('oktolab_media_export_episode', ['uniqID' => $uniqID]));
+                $this->get('session')->getFlashBag()->add(
+                    'success',
+                    'oktolab_media.success_export_episode'
+                );
+
+                return $this->redirect(
+                    $this->generateUrl(
+                        'oktolab_media_export_episode',
+                        ['uniqID' => $uniqID]
+                    )
+                );
             } else {
-                $this->get('session')->getFlashBag()->add('error', 'oktolab_media.error_export_episode');
+                $this->get('session')->getFlashBag()->add(
+                    'error',
+                    'oktolab_media.error_export_episode'
+                );
             }
         }
 
-        $keychains = $this->get('bprs_applink')->getKeychainsWithRole(MediaService::ROLE_WRITE);
+        $keychains = $this->get('bprs_applink')
+            ->getKeychainsWithRole(MediaService::ROLE_WRITE);
         $episode = $this->get('oktolab_media')->getEpisode($uniqID);
         return ['episode' => $episode, 'keychains' => $keychains];
     }
@@ -293,15 +369,28 @@ class EpisodeController extends Controller
      */
     public function listRemoteEpisodes(Keychain $keychain)
     {
-        $episodes_url = $this->get('bprs_applink')->getApiUrlsForKey($keychain, 'oktolab_media_api_list_episodes');
+        $episodes_url = $this->get('bprs_applink')->getApiUrlsForKey(
+            $keychain,
+            'oktolab_media_api_list_episodes'
+        );
+
         if ($episodes_url) {
             $client = new Client();
-            $response = $client->request('GET', $episodes_url, ['auth' => [$keychain->getUser(), $keychain->getApiKey()]]);
+            $response = $client->request(
+                'GET',
+                $episodes_url,
+                ['auth' => [$keychain->getUser(), $keychain->getApiKey()]]
+            );
+
             if ($response->getStatusCode() == 200) {
-                $info = json_decode(html_entity_decode((string)$response->getBody()), true);
+                $info = json_decode(
+                    html_entity_decode((string)$response->getBody()), true
+                );
+
                 return ['result' => $info, 'keychain' => $keychain];
             }
         }
+
         return new Response('', Response::HTTP_BAD_REQUEST);
     }
 
@@ -313,7 +402,11 @@ class EpisodeController extends Controller
     {
         $uniqID = $request->query->get('uniqID');
         if ($uniqID) {
-            $this->get('oktolab_media')->addEpisodeJob($keychain, $uniqID);
+            $this->get('oktolab_media')->addEpisodeJob(
+                $keychain,
+                $uniqID,
+                $request->query->get('overwrite', false)
+            );
             return new Response('', Response::HTTP_ACCEPTED);
         }
         return new Response('', Response::HTTP_BAD_REQUEST);

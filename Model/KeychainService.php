@@ -67,7 +67,7 @@ class KeychainService {
         return $episode;
     }
 
-    public function exportSeries($keychain, $uniqID)
+    public function exportSeries($keychain, $uniqID, $overwrite = false)
     {
         $client = new Client();
         $response = $client->request(
@@ -75,7 +75,7 @@ class KeychainService {
             $this->applink_service->getApiUrlsForKey($keychain, 'oktolab_media_api_import_series'),
             [
                 'auth' => [$keychain->getUser(), $keychain->getApiKey()],
-                'query' => ['uniqID' => $uniqID]
+                'query' => ['uniqID' => $uniqID, 'overwrite' => $overwrite]
             ]
         );
 
@@ -86,7 +86,7 @@ class KeychainService {
         return false;
     }
 
-    public function exportEpisode($keychain, $uniqID)
+    public function exportEpisode($keychain, $uniqID, $overwrite = false)
     {
         $client = new Client();
         $response = $client->request(
@@ -94,7 +94,7 @@ class KeychainService {
             $this->applink_service->getApiUrlsForKey($keychain, 'oktolab_media_api_import_episode'),
             [
                 'auth' => [$keychain->getUser(), $keychain->getApiKey()],
-                'query' => ['uniqID' => $uniqID]
+                'query' => ['uniqID' => $uniqID, 'overwrite' => $overwrite]
             ]
         );
 

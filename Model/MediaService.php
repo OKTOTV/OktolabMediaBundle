@@ -76,22 +76,30 @@ class MediaService
     /**
     * starts an import worker for an episode by uniqID from the given Keychain
     */
-    public function addEpisodeJob(Keychain $keychain, $uniqID)
+    public function addEpisodeJob(Keychain $keychain, $uniqID, $overwrite = false)
     {
         $this->jobService->addJob(
             "Oktolab\MediaBundle\Model\ImportEpisodeMetadataJob",
-            ['keychain' => $keychain->getUniqID(), 'uniqID' => $uniqID]
+            [
+                'keychain' => $keychain->getUniqID(),
+                'uniqID' => $uniqID,
+                'overwrite' => $overwrite
+            ]
         );
     }
 
     /**
     * starts an import worker for a series by uniqID from the given Keychain
     */
-    public function addSeriesJob(Keychain $keychain, $uniqID)
+    public function addSeriesJob(Keychain $keychain, $uniqID, $overwrite = false)
     {
         $this->jobService->addJob(
             "Oktolab\MediaBundle\Model\ImportSeriesMetadataJob",
-            ['keychain' => $keychain->getUniqID(), 'uniqID' => $uniqID]
+            [
+                'keychain' => $keychain->getUniqID(),
+                'uniqID' => $uniqID,
+                'overwrite' => $overwrite
+            ]
         );
     }
 
