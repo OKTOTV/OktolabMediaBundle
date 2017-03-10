@@ -91,7 +91,10 @@ class MediaApiController extends Controller
         );
         $episodes->setUsedRoute('oktolab_media_api_list_episodes');
         $episodes->setParam('_format', $_format);
-        return ['episodes' => $episodes, 'serialization_group' => $request->query->get('group')];
+        return [
+            'episodes' => $episodes,
+            'serialization_group' => $request->query->get('group')
+        ];
     }
 
     /**
@@ -106,7 +109,10 @@ class MediaApiController extends Controller
         if ($uniqID) {
             $em = $this->getDoctrine()->getManager();
             $episode = $this->get('oktolab_media')->getEpisode($uniqID);
-            return ['episode' => $episode, 'serialization_group' => $request->query->get('group')];
+            return [
+                'episode' => $episode,
+                'serialization_group' => $request->query->get('group')
+            ];
         }
         return new Response("", Response::HTTP_BAD_REQUEST);
     }
@@ -121,9 +127,14 @@ class MediaApiController extends Controller
         $filekey = $request->query->get('filekey');
         if ($filekey) {
             $em = $this->getDoctrine()->getManager();
-            $asset = $em->getRepository($this->container->getParameter('bprs_asset.class'))->findOneBy(array('filekey' => $filekey));
+            $asset = $em->getRepository(
+                $this->container->getParameter('bprs_asset.class'))->findOneBy(['filekey' => $filekey]);
             $jsonContent = $this->get('jms_serializer')->serialize($asset, $_format);
-            return new Response($jsonContent, 200, array('Content-Type' => 'application/json; charset=utf8'));
+            return new Response(
+                $jsonContent,
+                200,
+                ['Content-Type' => 'application/json; charset=utf8']
+            );
         }
         return new Response("", Response::HTTP_BAD_REQUEST);
     }
@@ -139,7 +150,11 @@ class MediaApiController extends Controller
         $uniqID = $request->query->get('uniqID');
         if ($uniqID) {
             $apiuser = $this->get('security.context')->getToken()->getUser();
-            $this->get('oktolab_media')->addSeriesJob($apiuser, $uniqID);
+            $this->get('oktolab_media')->addSeriesJob(
+                $apiuser,
+                $uniqID,
+                $request->query->get('overwrite', false)
+            );
             return new Response("", Response::HTTP_ACCEPTED);
             //and send OktolabMediaBundle worker to import an entire series
         }
@@ -156,7 +171,11 @@ class MediaApiController extends Controller
         $uniqID = $request->query->get('uniqID');
         if ($uniqID) {
             $apiuser = $this->get('security.context')->getToken()->getUser();
-            $this->get('oktolab_media')->addEpisodeJob($apiuser, $uniqID);
+            $this->get('oktolab_media')->addEpisodeJob(
+                $apiuser,
+                $uniqID,
+                $request->query->get('overwrite', false)
+            );
             return new Response("", Response::HTTP_ACCEPTED);
         }
         return new Response("", Response::BAD_REQUEST);
