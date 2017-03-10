@@ -24,7 +24,7 @@ class ExportSeriesCommand extends ContainerAwareCommand {
     {
         $keychain = $this->getContainer()->get('bprs_applink')->getKeychain($input->getArgument('keychain'));
         $series = $this->getContainer()->get('oktolab_media')->getSeries($input->getArgument('uniqID'));
-        var_dump($input->getOption('overwrite'));
+
         if ($keychain && $series) {
 
             $success = $this

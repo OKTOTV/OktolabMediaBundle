@@ -158,7 +158,10 @@ class MediaService
 
     public function getEpisode($uniqID)
     {
-        return $this->em->getRepository($this->episode_class)->findByUniqID($this->episode_class, $uniqID);
+        return $this->em->getRepository($this->episode_class)->findByUniqID(
+            $this->episode_class,
+            $uniqID
+        );
     }
 
     public function createEpisode()
@@ -168,7 +171,15 @@ class MediaService
 
     public function getSeries($uniqID)
     {
-        return $this->em->getRepository($this->series_class)->findByUniqID($this->series_class, $uniqID);
+        return $this->em->getRepository($this->series_class)->findByUniqID(
+            $this->series_class,
+            $uniqID
+        );
+    }
+
+    public function getSeriesRepo()
+    {
+        return $this->em->getRepository($this->series_class);
     }
 
     public function getCaption($uniqID)
