@@ -14,12 +14,6 @@ use Oktolab\MediaBundle\Event\FinalizeEpisodeEvent;
 use Oktolab\MediaBundle\Event\ImportedSeriesMetadataEvent;
 
 /**
- * TODO: use standardized links with applinkbundle (applink_helperservice)
- * use logging with logbook-bundle
- *
- */
-
-/**
 * handles import worker, jobs for worker and permission handling
 */
 class MediaService
