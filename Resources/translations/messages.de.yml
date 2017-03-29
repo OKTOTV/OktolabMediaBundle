@@ -24,7 +24,7 @@ oktolab_media.keychain_import_series_overwrite: '<span class="glyphicon glyphico
 ## episode index.html.twig
 oktolab_media.episode_index_header:         Episoden
 oktolab_media.episodes_index_total:         "%episodes% Episoden vorhanden"
-oktolab_media.episode_index_new:            <span class="glyphicon glyphicon-plus"> Neue Episode</span>
+oktolab_media.episode_index_new:            '<span class="glyphicon glyphicon-plus"></span> Neue Episode'
 oktolab_media.episode_index_name:           Folgenname
 oktolab_media.episode_index_uniqID:         UniqID
 oktolab_media.episode_index_series_name:    Sendereihe
@@ -187,6 +187,10 @@ oktolab_media_create_new_media:         Neues Media anlegen
 
 oktolab_media_media_for_episode_header: Episodenformate
 oktolab_media_media_fore_episode_empty: Derzeit keine Formate vorhanden
+
+oktolab_media_asset:                    "Datei"
+oktolab_media_asset_empty:              "Keine Datei vorhanden"
+oktolab_media_asset_adapter:            "Adapter"
 
 # caption ----------------------------------------------------------------------
 oktolab_media.caption_new_button:       '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Neue Textspur'

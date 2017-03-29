@@ -37,7 +37,13 @@
         </tr>
         <tr>
             <td>{{ 'oktolab_media_asset'|trans }}</td>
-            <td>{{ media.asset }}</td>
+            <td>
+                {% if media.asset is not empty %}
+                    <a href="{{ path('bprs_asset_show', {'filekey': media.asset.filekey}) }}">{{ media.asset }}</a>
+                {% else %}
+                    {{ 'oktolab_media_asset_empty'|trans }}
+                {% endif %}
+            </td>
         </tr>
         <tr>
             <td>
