@@ -5,13 +5,27 @@
 {%- endblock -%}
 
 {%- block body_main -%}
+    <ul class="nav nav-tabs">
+        <li role="presentation"><a href="{{ path('oktolab_series') }}">{{ 'oktolab_media.series_index_header'|trans }}</a></li>
+        <li role="presentation" class="active"><a href="{{ path('oktolab_episode_index') }}">{{ 'oktolab_media.episode_index_header'|trans }}</a></li>
+    </ul>
+
     <div class="page-header">
-        <h1>{{ 'oktolab_media.episode_index_header'|trans}}</h1>
         <p>{{ 'oktolab_media.episodes_index_total'|trans({'%episodes%': episodes.getTotalItemCount})}}</p>
-        <a href="{{ path('oktolab_episode_new') }}" class="btn btn-default">{{ 'oktolab_media.episode_index_new'|trans|raw }}</a>
+        <!-- Single button -->
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{ 'oktolab_media.episode_index_action_dropdown'|trans|raw }}
+            </button>
+            <ul class="dropdown-menu">
+                <li>
+                    <a href="{{ path('oktolab_episode_new') }}">{{ 'oktolab_media.episode_index_new'|trans|raw }}</a>
+                </li>
+            </ul>
+        </div>
         <div class="btn-group">
           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Sortieren <span class="caret"></span>
+              {{ 'oktolab_media.episode_index_sort_dropdown'|trans|raw }}
           </button>
           <ul class="dropdown-menu">
             <li{% if episodes.isSorted('e.name') %} class="active"{% endif %}>{{ knp_pagination_sortable(episodes, 'Name', 'e.name') }}</li>
@@ -25,8 +39,9 @@
     <div class="navigation">
         {{ knp_pagination_render(episodes) }}
     </div>
+    <div class="row">
             {% for episode in episodes %}
-                    <div class="row">
+                    <div class="col-md-12 col-lg-4">
                         <div class="col-md-6">
                             <a href="{{ path('oktolab_episode_show', {'uniqID': episode.uniqID}) }}">
                                 <img src="{{ episode.posterframe(true)|thumb(720,1280)}}" class="img-responsive" />
@@ -54,6 +69,7 @@
                         </div>
                     </div>
             {% endfor %}
+            </div>
     <div class="navigation">
         {{ knp_pagination_render(episodes) }}
     </div>

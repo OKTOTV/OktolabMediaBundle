@@ -23,7 +23,9 @@ oktolab_media.keychain_import_series_overwrite: '<span class="glyphicon glyphico
 # episode ----------------------------------------------------------------------
 ## episode index.html.twig
 oktolab_media.episode_index_header:         Episoden
-oktolab_media.episodes_index_total:         "%episodes% Episoden vorhanden"
+oktolab_media.episode_index_action_dropdown: 'Aktionen <span class="caret"></span>'
+oktolab_media.episode_index_sort_dropdown:   'Sortieren <span class="caret"></span>'
+oktolab_media.episodes_index_total:         "Derzeit sind %episodes% Episoden vorhanden"
 oktolab_media.episode_index_new:            '<span class="glyphicon glyphicon-plus"></span> Neue Episode'
 oktolab_media.episode_index_name:           Folgenname
 oktolab_media.episode_index_uniqID:         UniqID
@@ -161,7 +163,25 @@ oktolab_media.series_export_modal_export: '<span class="glyphicon glyphicon-expo
 
 ## series index.html.twig
 oktolab_media.series_index_total_series_choice: "{0} Derzeit ist keine Sendereihe vorhanden|{1} Derzeit ist %count% Sendereihe vorhanden|]1,Inf]Derzeit sind %count% Sendereihen vorhanden"
+oktolab_media.series_index_header:              "Sendereihen"
+oktolab_media.series_index_create_new_series:   '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Neue Sendereihe'
+oktolab_media.series_index_action_dropdown:     'Aktionen <span class="caret"></span>'
+oktolab_media.series_index_sortby:              'Sortieren <span class="caret"></span>'
+oktolab_media.series_index_sortby_name:         "Name"
+oktolab_media.series_index_sortby_webtitle:     "Webtitel"
+oktolab_media.series_index_sortby_uniqID:       "UniqID"
+oktolab_media.series_index_sortby_createdAt:    "Angelegt"
+oktolab_media.series_index_sortby_updatedAt:    "Letzte Änderung"
+oktolab_media.series_index_sortby_keychain:     "Ursprung"
 
+oktolab_media.series_index_info_name:           "Name"
+oktolab_media.series_index_info_description:    "Beschreibung"
+oktolab_media.series_index_info_webtitle:       "Webtitel"
+oktolab_media.series_index_info_uniqID:         "UniqID"
+oktolab_media.series_index_info_createdAt:      "Angelegt"
+oktolab_media.series_index_info_updatedAt:      "Letzte Änderung"
+oktolab_media.series_index_info_keychain:       "Ursprung"
+oktolab_media.series_index_info_no_keychain:    "Lokal"
 
 # media ------------------------------------------------------------------------
 oktolab_media_media_create_button:      Media anlegen

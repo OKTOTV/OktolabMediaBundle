@@ -5,34 +5,72 @@
 {% endblock %}
 
 {% block body_main -%}
-    <div class="page-header">
-        <h1>Sendereihen</h1>
-        <p>{{ 'oktolab_media.series_index_total_series_choice'|transchoice(seriess.getTotalItemCount)}}</p>
-        <a href="{{ path('oktolab_series_new') }}" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> Neue Sendereihe anlegen</a>
-    </div>
+    <ul class="nav nav-tabs">
+        <li role="presentation" class="active"><a href="{{ path('oktolab_series') }}">{{ 'oktolab_media.series_index_header'|trans }}</a></li>
+        <li role="presentation"><a href="{{ path('oktolab_episode_index') }}">{{ 'oktolab_media.episode_index_header'|trans }}</a></li>
+    </ul>
 
+    <div class="page-header">
+        <p>{{ 'oktolab_media.series_index_total_series_choice'|transchoice(seriess.getTotalItemCount)}}</p>
+        <!-- Single button -->
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {{ 'oktolab_media.series_index_action_dropdown'|trans|raw }}
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="{{ path('oktolab_series_new') }}">
+                    {{ 'oktolab_media.series_index_create_new_series'|trans|raw }}
+                </a></li>
+            </ul>
+        </div>
+        <!-- Single button -->
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{ 'oktolab_media.series_index_sortby'|trans|raw }}
+            </button>
+            <ul class="dropdown-menu">
+                <li{% if seriess.isSorted('s.name') %} class="active"{% endif %}>{{ knp_pagination_sortable(seriess, 'oktolab_media.series_index_sortby_name'|trans, 's.name') }}</li>
+                <li{% if seriess.isSorted('s.webtitle') %} class="active"{% endif %}>{{ knp_pagination_sortable(seriess, 'oktolab_media.series_index_sortby_webtitle'|trans, 's.webtitle') }}</li>
+                <li{% if seriess.isSorted('s.uniqID') %} class="active"{% endif %}>{{ knp_pagination_sortable(seriess, 'oktolab_media.series_index_sortby_uniqID'|trans, 's.uniqID') }}</li>
+                <li{% if seriess.isSorted('s.createdAt') %} class="active"{% endif %}>{{ knp_pagination_sortable(seriess, 'oktolab_media.series_index_sortby_createdAt'|trans, 's.createdAt') }}</li>
+                <li{% if seriess.isSorted('s.updatedAt') %} class="active"{% endif %}>{{ knp_pagination_sortable(seriess, 'oktolab_media.series_index_sortby_updatedAt'|trans, 's.updatedAt') }}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="container">
     <div class="navigation">
         {{ knp_pagination_render(seriess) }}
     </div>
-    <table class="table table-striped">
-        <tr>
-            {# sorting of properties based on query components #}
-            <th>Posterframe</th>
-            <th{% if seriess.isSorted('s.name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(seriess, 'Name', 's.name') }}</th>
-            <th{% if seriess.isSorted('s.webtitle') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(seriess, 'Webtitel', 's.webtitle') }}</th>
-            <th{% if seriess.isSorted('s.uniqID') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(seriess, 'UniqID', 's.uniqID') }}</th>
-        </tr>
+    <div class="row">
         {% for series in seriess %}
-            <tr>
-                <td>
-                    <a href="{{ path('oktolab_series_show', { 'series': series.uniqID }) }}"><img src="{{ series.posterframe|thumb(80,120) }}" class="img-responsive" /></a>
-                </td>
-                <td><a href="{{ path('oktolab_series_show', { 'series': series.uniqID }) }}">{{ series.name }}</a></td>
-                <td>{{ series.webtitle }}</td>
-                <td>{{ series.uniqID }}</td>
-            </tr>
+        <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <a href="{{ path('oktolab_series_show', { 'series': series.uniqID }) }}"><img src="{{ series.posterframe|thumb(720,1280) }}" class="img-responsive center-block" /></a>
+                        </div>
+                        <div class="col-md-9">
+                            <dl class="dl-horizontal">
+                                <dt>{{ 'oktolab_media.series_index_info_name'|trans }}</dt>
+                                <dd><a href="{{ path('oktolab_series_show', { 'series': series.uniqID }) }}">{{ series.name }}</a></dd>
+                                <dt>{{ 'oktolab_media.series_index_info_webtitle'|trans }}</dt>
+                                <dd>{{ series.webtitle }}</dd>
+                                <dt>{{ 'oktolab_media.series_index_info_uniqID'|trans }}</dt>
+                                <dd><a href="{{ path('oktolab_series_show', { 'series': series.uniqID }) }}">{{ series.uniqID }}</a></dd>
+                                <dt>{{ 'oktolab_media.series_index_info_createdAt'|trans }}</dt>
+                                <dd>{{ series.createdAt|date('d.m.Y') }}</dd>
+                                <dt>{{ 'oktolab_media.series_index_info_updatedAt'|trans }}</dt>
+                                <dd>{{ series.updatedAt|date('d.m.Y') }}</dd>
+                                <dt>{{ 'oktolab_media.series_index_info_keychain'|trans }}</dt>
+                                <dd>{% if series.keychain is empty %}{{ 'oktolab_media.series_index_info_no_keychain'|trans}}{% else %}<a href="{{ path('oktolab_media_show_keychain_series', {'keychain': series.keychain.id, 'uniqID': series.uniqID})}}">{{ series.keychain.uniqID }}</a>{% endif %}</dd>
+                                <dt>{{ 'oktolab_media.series_index_info_description'|trans }}</dt>
+                                <dd>{{ series.description }}</dd>
+                            </dl>
+                        </div>
+                    </div>
+        </div>
         {% endfor %}
-    </table>
+    </div>
     <div class="navigation">
         {{ knp_pagination_render(seriess) }}
     </div>
