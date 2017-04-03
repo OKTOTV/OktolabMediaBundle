@@ -34,6 +34,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('player_url')->isRequired()->end()
                 ->scalarNode('episode_class')->isRequired()->end()
                 ->scalarNode('series_class')->isRequired()->end()
+                ->scalarNode('media_class')->defaultValue('Oktolab\MediaBundle\Entity\Media')->end()
                 ->scalarNode('asset_class')->isRequired()->end()
                 ->booleanNode('keep_original')->defaultFalse()->end()
                 ->scalarNode('encoding_filesystem')->defaultValue('cache')->end()

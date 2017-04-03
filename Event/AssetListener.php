@@ -9,12 +9,14 @@ class AssetListener
     private $em;
     private $episode_class;
     private $series_class;
+    private $media_class;
 
-    public function __construct($entity_manager, $episode_class, $series_class)
+    public function __construct($entity_manager, $episode_class, $series_class, $media_class)
     {
         $this->em = $entity_manager;
         $this->episode_class = $episode_class;
         $this->series_class = $series_class;
+        $this->media_class = $media_class;
     }
 
     public function onAssetDelete(DeleteAssetEvent $event)

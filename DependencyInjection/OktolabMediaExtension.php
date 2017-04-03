@@ -25,6 +25,7 @@ class OktolabMediaExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
         $container->setParameter('oktolab_media.episode_class', $config['episode_class']);
+        $container->setParameter('oktolab_media.media_class', $config['media_class']);
         $container->setParameter('oktolab_media.series_class', $config['series_class']);
         $container->setParameter('oktolab_media.asset_class', $config['asset_class']);
         $container->setParameter('oktolab_media.resolutions', $config['resolutions']);

@@ -17,7 +17,7 @@ services:
 
     oktolab_media.asset_listener:
         class: Oktolab\MediaBundle\Event\AssetListener
-        arguments: [ "@doctrine.orm.entity_manager", %oktolab_media.episode_class%, %oktolab_media.series_class% ]
+        arguments: [ "@doctrine.orm.entity_manager", %oktolab_media.episode_class%, %oktolab_media.series_class%, %oktolab_media.media_class% ]
         tags:
             - { name: kernel.event_listener, event: bprs_asset.delete, method: onAssetDelete }
 
