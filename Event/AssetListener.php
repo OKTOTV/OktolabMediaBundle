@@ -19,8 +19,23 @@ class AssetListener
 
     public function onAssetDelete(DeleteAssetEvent $event)
     {
+        $this->updateMedias($event->getAsset());
         $this->updateEpisodes($event->getAsset());
         $this->updateSeries($event->getAsset());
+    }
+
+    public function updateMedias($asset)
+    {
+        $medias = $this->em->createQuery(
+                'SELECT m FROM '.$this->media_class.' m WHERE m.asset = :id'
+            )
+            ->setParameter('id', $asset->getId())
+            ->getResult();
+
+            foreach ($medias as $media) {
+                $media->setAsset(null);
+                $this->em->remove($media);
+            }
     }
 
     private function updateEpisodes($asset)
