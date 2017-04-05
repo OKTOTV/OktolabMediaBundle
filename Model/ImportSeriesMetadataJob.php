@@ -41,12 +41,9 @@ class ImportSeriesMetadataJob extends BprsContainerAwareJob
                     $em = $this->getContainer()->get('doctrine.orm.entity_manager');
                     $em->persist($local_series);
                     $em->flush();
-                    $this->media_service->addImportSeriesPosterframeJob(
-                        $this->args['uniqID'],
-                        $this->keychain,
-                        $series->getPosterframe()
+                    $this->media_service->addSeriesPosterframeJob(
+                        $this->args['uniqID']
                     );
-                    // $this->media_service->dispatchImportedSeriesMetadataEvent($this->args);
                 } else {
                     $this->logbook->error('oktolab_media.series_metadata_error_end_import', [], $this->args['uniqID']);
                 }

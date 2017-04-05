@@ -9,15 +9,15 @@ use Oktolab\MediaBundle\Event\DeleteEpisodeEvent;
 class MediaHelperService {
 
     private $em;
-    private $asset_helper;
+    private $asset_service;
     private $logbook;
     private $dispatcher;
     private $adapters;
 
-    public function __construct($em, $asset_helper, $logbook, $dispatcher, $adapters)
+    public function __construct($em, $asset_service, $logbook, $dispatcher, $adapters)
     {
         $this->em = $em;
-        $this->asset_helper = $asset_helper;
+        $this->asset_service = $asset_service;
         $this->logbook = $logbook;
         $this->dispatcher = $dispatcher;
         $this->adapters = $adapters;
@@ -51,7 +51,7 @@ class MediaHelperService {
         $this->em->remove($episode);
         $this->deleteMedia($episode, true);
         if ($episode->getPosterframe()) {
-            $this->asset_helper->deleteAsset($episode->getPosterframe());
+            $this->deletePosterframe($episode);
         }
         $this->em->flush();
         $this->logbook->info('oktolab_media.logbook_delete_episode_end', [], $episode->getUniqID());
@@ -66,7 +66,7 @@ class MediaHelperService {
 
         $this->em->remove($series);
         if ($series->getPosterframe()) {
-            $this->asset_helper->deleteAsset($series->getPosterframe());
+            $this->asset_service->deleteAsset($series->getPosterframe());
         }
         $this->em->flush();
         $this->logbook->info('oktolab_media.logbook_delete_series_end', [], $series->getUniqID());
@@ -76,20 +76,25 @@ class MediaHelperService {
     {
         $this->logbook->info('oktolab_media.logbook_delete_media_start', [], $episode->getUniqID());
         foreach ($episode->getMedia() as $media) {
-            $this->logbook->info('oktolab_media.logbook_delete_media', ['%media%', $media->getQuality()], $episode->getUniqID());
-            // keep the linked video asset of the media
-            if ($media == $episode->getVideo()) {
-                $this->em->remove($media);
-                if ($including_video) {
-                    $this->asset_helper->deleteAsset($media->getAsset());
-                }
-            } else { // delete media
-                $this->em->remove($media);
-                $this->asset_helper->deleteAsset($media->getAsset());
+            $this->logbook->info(
+                'oktolab_media.logbook_delete_media',
+                ['%media%', $media->getQuality()],
+                $episode->getUniqID()
+            );
 
+            // delete all media.
+            if ($media->getAsset() == $episode->getVideo()) {
+                $media->setAsset(null);
             }
+            $this->em->remove($media);
+
         }
         $this->em->flush();
+
+        if ($including_video) {
+            $this->deleteVideo($episode);
+        }
+
         $this->logbook->info('oktolab_media.logbook_delete_media_end', [], $episode->getUniqID());
     }
 
@@ -106,7 +111,7 @@ class MediaHelperService {
             }
             $episode->setVideo(null);
             if ($can_delete_video) {
-                $this->asset_helper->deleteAsset($video);
+                $this->asset_service->deleteAsset($video);
             }
             if ($including_media) {
                 $this->deleteMedia($episode);
@@ -115,15 +120,32 @@ class MediaHelperService {
         $this->logbook->info('oktolab_media.logbook_delete_video_end', [], $episode->getUniqID());
     }
 
+    /**
+     * @deprecated
+     */
     public function deletePosterframe($episode)
+    {
+        $this->deleteEpisodePosterframe($episode);
+    }
+
+    public function deleteEpisodePosterframe($episode)
     {
         $this->logbook->info('oktolab_media.logbook_delete_posterframe_start', [], $episode->getUniqID());
         if ($episode->getPosterframe()) {
-            $this->em->remove($episode->getPosterframe());
-            $this->asset_helper->deleteAsset($episode->getPosterframe());
+            $this->asset_service->deleteAsset($episode->getPosterframe());
         }
         $this->em->flush();
         $this->logbook->info('oktolab_media.logbook_delete_posterframe_end', [], $episode->getUniqID());
+    }
+
+    public function deleteSeriesPosterframe($series)
+    {
+        $this->logbook->info('oktolab_media.logbook_delete_posterframe_start', [], $series->getUniqID());
+        if ($series->getPosterframe()) {
+            $this->asset_service->deleteAsset($series->getPosterframe());
+        }
+        $this->em->flush();
+        $this->logbook->info('oktolab_media.logbook_delete_posterframe_end', [], $series->getUniqID());
     }
 
     public function getAdapters()

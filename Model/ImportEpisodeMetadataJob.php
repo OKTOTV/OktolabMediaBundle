@@ -45,10 +45,8 @@ class ImportEpisodeMetadataJob extends BprsContainerAwareJob
                     $local_episode->merge($episode);
                     $local_episode->setKeychain($this->keychain);
 
-                    $this->mediaService->addImportEpisodePosterframeJob(
-                        $this->args['uniqID'],
-                        $this->keychain,
-                        $episode->getPosterframe()
+                    $this->mediaService->addEpisodePosterframeJob(
+                        $this->args['uniqID']
                     );
                     $this->mediaService->addImportEpisodeVideoJob(
                         $this->args['uniqID'],

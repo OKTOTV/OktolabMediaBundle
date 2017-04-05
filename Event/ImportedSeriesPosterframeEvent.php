@@ -4,7 +4,7 @@ namespace Oktolab\MediaBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event;
 
-class ImportedEpisodePosterframeEvent extends Event
+class ImportedSeriesPosterframeEvent extends Event
 {
     protected $args;
 
@@ -12,13 +12,7 @@ class ImportedEpisodePosterframeEvent extends Event
         $this->args = $args;
     }
 
-    public function getUniqID()
-    {
-        return $this->args['uniqID'];
-    }
-
-    public function getArgs()
-    {
+    public function getArgs() {
         return $this->args;
     }
 }

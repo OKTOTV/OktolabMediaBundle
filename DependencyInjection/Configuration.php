@@ -41,6 +41,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('posterframe_filesystem')->defaultValue('posterframe')->end()
                 ->scalarNode('default_filesystem')->defaultValue('video')->end()
                 ->scalarNode('serializing_schema')->end()
+                ->scalarNode('worker_queue')->defaultValue('oktolab_media')->end()
                 ->arrayNode('resolutions')
                     ->requiresAtLeastOneElement()
                     ->prototype('array')

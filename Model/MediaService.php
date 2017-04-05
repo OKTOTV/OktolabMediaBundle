@@ -10,6 +10,7 @@ use Oktolab\MediaBundle\Entity\Episode;
 use Oktolab\MediaBundle\OktolabMediaEvent;
 use Oktolab\MediaBundle\Event\ImportedEpisodeMetadataEvent;
 use Oktolab\MediaBundle\Event\ImportedEpisodePosterframeEvent;
+use Oktolab\MediaBundle\Event\ImportedSeriesPosterframeEvent;
 use Oktolab\MediaBundle\Event\FinalizeEpisodeEvent;
 use Oktolab\MediaBundle\Event\ImportedSeriesMetadataEvent;
 
@@ -37,9 +38,10 @@ class MediaService
     private $adapters; // the adapter paths to save the assets to
     private $applinkservice; // service for api urls
     private $logbook; // loggingservice
-    private $dispatcher;
+    private $dispatcher; // event dispatcher
+    private $worker_queue;
 
-    public function __construct($jobService, $entity_manager, $serializer, $episode_class, $series_class, $asset_class, $adapters, $applinkservice, $logbook, $dispatcher)
+    public function __construct($jobService, $entity_manager, $serializer, $episode_class, $series_class, $asset_class, $adapters, $applinkservice, $logbook, $dispatcher, $worker_queue)
     {
         $this->jobService = $jobService;
         $this->em = $entity_manager;
@@ -51,14 +53,7 @@ class MediaService
         $this->applinkservice = $applinkservice;
         $this->logbook = $logbook;
         $this->dispatcher = $dispatcher;
-    }
-
-    /**
-     * @deprecated
-     */
-    public function encodeEpisode($uniqID)
-    {
-        $this->addEncodeVideoJob($uniqID);
+        $this->worker_queue = $worker_queue;
     }
 
     public function addEncodeVideoJob($uniqID)
@@ -192,6 +187,10 @@ class MediaService
         return [$this::ROLE_READ, $this::ROLE_WRITE];
     }
 
+    /**
+    * @deprecated
+    * use addImportEpisodePosterframeJob in the future
+    */
     public function addImportEpisodePosterframeJob($uniqID, $keychain, $filekey)
     {
         $this->jobService->addJob(
@@ -200,11 +199,41 @@ class MediaService
         );
     }
 
+    /**
+     * please use addSeriesPosterframeJob in the future.
+     * @deprecated
+     */
     public function addImportSeriesPosterframeJob($uniqID, $keychain, $filekey)
     {
         $this->jobService->addJob(
             "Oktolab\MediaBundle\Model\ImportSeriesPosterframeJob",
             ['uniqID' => $uniqID, 'keychain' => $keychain->getUniqID(), 'key' => $filekey]
+        );
+    }
+
+    public function addEpisodePosterframeJob($uniqID, $queue = false)
+    {
+        if (!$queue) {
+            $queue = $this->worker_queue;
+        }
+
+        $this->jobService->addJob(
+            "Oktolab\MediaBundle\Model\EpisodePosterframeJob",
+            ['uniqID' => $uniqID],
+            $queue
+        );
+    }
+
+    public function addSeriesPosterframeJob($uniqID, $queue = false)
+    {
+        if (!$queue) {
+            $queue = $this->worker_queue;
+        }
+
+        $this->jobService->addJob(
+            "Oktolab\MediaBundle\Model\SeriesPosterframeJob",
+            ["uniqID" => $uniqID],
+            $queue
         );
     }
 
@@ -216,22 +245,28 @@ class MediaService
         );
     }
 
-    public function dispatchImportedEpisodeMetadataEvent($uniqID)
+    public function dispatchImportedEpisodeMetadataEvent($args)
     {
-        $event = new ImportedEpisodeMetadataEvent($uniqID);
+        $event = new ImportedEpisodeMetadataEvent($args);
         $this->dispatcher->dispatch(OktolabMediaEvent::IMPORTED_EPISODE_METADATA, $event);
     }
 
-    public function dispatchImportedSeriesMetadataEvent($uniqID)
+    public function dispatchImportedSeriesMetadataEvent($args)
     {
-        $event = new ImportedSeriesMetadataEvent($uniqID);
+        $event = new ImportedSeriesMetadataEvent($args);
         $this->dispatcher->dispatch(OktolabMediaEvent::IMPORTED_SERIES_METADATA, $event);
     }
 
-    public function dispatchImportedEpisodePosterframeEvent($uniqID)
+    public function dispatchImportedEpisodePosterframeEvent($args)
     {
-        $event = new ImportedEpisodePosterframeEvent($uniqID);
+        $event = new ImportedEpisodePosterframeEvent($args);
         $this->dispatcher->dispatch(OktolabMediaEvent::IMPORTED_EPISODE_POSTERFRAME, $event);
+    }
+
+    public function dispatchImportedSeriesPosterframeEvent($args)
+    {
+        $event = new ImportedSeriesPosterframeEvent($args);
+        $this->dispatcher->dispatch(OktolabMediaEvent::IMPORTED_SERIES_POSTERFRAME, $event);
     }
 
     public function dispatchFinalizedEpisodeEvent($uniqID)

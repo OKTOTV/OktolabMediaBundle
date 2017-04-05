@@ -125,6 +125,7 @@ class EncodeVideoJob extends BprsContainerAwareJob
         $this->em->flush();
 
         // move encoded media from "cache" to adapter of the original file
+        echo "MOVE ASSET JOB EPISODE MEDIA MOVE ASSET JOB EPISODE MEDIA MOVE ASSET JOB EPISODE MEDIA";
         $this->getContainer()->get('bprs.asset_job')->addMoveAssetJob(
             $asset,
             $resolution['adapter'] ? $resolution['adapter'] : $episode->getVideo()->getAdapter()
@@ -146,15 +147,8 @@ class EncodeVideoJob extends BprsContainerAwareJob
 
     private function purgeEpisodeMedias($episode)
     {
-        foreach($episode->getMedia() as $media) {
-            $this->em->remove($media);
-            $episode->removeMedia($media);
-            $this->em->flush();
-            if ($media->getAsset() && $media->getAsset() != $episode->getVideo()) {
-                $this->getContainer()->get('bprs.asset_helper')->deleteAsset($media->getAsset());
-            }
-        }
-        $this->em->flush();
+        $media_helper = $this->getContainer()->get('oktolab_media_helper');
+        $media_helper->deleteMedia($episode);
     }
 
     /**
@@ -189,11 +183,15 @@ class EncodeVideoJob extends BprsContainerAwareJob
 
     public function createNewCacheAssetForResolution($episode, $resolution)
     {
-        $class = $this->getContainer()->getParameter('oktolab_media.asset_class');
-        $asset = new $class;
-        $key = sprintf('%s.%s', uniqId(), $resolution['container']);
-        $asset->setFilekey($key);
-        $asset->setAdapter($this->getContainer()->getParameter('oktolab_media.encoding_filesystem'));
+        $asset = $this->getContainer()->get('bprs.asset')->createAsset();
+        $asset->setFilekey(
+            sprintf('%s.%s',$asset->getFilekey(), $resolution['container'])
+        );
+        $asset->setAdapter(
+            $this->getContainer()->getParameter(
+                'oktolab_media.encoding_filesystem'
+            )
+        );
         $asset->setName($episode->getVideo()->getName());
         $asset->setMimetype('video/quicktime');
 
@@ -206,15 +204,14 @@ class EncodeVideoJob extends BprsContainerAwareJob
         if (!$this->getContainer()->getParameter('oktolab_media.keep_original')) {
             $this->logbook->info('oktolab_media.episode_encode_remove_old_media', [], $this->args['uniqID']);
             if (count($episode->getMedia())) {
+                $this->getContainer()->get('oktolab_media_helper')->deleteVideo($episode);
                 $best_media = $episode->getMedia()[0];
                 foreach ($episode->getMedia() as $media) {
                     if ($media->getSortNumber() > $best_media->getSortNumber()) {
                         $best_media = $media;
                     }
                 }
-                $origin = $episode->getVideo();
                 $episode->setVideo($best_media->getAsset());
-                $this->getContainer()->get('bprs.asset')->deleteAsset($origin);
 
                 $this->em->persist($episode);
                 $this->em->flush();

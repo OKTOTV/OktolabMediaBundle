@@ -28,6 +28,12 @@ final class OktolabMediaEvent
     const IMPORTED_EPISODE_POSTERFRAME = 'oktolab_media.imported_episode_posterframe';
 
     /**
+     * the oktolab_media.imported_series_posterframe event is thrown each time the posterframe of an series was imported.
+     * the event listener receives the complete arguments (args) of the job (including the uniqID).
+     */
+    const IMPORTED_SERIES_POSTERFRAME = 'oktolab_media.imported_series_posterframe';
+
+    /**
      * the oktolab_media.created_episode event is fired each time a new episode was persisted in the database.
      * See the EpisodeLifecycleListener for more info
      */
