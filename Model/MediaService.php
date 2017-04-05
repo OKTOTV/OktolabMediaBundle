@@ -56,10 +56,17 @@ class MediaService
         $this->worker_queue = $worker_queue;
     }
 
-    public function addEncodeVideoJob($uniqID)
+    public function addEncodeVideoJob($uniqID, $worker_queue = false)
     {
+        if (!$worker_queue) {
+            $worker_queue = $this->worker_queue;
+        }
         $this->setEpisodeStatus($uniqID, Episode::STATE_IN_PROGRESS_QUEUE);
-        $this->jobService->addJob("Oktolab\MediaBundle\Model\EncodeVideoJob", ['uniqID' => $uniqID]);
+        $this->jobService->addJob(
+            "Oktolab\MediaBundle\Model\EncodeVideoJob",
+            ['uniqID' => $uniqID],
+            $worker_queue
+        );
     }
 
     /**

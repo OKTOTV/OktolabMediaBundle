@@ -125,7 +125,6 @@ class EncodeVideoJob extends BprsContainerAwareJob
         $this->em->flush();
 
         // move encoded media from "cache" to adapter of the original file
-        echo "MOVE ASSET JOB EPISODE MEDIA MOVE ASSET JOB EPISODE MEDIA MOVE ASSET JOB EPISODE MEDIA";
         $this->getContainer()->get('bprs.asset_job')->addMoveAssetJob(
             $asset,
             $resolution['adapter'] ? $resolution['adapter'] : $episode->getVideo()->getAdapter()
