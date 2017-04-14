@@ -272,3 +272,11 @@ oktolab_media.series_import_error:          "Es ist ein (un)erwarteter Fehler be
 
 oktolab_media.logbook_delete_series_start:  "Beginne Sendereihe zu löschen"
 oktolab_media.logbook_delete_series_end:    "Sendereihe gelöscht"
+
+oktolab_media.logbook_delete_episode_start: "Beginne Episode zu löschen"
+oktolab_media.logbook_delete_episode_end:   "Episode löschen beendet"
+oktolab_media.logbook_delete_media_start:   "Beginne Episodenformate zu löschen"
+oktolab_media.logbook_delete_video_start:   "Beginne Episodendatei zu löschen"
+oktolab_media.logbook_delete_video_end:     "Episodendatei löschen beendet"
+oktolab_media.logbook_delete_media_end:     "Episodenformate löschen beendet"
+oktolab_media.logbook_delete_episode_end:   "Episode löschen beendet"

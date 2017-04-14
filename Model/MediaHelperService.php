@@ -45,7 +45,7 @@ class MediaHelperService {
     {
         $this->logbook->info('oktolab_media.logbook_delete_episode_start', [], $episode->getUniqID());
 
-        $event = new DeleteEpisodeEvent($series);
+        $event = new DeleteEpisodeEvent($episode);
         $this->dispatcher->dispatch(OktolabMediaEvent::DELETE_EPISODE, $event);
 
         $this->em->remove($episode);

@@ -48,36 +48,39 @@ class EpisodePosterframeJob extends BprsContainerAwareJob
     }
 
     private function importAsset($keychain, $filekey) {
-        $remote_asset = $this->getContainer()->get('bprs.asset_keychain')->getAsset($keychain, $filekey);
-        if ($remote_asset) {
-            $asset = $this->getContainer()->get('bprs.asset')->createAsset();
-            $asset->setAdapter($this->getContainer()->getParameter('oktolab_media.encoding_filesystem'));
-            $asset->setName($remote_asset->getName());
-            $asset->setMimetype($remote_asset->getMimetype());
+        if ($keychain != null && $filekey != null ) {
+            $remote_asset = $this->getContainer()->get('bprs.asset_keychain')->getAsset($keychain, $filekey);
+            if ($remote_asset) {
+                $asset = $this->getContainer()->get('bprs.asset')->createAsset();
+                $asset->setAdapter($this->getContainer()->getParameter('oktolab_media.encoding_filesystem'));
+                $asset->setName($remote_asset->getName());
+                $asset->setMimetype($remote_asset->getMimetype());
 
-            // download data
-            $this->downloadFile($keychain, $filekey, $asset);
+                // download data
+                $this->downloadFile($keychain, $filekey, $asset);
 
-            // remove old posterframe
-            $this->media_helper_service->deleteEpisodePosterframe($this->episode);
+                // remove old posterframe
+                $this->media_helper_service->deleteEpisodePosterframe($this->episode);
 
-            // set new posterframe
-            $this->episode->setPosterframe($asset);
-            $em = $this->getContainer()->get('doctrine.orm.entity_manager');
-            $em->persist($this->episode);
-            $em->persist($asset);
-            $em->flush();
+                // set new posterframe
+                $this->episode->setPosterframe($asset);
+                $em = $this->getContainer()->get('doctrine.orm.entity_manager');
+                $em->persist($this->episode);
+                $em->persist($asset);
+                $em->flush();
 
-            //move to correct destination
-            $this->getContainer()->get('bprs.asset_job')->addMoveAssetJob(
-                $asset,
-                $this->getContainer()->getParameter('oktolab_media.posterframe_filesystem')
-            );
+                //move to correct destination
+                $this->getContainer()->get('bprs.asset_job')->addMoveAssetJob(
+                    $asset,
+                    $this->getContainer()->getParameter('oktolab_media.posterframe_filesystem')
+                );
 
-            return true;
-        } else { // remote episode has no posterframe
-            return false;
+                return true;
+            } else { // remote episode has no posterframe
+                return false;
+            }
         }
+        return false;
     }
 
     /**
