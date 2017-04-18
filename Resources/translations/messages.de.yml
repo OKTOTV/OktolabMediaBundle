@@ -119,7 +119,6 @@ oktolab_media.series_webtitle_label: Webtitel
 oktolab_media.series_description_label: Beschreibung
 oktolab_media.series_isActive_label: Sendereihe Aktiv
 oktolab_media.series_uniqID_label: Global einzigartige ID der Sendereihe
-oktolab_media.series_add_new_episode: <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Neue Episode hinzufügen
 
 ## placeholder
 oktolab_media.series_description_placeholder: Sendereihenbeschreibung. Zeichenbegrenzung unter der Box.

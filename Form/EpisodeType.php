@@ -21,7 +21,10 @@ class EpisodeType extends AbstractType
     {
         $builder
             ->add('name', TextType::class,
-                ['label' => 'oktolab_media.name_label']
+                [
+                    'label' => 'oktolab_media.name_label',
+                    'required' => false,
+                ]
             )
             ->add('description', TextareaType::class,
                 [
@@ -33,7 +36,10 @@ class EpisodeType extends AbstractType
                 ]
             )
             ->add('isActive', CheckboxType::class,
-                ['label' => 'oktolab_media.isActive_label']
+                [
+                    'label' => 'oktolab_media.isActive_label',
+                    'required' => false
+                ]
             )
             ->add('onlineStart', DateTimeType::class,
                 [
@@ -65,9 +71,11 @@ class EpisodeType extends AbstractType
             ->add('uniqID', TextType::class,
                 ['label' => 'oktolab_media.uniqID_label']
             )
+
             ->add('posterframe', AssetType::class,
                 ['label' => 'oktolab_media.posterframe_label']
             )
+
             ->add('video', AssetType::class, ['label' => 'oktolab_media.video_label'])
         ;
     }
