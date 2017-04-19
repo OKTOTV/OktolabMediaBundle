@@ -26,6 +26,7 @@ class SeriesType extends AbstractType
         ->add('webtitle', TextType::class,
             ['label' => 'oktolab_media.series_webtitle_label']
         )
+
         ->add('description', TextareaType::class,
             [
                 'label' => 'oktolab_media.description_label',
@@ -35,12 +36,18 @@ class SeriesType extends AbstractType
                 ]
             ]
         )
+
         ->add('isActive', CheckboxType::class,
-            ['label' => 'oktolab_media.series_isActive_label']
+            [
+                'label' => 'oktolab_media.series_isActive_label',
+                'required' => false
+            ]
         )
+
         ->add('uniqID', TextType::class,
             ['label' => 'oktolab_media.series_uniqID_label']
         )
+
         ->add('posterframe', AssetType::class,
             ['label' => 'oktolab_media.series_posterframe_label']
         );
