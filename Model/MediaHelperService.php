@@ -65,9 +65,6 @@ class MediaHelperService {
         $this->dispatcher->dispatch(OktolabMediaEvent::DELETE_SERIES, $event);
 
         $this->em->remove($series);
-        if ($series->getPosterframe()) {
-            $this->asset_service->deleteAsset($series->getPosterframe());
-        }
         $this->em->flush();
         $this->logbook->info('oktolab_media.logbook_delete_series_end', [], $series->getUniqID());
     }

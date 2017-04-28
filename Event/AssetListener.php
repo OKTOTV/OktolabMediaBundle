@@ -21,9 +21,13 @@ class AssetListener
 
     public function onAssetDelete(DeleteAssetEvent $event)
     {
-        $this->updateMedias($event->getAsset());
-        $this->updateEpisodes($event->getAsset());
-        $this->updateSeries($event->getAsset());
+        // The cascading for media, episode and series asset removal collides with the
+        // doctrine cascading. You can't delete a series object graph with flushes inbetween.
+        // wait for an update in the bprs asset bundle for a specific deleteMaybeUsedAsset Event.
+
+        // $this->updateMedias($event->getAsset());
+        // $this->updateEpisodes($event->getAsset());
+        // $this->updateSeries($event->getAsset());
     }
 
     public function updateMedias($asset)

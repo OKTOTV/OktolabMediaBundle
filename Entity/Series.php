@@ -100,7 +100,7 @@ class Series implements SeriesMergerInterface
     /**
     * @JMS\Expose
     * @JMS\Type("string")
-    * @JMS\Groups({"oktolab"})
+    * @JMS\Groups({"oktolab", "series_posterframe"})
     * @ORM\OneToOne(targetEntity="Bprs\AssetBundle\Entity\AssetInterface", fetch="EAGER", cascade={"remove"})
     * @ORM\JoinColumn(name="posterframe_id", referencedColumnName="id")
     * @Assert\NotNull()
