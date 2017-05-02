@@ -40,7 +40,7 @@ oktolab_media.new_episode_back_to_list: Zurück zu Sendereihen
 oktolab_media.new_episode_create_button: Episode anlegen
 
 ## episode show.html.twig
-oktolab_media.episode_show_actions: 'Aktionen<span class="caret"></span>'
+oktolab_media.episode_show_actions: 'Aktionen <span class="caret"></span>'
 oktolab_media.episode_show_api: <span class="glyphicon glyphicon-link" aria-hidden="true"></span> API zugriff
 oktolab_media.episode_edit_button: <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Bearbeiten
 oktolab_media.show_episode_export: '<span class="glyphicon glyphicon-export" aria-hidden="true"></span> Exportieren'
