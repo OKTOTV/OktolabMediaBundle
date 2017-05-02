@@ -66,6 +66,8 @@ oktolab_media.episode_export_modal_header:  "Episode exportieren"
 oktolab_media.episode_export_modal_desc:    "Möchtest du Episode %uniqID% an %url% senden? Die dortige Episode wird überschrieben, die Aktion kann nicht rückgänging gemacht werden."
 oktolab_media.episode_export_modal_cancel:  "Abbrechen"
 oktolab_media.episode_export_modal_export:  "<span class='glyphicon glyphicon-export' aria-hidden='true'></span> Exportieren"
+oktolab_media.episode_export_modal_overwrite: '<span class="glyphicon glyphicon-fire" aria-hidden="true"></span> Überschreiben'
+oktolab_media.success_export_episode:       "Exportauftrag erfolgreich übermittelt"
 
 ## episode form labels
 oktolab_media.name_label: Folgenname
