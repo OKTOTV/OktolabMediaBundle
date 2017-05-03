@@ -129,7 +129,10 @@ class MediaHelperService {
     {
         $this->logbook->info('oktolab_media.logbook_delete_posterframe_start', [], $episode->getUniqID());
         if ($episode->getPosterframe()) {
-            $this->asset_service->deleteAsset($episode->getPosterframe());
+            $posterframe = $episode->getPosterframe();
+            $episode->setPosterframe(null);
+            $this->em->persist($episode);
+            $this->asset_service->deleteAsset($posterframe);
         }
         $this->em->flush();
         $this->logbook->info('oktolab_media.logbook_delete_posterframe_end', [], $episode->getUniqID());
