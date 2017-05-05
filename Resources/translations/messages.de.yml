@@ -69,6 +69,13 @@ oktolab_media.episode_export_modal_export:  "<span class='glyphicon glyphicon-ex
 oktolab_media.episode_export_modal_overwrite: '<span class="glyphicon glyphicon-fire" aria-hidden="true"></span> Überschreiben'
 oktolab_media.success_export_episode:       "Exportauftrag erfolgreich übermittelt"
 
+## episode encode
+oktolab_media.episode_encode_info:          "Encodierung wurde in Auftrag gegeben"
+oktolab_media.episode_start_encoding_resolution: "Auflösung wird nun encodiert"
+oktolab_media.episode_start_saving_media:   "Beginne Medien abzuspeichern"
+oktolab_media.episode_end_saving_media:     "Medien erfolgreich gespeichert"
+
+
 ## episode form labels
 oktolab_media.name_label: Folgenname
 oktolab_media.description_label: Beschreibung
@@ -254,6 +261,7 @@ oktolab_media.episode_encode_media_end:     "Episode Media %media% encodierung b
 oktolab_media.episode_encode_error:         "Es ist ein Fehler beim Encodieren aufgetreten"
 oktolab_media.episode_encode_no_streams:    "Es konnte keine Streaminformation des Videos gelesen werden"
 oktolab_media.episode_encode_remove_old_media: "Encodierte Medien werden bereinigt"
+oktolab_media.logbook_delete_media:         "Medien werden gelöscht"
 
 oktolab_media.episode_start_finalize:       "Episode wird finalisiert"
 oktolab_media.episode_end_finalize:         "Episoden finalisierung beendet"
