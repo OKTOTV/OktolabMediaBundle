@@ -14,7 +14,7 @@
         {{ form_errors(form) }}
         {{ form_row(form.name) }}
         {{ form_row(form.description) }}
-        {% include "BprsAssetBundle::singleUpload.html.twig" with {'widget': form.video, 'adapter': 'video'} %}
+        {% include "BprsAssetBundle::singleUpload.html.twig" with {'widget': form.video, 'adapter': 'cache'} %}
         {% include "BprsAssetBundle::singleUpload.html.twig" with {'widget': form.posterframe, 'adapter': 'posterframe'} %}
         {% include "BprsStyleBundle::datetimepicker.html.twig" with {'widget': form.onlineStart} %}
         {% include "BprsStyleBundle::datetimepicker.html.twig" with {'widget': form.onlineEnd} %}

@@ -13,7 +13,7 @@
         {{ form_errors(form) }}
         {{ form_row(form.name) }}
         {{ form_row(form.description) }}
-        {% include "BprsAssetBundle::singleUpload.html.twig" with {'widget': form.video, 'adapter': 'video', 'asset': form.vars.value.video} %}
+        {% include "BprsAssetBundle::singleUpload.html.twig" with {'widget': form.video, 'adapter': 'cache', 'asset': form.vars.value.video} %}
         {% include "BprsAssetBundle::singleUpload.html.twig" with {'widget': form.posterframe, 'adapter': 'posterframe', 'asset': form.vars.value.posterframe} %}
         {% include "BprsStyleBundle::datetimepicker.html.twig" with {'widget': form.onlineStart} %}
         {% include "BprsStyleBundle::datetimepicker.html.twig" with {'widget': form.onlineEnd} %}
