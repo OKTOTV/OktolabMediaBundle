@@ -52,6 +52,9 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('video_framerate')->defaultValue("50/1")->end()
                             ->scalarNode('video_width')->end()
                             ->scalarNode('video_height')->end()
+                            ->integerNode('video_bitrate')->defaultValue(5000000)->end() // 5 mbit
+                            ->integerNode('crf_rate')->defaultValue(23)->end()
+                            ->scalarNode('preset')->defaultValue('veryslow')->end()
                             ->scalarNode('audio_codec')->defaultValue("aac")->end()
                             ->scalarNode('audio_sample_rate')->defaultValue("48000")->end()
                             ->scalarNode('container')->defaultValue('mov')->end()

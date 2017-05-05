@@ -39,38 +39,63 @@ class EncodeVideoJob extends BprsContainerAwareJob
                 $resolutions = $this->getContainer()->getParameter('oktolab_media.resolutions');
                 foreach($resolutions as $format => $resolution) {
                     // create new asset in "cache"
+                    $this->logbook->info('oktolab_media.episode_start_encoding_resolution', [], $this->args['uniqID']);
                     $asset = $this->createNewCacheAssetForResolution($episode, $resolution);
                     $path = $this->getContainer()->get('bprs.asset_helper')->getPath($asset, true);
 
                     if ($this->resolutionIsTheSame($resolution, $metainfo['video'])) { //resolution is the same
                         if ($this->videoCanBeCopied($resolution, $metainfo['video'])) { //videocodec is the same, can be copied
                             if ($this->audioCanBeCopied($resolution, $metainfo['audio'])) { // audiocodec is the same, can be copied
-                                shell_exec(sprintf('ffmpeg -i "%s" -movflags +faststart -c:v copy -c:a copy "%s"', $uri, $path));
+                                shell_exec(
+                                    sprintf(
+                                        'ffmpeg -i "%s" -movflags +faststart -c:v copy -c:a copy "%s"',
+                                        $uri,
+                                        $path
+                                    )
+                                );
                             } else { // just copy video
-                                shell_exec(sprintf('ffmpeg -i "%s" -movflags +faststart -c:v copy -c:a aac -strict -2 "%s"', $uri, $path));
+                                shell_exec(
+                                    sprintf(
+                                        'ffmpeg -i "%s" -movflags +faststart -c:v copy -c:a aac -strict -2 "%s"',
+                                        $uri,
+                                        $path
+                                    )
+                                );
                             }
                         } else { // video can not be copied (encode me)
-                            shell_exec(sprintf('ffmpeg -i "%s" -deinterlace -crf 21 -movflags +faststart -c:v h264 -r 50 -c:a aac -strict -2 "%s"', $uri, $path));
+                            shell_exec(
+                                sprintf(
+                                    'ffmpeg -i "%s" -deinterlace -crf %s -movflags +faststart -c:v h264 -r 50 -c:a aac -strict -2 -preset %s "%s"',
+                                    $uri,
+                                    $resolution['crf_rate'],
+                                    $resolution['preset'],
+                                    $path
+                                )
+                            );
                         }
                         $this->saveMedia($format, $resolution, $asset, $episode);
                     } elseif ($this->resolutionCanBeEncoded($resolution, $metainfo['video'])) { // resolution can be encoded
                         if ($this->audioCanBeCopied($resolution, $metainfo['audio'])) { // audiocodec is the same, can be copied
                             shell_exec(
                                 sprintf(
-                                    'ffmpeg -i "%s" -deinterlace -crf 21 -s %sx%s -movflags +faststart -c:v h264 -r 50 -c:a copy "%s"',
+                                    'ffmpeg -i "%s" -deinterlace -crf %s -s %sx%s -movflags +faststart -c:v h264 -r 50 -c:a copy -preset %s "%s"',
                                     $uri,
+                                    $resolution['crf_rate'],
                                     $resolution['video_width'],
                                     $resolution['video_height'],
+                                    $resolution['preset'],
                                     $path
                                 )
                             );
                         } else { // encode video and audio in resolution
                             shell_exec(
                                 sprintf(
-                                    'ffmpeg -i "%s" -deinterlace -crf 21 -s %sx%s -movflags +faststart -c:v copy -c:a aac -strict -2 "%s"',
+                                    'ffmpeg -i "%s" -deinterlace -crf %s -s %sx%s -movflags +faststart -c:v copy -c:a aac -strict -2 -preset %s "%s"',
                                     $uri,
+                                    $resolution['crf_rate'],
                                     $resolution['video_width'],
                                     $resolution['video_height'],
+                                    $resolution['preset'],
                                     $path
                                 )
                             );
@@ -93,26 +118,59 @@ class EncodeVideoJob extends BprsContainerAwareJob
 
     private function resolutionIsTheSame($resolution, $metainfo)
     {
-        return $resolution['video_width'] == $metainfo['width'] && $resolution['video_height'] == $metainfo['height'];
+        return
+            $resolution['video_width'] == $metainfo['width'] &&
+            $resolution['video_height'] == $metainfo['height']
+        ;
     }
 
+    /**
+     * determines if the stream can simply be copied.
+     * important factors are codec, framerate and a maximum bitrate.
+     */
     private function videoCanBeCopied($resolution, $metainfo)
     {
-        return $resolution['video_codec'] == $metainfo['codec_name'] && $resolution['video_framerate'] == $metainfo['avg_frame_rate'];
+        echo $metainfo['codec_name'];
+        echo "\n----------------\n";
+        echo $metainfo['bit_rate'];
+        return
+            $resolution['video_codec'] == $metainfo['codec_name'] &&
+            $resolution['video_framerate'] == $metainfo['avg_frame_rate'] &&
+            $metainfo['bit_rate'] <= $resolution['video_bitrate']
+        ;
     }
 
     private function audioCanBeCopied($resolution, $metainfo)
     {
-        return $resolution['audio_codec'] == $metainfo['codec_name'] && $resolution['audio_sample_rate'] >= $metainfo['sample_rate'];
+        return
+            $resolution['audio_codec'] == $metainfo['codec_name'] &&
+            $resolution['audio_sample_rate'] >= $metainfo['sample_rate']
+        ;
     }
 
+    /**
+     * determines if the resolution is the minimum size required to be encoded
+     */
     private function resolutionCanBeEncoded($resolution, $metainfo)
     {
-        return $resolution['video_width'] <= $metainfo['width'] && $resolution['video_height'] <= $metainfo['height'];
+        return
+            $resolution['video_width'] <= $metainfo['width'] &&
+            $resolution['video_height'] <= $metainfo['height']
+        ;
     }
 
+    /**
+     * persists media in the database and adds a move asset job to move
+     * the asset from cache to the video filesystem
+     */
     private function saveMedia($format, $resolution, $asset, $episode)
     {
+        $this->logbook->info(
+            'oktolab_media.episode_start_saving_media',
+            [],
+            $this->args['uniqID'
+        ]);
+
         $media = new Media();
         $media->setQuality($format);
         $media->setSortNumber($resolution['sortNumber']);
@@ -124,6 +182,12 @@ class EncodeVideoJob extends BprsContainerAwareJob
         $this->em->persist($episode);
         $this->em->flush();
 
+        $this->logbook->info(
+            'oktolab_media.episode_end_saving_media',
+            [],
+            $this->args['uniqID'
+        ]);
+
         // move encoded media from "cache" to adapter of the original file
         $this->getContainer()->get('bprs.asset_job')->addMoveAssetJob(
             $asset,
@@ -134,8 +198,16 @@ class EncodeVideoJob extends BprsContainerAwareJob
     private function finalizeEpisode($episode)
     {
         $event = new EncodedEpisodeEvent($episode);
-        $this->getContainer()->get('event_dispatcher')->dispatch(OktolabMediaEvent::ENCODED_EPISODE, $event);
-        $this->getContainer()->get('oktolab_media')->setEpisodeStatus($episode->getUniqID(), Episode::STATE_IN_FINALIZE_QUEUE);
+        $this->getContainer()->get('event_dispatcher')->dispatch(
+            OktolabMediaEvent::ENCODED_EPISODE,
+            $event
+        );
+
+        $this->getContainer()->get('oktolab_media')->setEpisodeStatus(
+            $episode->getUniqID(),
+            Episode::STATE_IN_FINALIZE_QUEUE
+        );
+
         $this->getContainer()->get('bprs_jobservice')->addJob(
         'Oktolab\MediaBundle\Model\FinalizeVideoJob',
             [

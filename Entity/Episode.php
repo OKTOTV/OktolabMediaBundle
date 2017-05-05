@@ -167,7 +167,7 @@ class Episode implements EpisodeMergerInterface
 
     /**
      *
-     * @ORM\OneToMany(targetEntity="Oktolab\MediaBundle\Entity\Media", mappedBy="episode", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="Oktolab\MediaBundle\Entity\Media", mappedBy="episode", cascade={"remove", "persist"})
      */
     protected $media;
 

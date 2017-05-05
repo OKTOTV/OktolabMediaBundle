@@ -65,7 +65,7 @@ class Media
 
     /**
      * @JMS\Expose
-     * @ORM\ManyToOne(targetEntity="Oktolab\MediaBundle\Entity\EpisodeInterface", inversedBy="media")
+     * @ORM\ManyToOne(targetEntity="Oktolab\MediaBundle\Entity\EpisodeInterface", inversedBy="media", cascade={"persist"})
      * @ORM\JoinColumn(name="episode_id", referencedColumnName="id")
      */
     private $episode;
