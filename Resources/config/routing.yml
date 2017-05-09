@@ -53,6 +53,10 @@ oktolab_media_export_episode:
     defaults:   { _controller: OktolabMediaBundle:Episode:export }
 
 # Media
+oktolab_media_index:
+    path:       /oktolab_media/media/index
+    defaults:   { _controller: OktolabMediaBundle:Media:index }
+
 oktolab_media_media_for_episode:
     path:       /oktolab_media/media/media_for_episode/{uniqID}
     defaults:   { _controller: OktolabMediaBundle:Media:mediaForEpisode }

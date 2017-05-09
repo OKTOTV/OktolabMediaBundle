@@ -1,0 +1,84 @@
+{% extends "BprsStyleBundle::layout.html.twig" %}
+
+{% block nav_head%}
+    {% include 'BprsStyleBundle::menu.html.twig' with {'selected': 'backend', 'dropdown': ''} %}
+{% endblock %}
+
+{% block body_main -%}
+    <ul class="nav nav-tabs">
+        <li role="presentation"><a href="{{ path('oktolab_series') }}">{{ 'oktolab_media.series_index_header'|trans }}</a></li>
+        <li role="presentation"><a href="{{ path('oktolab_episode_index') }}">{{ 'oktolab_media.episode_index_header'|trans }}</a></li>
+        <li role="presentation" class="active"><a href="{{ path('oktolab_media_index') }}">{{ 'oktolab_media.media_index_header'|trans }}</a></li>
+    </ul>
+
+    <div class="page-header">
+        <p>{{ 'oktolab_media.series_index_total_series_choice'|transchoice(medias.getTotalItemCount)}}</p>
+        <!-- Single button -->
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{ 'oktolab_media.media_index_sortby'|trans|raw }}
+            </button>
+            <ul class="dropdown-menu">
+                <li{% if medias.isSorted('m.quality') %} class="active"{% endif %}>{{ knp_pagination_sortable(medias, 'oktolab_media.media_index_sortby_quality'|trans, 'm.quality') }}</li>
+                <li{% if medias.isSorted('m.episode') %} class="active"{% endif %}>{{ knp_pagination_sortable(medias, 'oktolab_media.media_index_sortby_episode'|trans, 'e.name') }}</li>
+                <li{% if medias.isSorted('m.progress') %} class="active"{% endif %}>{{ knp_pagination_sortable(medias, 'oktolab_media.media_index_sortby_progress'|trans, 'm.progress') }}</li>
+                <li{% if medias.isSorted('m.status') %} class="active"{% endif %}>{{ knp_pagination_sortable(medias, 'oktolab_media.media_index_sortby_status'|trans, 'm.status') }}</li>
+                <li{% if medias.isSorted('m.createdAt') %} class="active"{% endif %}>{{ knp_pagination_sortable(medias, 'oktolab_media.media_index_sortby_createdAt'|trans, 'm.createdAt') }}</li>
+                <li{% if medias.isSorted('m.updatedAt') %} class="active"{% endif %}>{{ knp_pagination_sortable(medias, 'oktolab_media.media_index_sortby_updatedAt'|trans, 'm.updatedAt') }}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="navigation">
+        {{ knp_pagination_render(medias) }}
+    </div>
+    <div class="row">
+        {% for media in medias %}
+        <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <a href="{{ path('oktolab_media_show_media', { 'media': media.id }) }}"><img src="{{ media.episode.posterframe|thumb(720,1280) }}" class="img-responsive center-block" /></a>
+                        </div>
+                        <div class="col-md-9">
+                            <dl class="dl-horizontal">
+                                <dt>{{ 'oktolab_media.media_index_info_quality'|trans }}</dt>
+                                <dd><a href="{{ path('oktolab_media_show_media', { 'media': media.id }) }}">{{ media.quality }}</a></dd>
+
+                                <dt>{{ 'oktolab_media.media_index_info_progress'|trans }}</dt>
+                                <dd><a href="{{ path('oktolab_media_show_media', { 'media': media.id }) }}">{{ media.progress }}</a></dd>
+
+                                <dt>{{ 'oktolab_media.media_index_info_status'|trans }}</dt>
+                                <dd><a href="{{ path('oktolab_media_show_media', { 'media': media.id }) }}">{{ 'oktolab_media.media_index_status_choice'|transchoice(media.status) }}</a></dd>
+
+                                <dt>{{ 'oktolab_media.media_index_info_episode'|trans }}</dt>
+                                <dd>
+                                    {% if media.episode is not empty %}
+                                        <a href="{{ path('oktolab_episode_show', { 'uniqID': media.episode.uniqID }) }}">
+                                            {{ media.episode }}
+                                        </a>
+                                    {% endif %}
+                                </dd>
+
+                                <dt>{{ 'oktolab_media.media_index_info_size'|trans }}</dt>
+                                <dd>
+                                    {% if media.asset is not empty %}
+                                        {{ media.asset|filesize}}
+                                    {% endif %}
+                                </dd>
+
+                                <dt>{{ 'oktolab_media.media_index_info_createdAt'|trans }}</dt>
+                                <dd>{{ media.createdAt|date('d.m.Y H:i:s') }}</dd>
+
+                                <dt>{{ 'oktolab_media.media_index_info_updatedAt'|trans }}</dt>
+                                <dd>{{ media.updatedAt|date('d.m.Y H:i:s') }}</dd>
+                            </dl>
+                        </div>
+                    </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="navigation">
+        {{ knp_pagination_render(medias) }}
+    </div>
+{% endblock %}

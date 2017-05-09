@@ -20,6 +20,29 @@ class MediaController extends Controller
 {
 
     /**
+     * @Route("/index", name="oktolab_media_index")
+     * @Template()
+     */
+    public function indexAction(Request $request)
+    {
+        $page = $request->query->get('page', 1);
+        $results = $request->query->get('results', 20);
+
+        $em = $this->getDoctrine()->getManager();
+        $class = $this->container->getParameter("oktolab_media.media_class");
+        $dql = "SELECT m, e FROM ".$class." m LEFT JOIN m.episode e";
+        $query = $em->createQuery($dql);
+        $paginator  = $this->get('knp_paginator');
+        $medias = $paginator->paginate(
+            $query,
+            $page,
+            $results
+        );
+
+        return ['medias' => $medias];
+    }
+
+    /**
      * @Route("/media_for_episode/{uniqID}", name="oktolab_media_media_for_episode")
      * @Template()
      */

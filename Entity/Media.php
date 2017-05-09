@@ -82,7 +82,7 @@ class Media
 
     /**
      * status of transcoding in worker.
-     * @ORM\Column(name="status", type="integer")
+     * @ORM\Column(name="status", type="integer", options={"default"= 0})
      */
     private $status;
 

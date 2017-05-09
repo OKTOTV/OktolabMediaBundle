@@ -13,6 +13,7 @@ use Oktolab\MediaBundle\Event\ImportedEpisodePosterframeEvent;
 use Oktolab\MediaBundle\Event\ImportedSeriesPosterframeEvent;
 use Oktolab\MediaBundle\Event\FinalizeEpisodeEvent;
 use Oktolab\MediaBundle\Event\ImportedSeriesMetadataEvent;
+use Oktolab\MediaBundle\Event\EpisodeAssetDataEvent;
 
 /**
 * handles import worker, jobs for worker and permission handling
@@ -96,6 +97,14 @@ class MediaService
                 'uniqID' => $uniqID,
                 'overwrite' => $overwrite
             ]
+        );
+    }
+
+    public function addEpisodeAssetDataJob($uniqID)
+    {
+        $this->jobService->addJob(
+            "Oktolab\MediaBundle\Model\EpisodeAssetDataJob",
+            ['uniqID' => $uniqID]
         );
     }
 
@@ -286,5 +295,11 @@ class MediaService
     {
         $event = new FinalizeEpisodeEvent($uniqID);
         $this->dispatcher->dispatch(OktolabMediaEvent::FINALIZED_EPISODE, $event);
+    }
+
+    public function dispatchEpisodeAssetDataEvent($assetData)
+    {
+        $event = new EpisodeAssetDataEvent($assetData);
+        $this->dispatcher->dispatch(OktolabMediaEvent::EPISODE_ASSETDATA, $event);
     }
 }

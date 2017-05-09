@@ -33,6 +33,7 @@ oktolab_media.episode_index_series_name:    "Sendereihe"
 oktolab_media.episode_index_firstranAt:     "Erstausstrahlung"
 oktolab_media.episode_index_updatedAt:      "Aktualisiert"
 oktolab_media.episode_index_description:    "Beschreibung"
+oktolab_media.episode_index_duration:       "Spieldauer"
 
 ## episode new.html.twig
 oktolab_media.new_episode_header:           "Neue Episode"
@@ -186,6 +187,27 @@ oktolab_media.series_index_info_keychain:       "Ursprung"
 oktolab_media.series_index_info_no_keychain:    "Lokal"
 
 # media ------------------------------------------------------------------------
+# Resources/views/Media/index.html.twig
+oktolab_media.media_index_header:       "Episodenformate"
+oktolab_media.media_index_sortby:       'Sortieren <span class="caret"></span>'
+oktolab_media.media_index_sortby_quality:   "Format"
+oktolab_media.media_index_sortby_episode:   "Episode"
+oktolab_media.media_index_sortby_progress:  "Fortschritt"
+oktolab_media.media_index_sortby_status:    "Status"
+oktolab_media.media_index_sortby_createdAt: "Angelegt am"
+oktolab_media.media_index_sortby_updatedAt: "Aktualisiert am"
+
+oktolab_media.media_index_info_quality:     "Format"
+oktolab_media.media_index_info_episode:     "Episode"
+oktolab_media.media_index_info_progress:    "Fortschritt"
+oktolab_media.media_index_info_progress:    "Status"
+oktolab_media.media_index_info_createdAt:   "Angelegt am"
+oktolab_media.media_index_info_updatedAt:   "Aktualisiert am"
+oktolab_media.media_index_info_status:      "Status"
+oktolab_media.media_index_info_size:        "Dateigröße"
+oktolab_media.media_index_status_choice:    "{0} In Queue | {50} Wird umgerechnet | {100} Ist umgerechnet"
+
+#--------------------------------------
 oktolab_media_media_create_button:      "Media anlegen"
 oktolab_media_success_create_media:     "Media erfolgreich angelegt"
 oktolab_media_error_create_media:       "Media konnte nicht angelegt werden"
@@ -293,6 +315,13 @@ oktolab_media.logbook_delete_video_start:   "Beginne Episodendatei zu löschen"
 oktolab_media.logbook_delete_video_end:     "Episodendatei löschen beendet"
 oktolab_media.logbook_delete_media_end:     "Episodenformate löschen beendet"
 oktolab_media.logbook_delete_episode_end:   "Episode löschen beendet"
+
+# EpisodeAssetDataJob
+oktolab_media.episode_start_assetdatajob:   "Beginne Daten aus Datei zu lesen"
+oktolab_media.episode_assetdatajob_novideo: "Episode hat keine Datei zum lesen"
+oktolab_media.episode_end_assetdatajob:     "Daten erfolgreich gelesen"
+oktolab_media.episode_assetdatajob_cantreadmeainfos: "Kann keine Informationen lesen! [%url%]"
+oktolab_media.episode_assetdatajob_nourl:   "Kann keine Url für Datei generieren"
 
 ## media Entity
 oktolab_media.media_status_choice:          "{0} Episodenformat warted darauf encodiert zu werden | {50} Episodenformat wird gerade umgerechnet | {100} Episodenformat wurde umgerechnet"

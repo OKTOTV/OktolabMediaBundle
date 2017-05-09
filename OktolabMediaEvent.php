@@ -62,4 +62,10 @@ final class OktolabMediaEvent
     * Oktolab\MediaBundle\Entity\Series instance. The actual entity depends on the oktolab_media.series_class setting
     */
     const DELETE_SERIES =   'oktolab_media.delete_series';
+
+    /**
+     * is thrown each time the metadata of the episode asset is read.
+     * contains all the metainformations read with ffprobe
+     */
+    const EPISODE_ASSETDATA = 'oktolab_media.episode_assetdata';
 }
