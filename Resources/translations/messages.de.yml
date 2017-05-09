@@ -1,19 +1,19 @@
 # api  -------------------------------------------------------------------------
-oktolab_media.show_series.import_episode: Folge Importieren
-oktolab_media.show_series.import_series: Sendereihe Importieren
-oktolab_media.show_keychain.placeholder: Suche nach Sendereihen
-oktolab_media.show_keychain.no_matches: Keine Übereinstimmung
+oktolab_media.show_series.import_episode:   "Folge Importieren"
+oktolab_media.show_series.import_series:    "Sendereihe Importieren"
+oktolab_media.show_keychain.placeholder:    "Suche nach Sendereihen"
+oktolab_media.show_keychain.no_matches:     "Keine Übereinstimmung"
 
-oktolab_media.list_keychains.header: Schlüsselkasten
-oktolab_media.keychain:              OktolabMedia Api
+oktolab_media.list_keychains.header:        "Schlüsselkasten"
+oktolab_media.keychain:                     "OktolabMedia Api"
 
-oktolab_media.keychain_show_prev_results:   Vorherige
-oktolab_media.keychain_show_next_results:   Nächste
+oktolab_media.keychain_show_prev_results:   "Vorherige"
+oktolab_media.keychain_show_next_results:   "Nächste"
 
 # keychain ---------------------------------------------------------------------
-oktolab_media.keychain_compare_episode:    Episode Vergleichen
-oktolab_media.keychain_compare_local:      Lokal
-oktolab_media.keychain_compare_remote:     Remote
+oktolab_media.keychain_compare_episode:    "Episode Vergleichen"
+oktolab_media.keychain_compare_local:      "Lokal"
+oktolab_media.keychain_compare_remote:     "Remote"
 
 # Oktolab/MediaBundle/Resources/views/Keychain/showSeries.html.twig
 oktolab_media_show_keychain.back_to_keychains:  '<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Zurück zum Schlüsselkasten'
@@ -22,39 +22,40 @@ oktolab_media.keychain_import_series_overwrite: '<span class="glyphicon glyphico
 
 # episode ----------------------------------------------------------------------
 ## episode index.html.twig
-oktolab_media.episode_index_header:         Episoden
+oktolab_media.episode_index_header:         "Episoden"
 oktolab_media.episode_index_action_dropdown: 'Aktionen <span class="caret"></span>'
 oktolab_media.episode_index_sort_dropdown:   'Sortieren <span class="caret"></span>'
 oktolab_media.episodes_index_total:         "Derzeit sind %episodes% Episoden vorhanden"
 oktolab_media.episode_index_new:            '<span class="glyphicon glyphicon-plus"></span> Neue Episode'
-oktolab_media.episode_index_name:           Folgenname
-oktolab_media.episode_index_uniqID:         UniqID
-oktolab_media.episode_index_series_name:    Sendereihe
-oktolab_media.episode_index_firstranAt:     Erstausstrahlung
-oktolab_media.episode_index_updatedAt:      Aktualisiert
-oktolab_media.episode_index_description:    Beschreibung
+oktolab_media.episode_index_name:           "Folgenname"
+oktolab_media.episode_index_uniqID:         "UniqID"
+oktolab_media.episode_index_series_name:    "Sendereihe"
+oktolab_media.episode_index_firstranAt:     "Erstausstrahlung"
+oktolab_media.episode_index_updatedAt:      "Aktualisiert"
+oktolab_media.episode_index_description:    "Beschreibung"
 
 ## episode new.html.twig
-oktolab_media.new_episode_header: Neue Episode
-oktolab_media.new_episode_back_to_list: Zurück zu Sendereihen
-oktolab_media.new_episode_create_button: Episode anlegen
+oktolab_media.new_episode_header:           "Neue Episode"
+oktolab_media.new_episode_back_to_list:     "Zurück zu Sendereihen"
+oktolab_media.new_episode_create_button:    "Episode anlegen"
 
 ## episode show.html.twig
-oktolab_media.episode_show_actions: 'Aktionen <span class="caret"></span>'
-oktolab_media.episode_show_api: <span class="glyphicon glyphicon-link" aria-hidden="true"></span> API zugriff
-oktolab_media.episode_edit_button: <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Bearbeiten
-oktolab_media.show_episode_export: '<span class="glyphicon glyphicon-export" aria-hidden="true"></span> Exportieren'
-oktolab_media.episode_download_video_button: <span class="glyphicon glyphicon-film" aria-hidden="true"></span> Video
-oktolab_media.episode_download_posterframe_button: <span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Posterframe
-oktolab_media_info_for_episode_header:  Informationen
-oktolab_media.episode_info_uniqID: Episoden ID
-oktolab_media.episode_info_isActive: Verfügbarkeit
+oktolab_media.episode_show_actions:         'Aktionen <span class="caret"></span>'
+oktolab_media.episode_show_api:             '<span class="glyphicon glyphicon-link" aria-hidden="true"></span> API zugriff'
+oktolab_media.episode_edit_button:          '<span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Bearbeiten'
+oktolab_media.show_episode_export:          '<span class="glyphicon glyphicon-export" aria-hidden="true"></span> Exportieren'
+oktolab_media.episode_download_video_button: '<span class="glyphicon glyphicon-film" aria-hidden="true"></span> Video'
+oktolab_media.episode_download_posterframe_button: '<span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Posterframe'
+oktolab_media_info_for_episode_header:      "Informationen"
+oktolab_media.episode_info_uniqID:          "Episoden ID"
+oktolab_media.episode_info_isActive:        "Verfügbarkeit"
 oktolab_media.episode_info_isActive_choice: "{0} Inaktiv|{1} Aktiv"
-oktolab_media.episode_info_createdAt: Erstellt am
-oktolab_media.episode_info_updatedAt: Aktualisiert am
-oktolab_media.episode_info_onlineStart: Verfügbar von
-oktolab_media.episode_info_onlineEnd: Verfügbar bis
-oktolab_media.episode_info_firstranAt: Erstausstrahlung
+oktolab_media.episode_info_createdAt:       "Erstellt am"
+oktolab_media.episode_info_updatedAt:       "Aktualisiert am"
+oktolab_media.episode_info_onlineStart:     "Verfügbar von"
+oktolab_media.episode_info_onlineEnd:       "Verfügbar bis"
+oktolab_media.episode_info_firstranAt:      "Erstausstrahlung"
+oktolab_media.episode_info_duration:        "Laufzeit"
 oktolab_media.episode_show_captions_header: "Textspuren"
 oktolab_media.episode_add_new_media:    "<span class='glyphicon glyphicon-plus' aria-hidden='true'></span> Episodenformat hinzufügen"
 
@@ -69,82 +70,75 @@ oktolab_media.episode_export_modal_export:  "<span class='glyphicon glyphicon-ex
 oktolab_media.episode_export_modal_overwrite: '<span class="glyphicon glyphicon-fire" aria-hidden="true"></span> Überschreiben'
 oktolab_media.success_export_episode:       "Exportauftrag erfolgreich übermittelt"
 
-## episode encode
-oktolab_media.episode_encode_info:          "Encodierung wurde in Auftrag gegeben"
-oktolab_media.episode_start_encoding_resolution: "Auflösung wird nun encodiert"
-oktolab_media.episode_start_saving_media:   "Beginne Medien abzuspeichern"
-oktolab_media.episode_end_saving_media:     "Medien erfolgreich gespeichert"
-
-
 ## episode form labels
-oktolab_media.name_label: Folgenname
-oktolab_media.description_label: Beschreibung
-oktolab_media.video_label: Videodatei
-oktolab_media.posterframe_label: Posterframe
-oktolab_media.firstRanAt_label:  Erstausstrahlung
-oktolab_media.onlineStart_label: Öffentlich verfügbar ab
-oktolab_media.onlineEnd_label: Öffentlich verfügbar bis
-oktolab_media.isActive_label: Ist Verfügbar
-oktolab_media.uniqID_label: Global einzigartige ID der Episode
+oktolab_media.name_label:           "Folgenname"
+oktolab_media.description_label:    "Beschreibung"
+oktolab_media.video_label:          "Videodatei"
+oktolab_media.posterframe_label:    "Posterframe"
+oktolab_media.firstRanAt_label:     "Erstausstrahlung"
+oktolab_media.onlineStart_label:    "Öffentlich verfügbar ab"
+oktolab_media.onlineEnd_label:      "Öffentlich verfügbar bis"
+oktolab_media.isActive_label:       "Ist Verfügbar"
+oktolab_media.uniqID_label:         "Global einzigartige ID der Episode"
 
 ## placeholder
-oktolab_media.firstRanAt_placeholder:  28.11.2005 11:00
-oktolab_media.onlineStart_placeholder: 28.11.2005 12:00
-oktolab_media.onlineEnd_placeholder: 01.01.2007 20:10
-oktolab_media.description_placeholder: Inhaltsbeschreibung. Zeichenbegrenzung unter der Box.
+oktolab_media.firstRanAt_placeholder:   "28.11.2005 11:00"
+oktolab_media.onlineStart_placeholder:  "28.11.2005 12:00"
+oktolab_media.onlineEnd_placeholder:    "01.01.2007 20:10"
+oktolab_media.description_placeholder:  "Inhaltsbeschreibung. Zeichenbegrenzung unter der Box."
 
 ## episode messages
-oktolab_media.error_create_episode:     Die Episode konnte nicht angelegt werden
-oktolab_media.success_create_episode:   Episode erfolgreich angelegt
-oktolab_media.success_edit_episode:     Änderungen erfolgreich gespeichert
-oktolab_media.error_edit_episode:       Änderungen konnten nicht übernommen werden
-oktolab_media.success_delete_episode:   Episode erfolgreich gelöscht
-oktolab_media.error_delete_episode:     Episode konnte nicht gelöscht werden oder ein Fehler ist während dem Löschen aufgetreten.
+oktolab_media.error_create_episode:     "Die Episode konnte nicht angelegt werden"
+oktolab_media.success_create_episode:   "Episode erfolgreich angelegt"
+oktolab_media.success_edit_episode:     "Änderungen erfolgreich gespeichert"
+oktolab_media.error_edit_episode:       "Änderungen konnten nicht übernommen werden"
+oktolab_media.success_delete_episode:   "Episode erfolgreich gelöscht"
+oktolab_media.error_delete_episode:     "Episode konnte nicht gelöscht werden oder ein Fehler ist während dem Löschen aufgetreten."
 
 # episode new.html.twig
-oktolab_media.create_episode_button:    <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Episode anlegen
+oktolab_media.create_episode_button:    '<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Episode anlegen'
 
 ## episode edit.html.twig
-oktolab_media.edit_episode_button: Änderungen speichern
-oktolab_media.delete_episode_button: Episode löschen
-oktolab_media.edit_episode_cancel: Abbrechen
-oktolab_media.edit_episode_header: Episode bearbeiten
+oktolab_media.edit_episode_button:      "Änderungen speichern"
+oktolab_media.delete_episode_button:    "Episode löschen"
+oktolab_media.edit_episode_cancel:      "Abbrechen"
+oktolab_media.edit_episode_header:      "Episode bearbeiten"
 
 ## episode show.html.twig
-oktolab_media.show_episode_add_to_encode_queue: <span class="glyphicon glyphicon-compressed" aria-hidden="true"></span> Episode Encodieren
-oktolab_media.show_episode_description_missing: Keine Beschreibung verfügbar
-oktolab_media.show_episode_technical_state:     Technischer Status
+oktolab_media.show_episode_add_to_encode_queue: '<span class="glyphicon glyphicon-compressed" aria-hidden="true"></span> Episode Encodieren'
+oktolab_media.show_episode_description_missing: "Keine Beschreibung verfügbar"
+oktolab_media.show_episode_technical_state:     "Technischer Status"
 oktolab_media.show_episode_technical_state_choice: "[0, 9] Nicht Bereit. Keine Videodatei |[10, 19] Episode in Queue |[20, 29] Episode wird importiert |[30,39] Medien in Queue | {40} Medien werden Encodiert |[41, 46] Episode besitzt kein Video zum Encodieren |{47} In Finalizierungsqueue |{48} Wird Finalisiert |{49} Eine oder mehrere Medien konnten nicht geprüft werden |{50} Episode bereit"
 
 # series -----------------------------------------------------------------------
 ## series new.html.twig
-oktolab_media.new_series_header: Neue Sendereihe anlegen
-oktolab_media.new_series_button: Anlegen
+oktolab_media.new_series_header:        "Neue Sendereihe anlegen"
+oktolab_media.new_series_button:        "Anlegen"
 
 ## series form labels
-oktolab_media.series_posterframe_label: Posterframe
-oktolab_media.series_name_label: Sendereihenname
-oktolab_media.series_webtitle_label: Webtitel
-oktolab_media.series_description_label: Beschreibung
-oktolab_media.series_isActive_label: Sendereihe Aktiv
-oktolab_media.series_uniqID_label: Global einzigartige ID der Sendereihe
+oktolab_media.series_posterframe_label: "Posterframe"
+oktolab_media.series_name_label:        "Sendereihenname"
+oktolab_media.series_webtitle_label:    "Webtitel"
+oktolab_media.series_description_label: "Beschreibung"
+oktolab_media.series_isActive_label:    "Sendereihe Aktiv"
+oktolab_media.series_uniqID_label:      "Global einzigartige ID der Sendereihe"
 
 ## placeholder
-oktolab_media.series_description_placeholder: Sendereihenbeschreibung. Zeichenbegrenzung unter der Box.
+oktolab_media.series_description_placeholder: "Sendereihenbeschreibung. Zeichenbegrenzung unter der Box."
 
 ## series messages
-oktolab_media.success_create_series: Sendereihe erfolgreich angelegt
-oktolab_media.error_create_series:  Sendereihe konnte nicht angelegt werden
-oktolab_media.success_edit_series: Änderungen erfolgreich gespeichert
-oktolab_media.error_edit_series: Änderungen konnten nicht übernommen werden
-oktolab_media.success_delete_series: Sendereihe erfolgreich gelöscht
-oktolab_media.unknown_action_series: Aktion unbekannt
+oktolab_media.success_create_series:    "Sendereihe erfolgreich angelegt"
+oktolab_media.error_create_series:      "Sendereihe konnte nicht angelegt werden"
+oktolab_media.success_edit_series:      "Änderungen erfolgreich gespeichert"
+oktolab_media.error_edit_series:        "Änderungen konnten nicht übernommen werden"
+oktolab_media.success_delete_series:    "Sendereihe erfolgreich gelöscht"
+oktolab_media.unknown_action_series:    "Aktion unbekannt"
 
 ## series edit.html.twig
-oktolab_media.edit_series_header: %series_name% bearbeiten
-oktolab_media.edit_series_cancel: Abbrechen
-oktolab_media.edit_series_button:  <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Änderungen speichern
-oktolab_media.delete_series_button: <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Sendereihe löschen
+oktolab_media.edit_series_header:       "%series_name% bearbeiten"
+oktolab_media.edit_series_cancel:       "Abbrechen"
+oktolab_media.edit_series_button:       '<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Änderungen speichern'
+oktolab_media.delete_series_button:     '<span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Sendereihe löschen'
 
 ## series show.html.twig
 oktolab_media.series_show_actions: 'Aktionen<span class="caret"></span>'
@@ -192,29 +186,35 @@ oktolab_media.series_index_info_keychain:       "Ursprung"
 oktolab_media.series_index_info_no_keychain:    "Lokal"
 
 # media ------------------------------------------------------------------------
-oktolab_media_media_create_button:      Media anlegen
-oktolab_media_success_create_media:     Media erfolgreich angelegt
-oktolab_media_error_create_media:       Media konnte nicht angelegt werden
+oktolab_media_media_create_button:      "Media anlegen"
+oktolab_media_success_create_media:     "Media erfolgreich angelegt"
+oktolab_media_error_create_media:       "Media konnte nicht angelegt werden"
 
-oktolab_media_edit_media_header:        Media bearbeiten
-oktolab_media_delete_media_button:      Media löschen
-oktolab_media_edit_media_button:        Änderungen speichern
-oktolab_media_success_update_media:     Media erfolgreich aktualisiert
-oktolab_media_success_delete_media:     Media erfolgreich gelöscht
-oktolab_media_error_update_media:       Media konnte nicht aktualisiert werden
+oktolab_media_edit_media_header:        "Media bearbeiten"
+oktolab_media_delete_media_button:      "Media löschen"
+oktolab_media_edit_media_button:        "Änderungen speichern"
+oktolab_media_success_update_media:     "Media erfolgreich aktualisiert"
+oktolab_media_success_delete_media:     "Media erfolgreich gelöscht"
+oktolab_media_error_update_media:       "Media konnte nicht aktualisiert werden"
 
-oktolab_media_quality_label:            Qualitätsname
-oktolab_media_public_label:             Öffentlich verfügbar
-oktolab_media_asset_label:              Media anhang
-oktolab_media_sortNumber_label:         Nummer in Reihenfolge
+oktolab_media_quality_label:            "Qualitätsname"
+oktolab_media_public_label:             "Öffentlich verfügbar"
+oktolab_media_asset_label:              "Media anhang"
+oktolab_media_sortNumber_label:         "Nummer in Reihenfolge"
+oktolab_media_status_label:             "Workerstatus"
+oktolab_media_progress_label:           "Encodierungsfortschritt"
+oktolab_media_progress_percent:         "%progress%%"
+oktolab_media_createdAt_label:          "Angelegt am"
+oktolab_media_updatedAt_label:          "Zuletzt aktualisiert"
+oktolab_media_episode_label:            "Episode"
 
 oktolab_media_public_choice:            "{0} Nicht Öffentlich|{1} Öffentlich"
 
-oktolab_media_edit_media:               Media bearbeiten
-oktolab_media_create_new_media:         Neues Media anlegen
+oktolab_media_edit_media:               "Media bearbeiten"
+oktolab_media_create_new_media:         "Neues Media anlegen"
 
-oktolab_media_media_for_episode_header: Episodenformate
-oktolab_media_media_fore_episode_empty: Derzeit keine Formate vorhanden
+oktolab_media_media_for_episode_header: "Episodenformate"
+oktolab_media_media_fore_episode_empty: "Derzeit keine Formate vorhanden"
 
 oktolab_media_asset:                    "Datei"
 oktolab_media_asset_empty:              "Keine Datei vorhanden"
@@ -261,13 +261,13 @@ oktolab_media.episode_encode_media_end:     "Episode Media %media% encodierung b
 oktolab_media.episode_encode_error:         "Es ist ein Fehler beim Encodieren aufgetreten"
 oktolab_media.episode_encode_no_streams:    "Es konnte keine Streaminformation des Videos gelesen werden"
 oktolab_media.episode_encode_remove_old_media: "Encodierte Medien werden bereinigt"
-oktolab_media.logbook_delete_media:         "Medien werden gelöscht"
+oktolab_media.episode_cannot_encoderesolution: "Das Format [%format%] kann nicht encodiert werden. Das Ausgangsformat ist wahrscheinlich zu klein."
 
 oktolab_media.episode_start_finalize:       "Episode wird finalisiert"
 oktolab_media.episode_end_finalize:         "Episoden finalisierung beendet"
 oktolab_media.episode_finalize_error:       "Es ist ein Fehler beim Finalisieren aufgetreten"
 oktolab_media.episode_finalize_url:         "Überprüfe Media [%media%] [%url%]"
-oktolab_media.episode_finalize_not_ok:      "Media [%media%] URI [%url%] antwortet nicht korrekt"
+oktolab_media.episode_finalize_not_ok:      "Media [%media%] [%url%] antwortet nicht korrekt"
 
 oktolab_media.episode_start_import:         "Episodenimport gestartet"
 oktolab_media.episode_end_import:           "Episodenimport beendet"
@@ -278,6 +278,10 @@ oktolab_media.series_end_import:            "Sendereihenimport beendet"
 oktolab_media.series_import_no_keychain:    "Keychain für Import wurde nicht gefunden"
 oktolab_media.series_import_error:          "Es ist ein (un)erwarteter Fehler beim Sendereihenimport aufgetreten"
 
+oktolab_media.logbook_delete_media:              "Episodenformat wird gelöscht"
+oktolab_media.episode_start_encoding_resolution: "Beginne Episodenformat mit FFmpeg umzurechnen"
+oktolab_media.episode_start_saving_media:   "Epsidoenformat wurde angelegt"
+oktolab_media.episode_end_saving_media:     "Episodenformat wurde verarbeitet"
 
 oktolab_media.logbook_delete_series_start:  "Beginne Sendereihe zu löschen"
 oktolab_media.logbook_delete_series_end:    "Sendereihe gelöscht"
@@ -289,3 +293,6 @@ oktolab_media.logbook_delete_video_start:   "Beginne Episodendatei zu löschen"
 oktolab_media.logbook_delete_video_end:     "Episodendatei löschen beendet"
 oktolab_media.logbook_delete_media_end:     "Episodenformate löschen beendet"
 oktolab_media.logbook_delete_episode_end:   "Episode löschen beendet"
+
+## media Entity
+oktolab_media.media_status_choice:          "{0} Episodenformat warted darauf encodiert zu werden | {50} Episodenformat wird gerade umgerechnet | {100} Episodenformat wurde umgerechnet"

@@ -16,19 +16,35 @@
             <td>{{ media.quality }}</td>
         </tr>
         <tr>
+            <td>{{ 'oktolab_media_status_label'|trans }}</td>
+            <td>{{ 'oktolab_media.media_status_choice'|transchoice(media.status)}}</td>
+        </tr>
+        <tr>
+            <td>
+                {{ 'oktolab_media_progress_label'|trans }}
+            </td>
+            <td>
+                <div class="progress media-progress">
+                    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="{{ media.progress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{media.progress}}%">
+                        <span>{{ 'oktolab_media_progress_percent'|trans({'%progress%': media.progress})}}</span>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
             <td>{{'oktolab_media_sortNumber_label'|trans}}</td>
             <td>{{ media.sortNumber }}</td>
         </tr>
         <tr>
-            <td>{{'createdAt'|trans}}</td>
+            <td>{{'oktolab_media_createdAt_label'|trans}}</td>
             <td>{{ media.createdAt|date('d.m.Y H:i')}}</td>
         </tr>
         <tr>
-            <td>{{'updatedAt'|trans}}</td>
+            <td>{{'oktolab_media_updatedAt_label'|trans}}</td>
             <td>{{ media.updatedAt|date('d.m.Y H:i')}}</td>
         </tr>
         <tr>
-            <td>{{'episode'|trans}}</td>
+            <td>{{'oktolab_media_episode_label'|trans}}</td>
             <td><a href="{{ path('oktolab_episode_show', {'uniqID': media.episode.uniqID })}}">{{ media.episode }}</a></td>
         </tr>
         <tr>
@@ -56,4 +72,22 @@
             </td>
         </tr>
     </table>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+    $(document).ready(function(event){
+        setInterval("updateCurrent()", 5000);
+    });
+
+    function updateCurrent() {
+        $.ajax({
+            url: "{{ url('oktolab_media_progress_media', {'media': media.id}) }}",
+            success: function(data) {
+                $('.media-progress').replaceWith(data);
+            }
+        });
+    }
+    </script>
 {% endblock %}

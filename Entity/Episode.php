@@ -171,6 +171,12 @@ class Episode implements EpisodeMergerInterface
      */
     protected $media;
 
+    /**
+     * the duration of the episode in seconds.milliseconds
+     * @ORM\Column(name="duration", type="integer", options={"default" = 0})
+     */
+    private $duration;
+
     public function __construct()
     {
         $this->technical_status = $this::STATE_NOT_READY;
@@ -178,6 +184,7 @@ class Episode implements EpisodeMergerInterface
         $this->uniqID = uniqid();
         $this->createdAt = new \Datetime();
         $this->updatedAt = new \Datetime();
+        $this->duration = 0;
     }
 
     public function __toString()
@@ -541,5 +548,16 @@ class Episode implements EpisodeMergerInterface
         $this->onlineStart = $episode->getOnlineStart();
         $this->onlineEnd = $episode->getOnlineEnd();
         $this->firstranAt = $episode->getFirstranAt();
+    }
+
+    public function getDuration()
+    {
+        return $this->duration;
+    }
+
+    public function setDuration($duration)
+    {
+        $this->duration = $duration;
+        return $this;
     }
 }

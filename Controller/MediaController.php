@@ -3,6 +3,7 @@
 namespace Oktolab\MediaBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -101,5 +102,14 @@ class MediaController extends Controller
         }
 
         return ['form' => $form->createView()];
+    }
+
+    /**
+     * @Route("/{media}/progress", name="oktolab_media_progress_media")
+     * @Template()
+     */
+    public function progressAction(Request $request, Media $media)
+    {
+        return ['media' => $media];
     }
 }

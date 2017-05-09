@@ -38,6 +38,13 @@ services:
         tags:
             - { name: twig.extension }
 
+    oktolab_media.episode_duration_twig_extension:
+        class: Oktolab\MediaBundle\Twig\EpisodeDurationExtension
+        public: false
+        arguments: [ ]
+        tags:
+            - { name: twig.extension }
+
     # BPRSAppLinkAPIUrl
     oktolab_media_api:
         class: Oktolab\MediaBundle\Model\ApiUrlService

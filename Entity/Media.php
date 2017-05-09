@@ -17,6 +17,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Media
 {
+    const OKTOLAB_MEDIA_STATUS_MEDIA_TOPROGRESS = 0;    //Media needs to be processed
+    const OKTOLAB_MEDIA_STATUS_MEDIA_INPROGRESS = 50;   //Media is in progress
+    const OKTOLAB_MEDIA_STATUS_MEDIA_FINISHED = 100;    //Media process is finished
+
     /**
      * @var integer
      *
@@ -71,13 +75,26 @@ class Media
     private $episode;
 
     /**
+     * percentage of current transcoding process
+     * @ORM\Column(name="progress", type="integer", options={"default"= 0})
+     */
+    private $progress;
+
+    /**
+     * status of transcoding in worker.
+     * @ORM\Column(name="status", type="integer")
+     */
+    private $status;
+
+    /**
      * @ORM\Column(name="public", type="boolean", options={"default"=true})
      */
     private $public;
 
     public function __construct()
     {
-
+        $this->status = $this::OKTOLAB_MEDIA_STATUS_MEDIA_TOPROGRESS;
+        $this->progress = 0;
     }
 
     public function __toString()
@@ -254,5 +271,27 @@ class Media
     public function getPublic()
     {
         return $this->public;
+    }
+
+    public function getProgress()
+    {
+        return $this->progress;
+    }
+
+    public function setProgress($progress)
+    {
+        $this->progress = $progress;
+        return $this;
+    }
+
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    public function setStatus($status)
+    {
+        $this->status = $status;
+        return $this;
     }
 }

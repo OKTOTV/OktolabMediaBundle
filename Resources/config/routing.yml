@@ -69,6 +69,10 @@ oktolab_media_edit_media:
     path:       /oktolab_media/media/{media}/edit
     defaults:   { _controller: OktolabMediaBundle:Media:edit }
 
+oktolab_media_progress_media:
+    path:       /oktolab_media/media/{media}/progress
+    defaults:   { _controller: OktolabMediaBundle:Media:progress }
+
 # Caption
 oktolab_caption_index:
     path:       /oktolab_media/caption/
