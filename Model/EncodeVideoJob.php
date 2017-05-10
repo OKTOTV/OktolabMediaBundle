@@ -41,9 +41,10 @@ class EncodeVideoJob extends BprsContainerAwareJob
                 $resolutions = $this->getContainer()->getParameter('oktolab_media.resolutions');
                 foreach($resolutions as $format => $resolution) {
                     // create new asset in "cache"
-                    $this->logbook->info('oktolab_media.episode_start_encoding_resolution', [], $this->args['uniqID']);
+                    $this->logbook->info('oktolab_media.episode_start_encoding_resolution', ["%resolution%" => $format], $this->args['uniqID']);
                     $cmd = "";
                     if ($this->resolutionIsTheSame($resolution, $metainfo['video'])) { //resolution is the same
+
                         $media = $this->createMediaForEpisode($episode, $format, $resolution);
                         $path = $this->getContainer()->get('bprs.asset_helper')->getPath($media->getAsset(), true);
                         if ($this->videoCanBeCopied($resolution, $metainfo['video'])) { //videocodec is the same, can be copied
@@ -71,7 +72,9 @@ class EncodeVideoJob extends BprsContainerAwareJob
                         }
                         $this->executeFFmpegForMedia($cmd, $media);
                         $this->saveMedia($media, $resolution);
+
                     } elseif ($this->resolutionCanBeEncoded($resolution, $metainfo['video'])) { // resolution can be encoded
+
                         $media = $this->createMediaForEpisode($episode, $format, $resolution);
                         $path = $this->getContainer()->get('bprs.asset_helper')->getPath($media->getAsset(), true);
                         if ($this->audioCanBeCopied($resolution, $metainfo['audio'])) { // audiocodec is the same, can be copied
@@ -97,6 +100,7 @@ class EncodeVideoJob extends BprsContainerAwareJob
                         }
                         $this->executeFFmpegForMedia($cmd, $media);
                         $this->saveMedia($media, $resolution);
+
                     } else { // the resolution can not be encoded. source does not fit the resolutions expectations
                         $this->logbook->info('oktolab_media.episode_cannot_encoderesolution', ['%format%'=> $format], $this->args['uniqID']);
                     }
