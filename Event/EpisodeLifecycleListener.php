@@ -33,7 +33,6 @@ class EpisodeLifecycleListener {
         );
         $event = new EpisodeLifecycleEvent($episode);
         $this->container->get('event_dispatcher')->dispatch(OktolabMediaEvent::CREATED_EPISODE, $event);
-        $this->container->get('oktolab_media')->addEncodeVideoJob($episode->getUniqID());
     }
 }
 

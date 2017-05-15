@@ -276,7 +276,7 @@ oktolab_media.episode_overwrite_not_allowed: "Der Importauftrag durfte die Episo
 oktolab_media.episode_metadata_end_import:  "Episoden Metadatenimport beendet"
 oktolab_media.episode_metadata_import_no_keychain: "Kein Schlüsselbund gefunden"
 
-oktolab_media.episode_start_encodevideo:    "Episode wird nun Encodiert"
+
 oktolab_media.episode_end_encodevideo:      "Episode encodierung beendet"
 oktolab_media.episode_encode_media_start:   "Episode Media %media% wird encodiert"
 oktolab_media.episode_encode_media_end:     "Episode Media %media% encodierung beendet"
@@ -300,10 +300,9 @@ oktolab_media.series_end_import:            "Sendereihenimport beendet"
 oktolab_media.series_import_no_keychain:    "Keychain für Import wurde nicht gefunden"
 oktolab_media.series_import_error:          "Es ist ein (un)erwarteter Fehler beim Sendereihenimport aufgetreten"
 
-oktolab_media.logbook_delete_media:              "Episodenformat wird gelöscht"
-oktolab_media.episode_start_encoding_resolution: "Beginne Episodenformat [%resolution%] mit FFmpeg umzurechnen"
-oktolab_media.episode_start_saving_media:        "Epsidoenformat wurde angelegt"
-oktolab_media.episode_end_saving_media:          "Episodenformat wurde verarbeitet"
+oktolab_media.logbook_delete_media:              "Episodenformat [%format%] wird gelöscht"
+oktolab_media.episode_start_saving_media:        "Episodenformat [%format%] wurde angelegt. Starte Umrechnungsbefehl [%cmd%]"
+oktolab_media.episode_end_saving_media:          "Episodenformat [%format%] wurde verarbeitet. Umrechnungsdauer: %seconds% sekunden"
 
 oktolab_media.logbook_delete_series_start:  "Beginne Sendereihe zu löschen"
 oktolab_media.logbook_delete_series_end:    "Sendereihe gelöscht"
@@ -315,6 +314,19 @@ oktolab_media.logbook_delete_video_start:   "Beginne Episodendatei zu löschen"
 oktolab_media.logbook_delete_video_end:     "Episodendatei löschen beendet"
 oktolab_media.logbook_delete_media_end:     "Episodenformate löschen beendet"
 oktolab_media.logbook_delete_episode_end:   "Episode löschen beendet"
+
+# Oktolab\MediaBundle\Model\EncodeEpisodeJob.php
+oktolab_media.episode_start_encodevideo:            "Beginne Episode zu encodieren"
+oktolab_media.episode_start_encoding_resolution:    "Episodenformat [%format%] wird auf Encodierbarkeit geprüft"
+oktolab_media.encodeEpisodeJob_video_copy_all:      "Episodenformat [%format%] kann alle Spuren kopieren"
+oktolab_media.encodeEpisodeJob_video_copy_video:    "Episodenformat [%format%] kann Videospur kopieren"
+oktolab_media.encodeEpisodeJob_video_copy_audio:    "Episodenformat [%format%] kann Audiospur kopieren"
+oktolab_media.encodeEpisodeJob_video_encode_both:   "Episodenformat [%format%] muss alle Spuren umrechnen"
+oktolab_media.encodeEpisodeJob_video_only_copy:     "Datei besitzt nur eine Videospur. Episodenformat [%format%] kann Videospur kopieren"
+oktolab_media.encodeEpisodeJob_video_only_encode:   "Datei besitzt nur eine Videospur. Episodenformat [%format%] kann Videospur umrechnen"
+oktolab_media.encodeEpisodeJob_audio_copy:          "Datei ist wahrscheinlich ein Soundfile. Episodenformat [%format%] kopiert Audiospur"
+oktolab_media.encodeEpisodeJob_audio_encode:        "Datei ist wahrscheinlich ein Soundfile. Episodenformat [%format%] kann Audiospur umrechnen"
+oktolab_media.encodeEpisodeJob_unknown_encoding: "Umrechnung unklar. Episodenformat [%format%]"
 
 # EpisodeAssetDataJob
 oktolab_media.episode_start_assetdatajob:   "Beginne Daten aus Datei zu lesen"
