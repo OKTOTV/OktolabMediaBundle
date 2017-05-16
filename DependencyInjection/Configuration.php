@@ -58,7 +58,7 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('preset')->defaultValue('veryslow')->end()
                             ->scalarNode('audio_codec')->defaultValue("aac")->end()
                             ->scalarNode('audio_sample_rate')->defaultValue("48000")->end()
-                            ->scalarNode('audio_bitrate')->defaultValue("128000")->end()
+                            ->scalarNode('audio_bitrate')->defaultValue("256000")->end()
                             ->scalarNode('container')->defaultValue('mov')->end()
                             ->booleanNode('public')->defaultTrue()->end()
                             ->scalarNode('adapter')->defaultValue('video')->end()

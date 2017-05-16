@@ -64,7 +64,6 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
                     $this->logbook->info('oktolab_media.episode_start_encoding_resolution', ["%format%" => $format], $this->args['uniqID']);
                     $cmd = false;
                     $encoding_option = $this->detectEncodingOptionForResolution($resolution, $metainfo);
-
                     switch ($encoding_option) {
 
                         case $this::ENCODING_OPTION_VIDEO_COPY_ALL:
@@ -356,14 +355,16 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
                 $can_encode_audio = $this->audioCanBeEncoded($resolution, $metainfo['audio']);
                 $can_copy_video = $this->videoCanBeCopied($resolution, $metainfo['video']);
                 $can_encode_video = $this->videoCanBeEncoded($resolution, $metainfo['video']);
-
                 if ($can_copy_audio && $can_copy_video) {
                     return $this::ENCODING_OPTION_VIDEO_COPY_ALL;
-                } elseif($can_copy_audio && $can_encode_video) {
+                }
+                if($can_copy_audio && $can_encode_video) {
                     return $this::ENCODING_OPTION_VIDEO_COPY_AUDIO;
-                } elseif($can_encode_audio && $can_copy_video) {
+                }
+                if($can_encode_audio && $can_copy_video) {
                     return $this::ENCODING_OPTION_VIDEO_COPY_VIDEO;
-                } elseif($can_encode_audio && $can_encode_video) {
+                }
+                if($can_encode_audio && $can_encode_video) {
                     return $this::ENCODING_OPTION_VIDEO_ENCODE_BOTH;
                 }
                 return $this::ENCODING_OPTION_NONE;
@@ -438,7 +439,7 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
     {
         return
             $resolution['audio_sample_rate'] >= $metainfo['sample_rate'] &&
-            $resolution['audio_bitrate'] >= $metainfo['max_bit_rate']
+            $resolution['audio_bitrate'] <= $metainfo['max_bit_rate']
         ;
     }
 
