@@ -23,6 +23,7 @@ class FinalizeVideoJob extends BprsContainerAwareJob
     public function perform() {
         $this->logbook = $this->getContainer()->get('bprs_logbook');
         $this->logbook->info('oktolab_media.episode_start_finalize', [], $this->args['uniqID']);
+
         $this->em = $this->getContainer()->get('doctrine.orm.entity_manager');
         $this->media_service = $this->getContainer()->get('oktolab_media');
         $episode = $this->media_service->getEpisode($this->args['uniqID']);
@@ -30,13 +31,15 @@ class FinalizeVideoJob extends BprsContainerAwareJob
             $this->asset_helper_service = $this->getContainer()->get('bprs.asset_helper');
 
             $this->media_service->setEpisodeStatus($this->args['uniqID'], Episode::STATE_FINALIZING);
-
+            sleep(180);
             if ($this->checkMediaStatus($episode)) {
+                $episode->setIsActive(true);
                 $this->em->persist($episode);
                 $this->em->flush();
                 $this->media_service->setEpisodeStatus($this->args['uniqID'], Episode::STATE_READY);
                 $this->media_service->dispatchFinalizedEpisodeEvent($this->args['uniqID']);
             } else {
+                $episode->setIsActive(false);
                 $this->em->persist($episode);
                 $this->em->flush();
                 $this->media_service->setEpisodeStatus($this->args['uniqID'], Episode::STATE_FINALIZING_FAILED);
