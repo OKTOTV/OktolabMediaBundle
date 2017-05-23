@@ -32,6 +32,7 @@ oktolab_media.episode_index_uniqID:         "UniqID"
 oktolab_media.episode_index_series_name:    "Sendereihe"
 oktolab_media.episode_index_firstranAt:     "Erstausstrahlung"
 oktolab_media.episode_index_updatedAt:      "Aktualisiert"
+oktolab_media.episode_index_createdAt:      "Angelegt"
 oktolab_media.episode_index_description:    "Beschreibung"
 oktolab_media.episode_index_duration:       "Spieldauer"
 
@@ -189,6 +190,7 @@ oktolab_media.series_index_info_no_keychain:    "Lokal"
 # media ------------------------------------------------------------------------
 # Resources/views/Media/index.html.twig
 oktolab_media.media_index_header:       "Episodenformate"
+oktolab_media.media_index_total_media_choice: "{0} Derzeit sind keine Episodenformate vorhanden|{1} Derzeit ist %count% Episodenformat vorhanden|]1,Inf]Derzeit sind %count% Episodenformate vorhanden"
 oktolab_media.media_index_sortby:       'Sortieren <span class="caret"></span>'
 oktolab_media.media_index_sortby_quality:   "Format"
 oktolab_media.media_index_sortby_episode:   "Episode"

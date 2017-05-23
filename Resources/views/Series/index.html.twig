@@ -33,8 +33,8 @@
                 <li{% if seriess.isSorted('s.name') %} class="active"{% endif %}>{{ knp_pagination_sortable(seriess, 'oktolab_media.series_index_sortby_name'|trans, 's.name') }}</li>
                 <li{% if seriess.isSorted('s.webtitle') %} class="active"{% endif %}>{{ knp_pagination_sortable(seriess, 'oktolab_media.series_index_sortby_webtitle'|trans, 's.webtitle') }}</li>
                 <li{% if seriess.isSorted('s.uniqID') %} class="active"{% endif %}>{{ knp_pagination_sortable(seriess, 'oktolab_media.series_index_sortby_uniqID'|trans, 's.uniqID') }}</li>
-                <li{% if seriess.isSorted('s.createdAt') %} class="active"{% endif %}>{{ knp_pagination_sortable(seriess, 'oktolab_media.series_index_sortby_createdAt'|trans, 's.createdAt') }}</li>
-                <li{% if seriess.isSorted('s.updatedAt') %} class="active"{% endif %}>{{ knp_pagination_sortable(seriess, 'oktolab_media.series_index_sortby_updatedAt'|trans, 's.updatedAt') }}</li>
+                <li{% if seriess.isSorted('s.createdAt') %} class="active"{% endif %}>{{ knp_pagination_sortable(seriess, 'oktolab_media.series_index_sortby_createdAt'|trans, 's.createdAt', {'direction': 'desc'}) }}</li>
+                <li{% if seriess.isSorted('s.updatedAt') %} class="active"{% endif %}>{{ knp_pagination_sortable(seriess, 'oktolab_media.series_index_sortby_updatedAt'|trans, 's.updatedAt', {'direction': 'desc'}) }}</li>
             </ul>
         </div>
     </div>

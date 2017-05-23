@@ -12,7 +12,7 @@
     </ul>
 
     <div class="page-header">
-        <p>{{ 'oktolab_media.series_index_total_series_choice'|transchoice(medias.getTotalItemCount)}}</p>
+        <p>{{ 'oktolab_media.media_index_total_media_choice'|transchoice(medias.getTotalItemCount)}}</p>
         <!-- Single button -->
         <div class="btn-group">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -23,8 +23,8 @@
                 <li{% if medias.isSorted('m.episode') %} class="active"{% endif %}>{{ knp_pagination_sortable(medias, 'oktolab_media.media_index_sortby_episode'|trans, 'e.name') }}</li>
                 <li{% if medias.isSorted('m.progress') %} class="active"{% endif %}>{{ knp_pagination_sortable(medias, 'oktolab_media.media_index_sortby_progress'|trans, 'm.progress') }}</li>
                 <li{% if medias.isSorted('m.status') %} class="active"{% endif %}>{{ knp_pagination_sortable(medias, 'oktolab_media.media_index_sortby_status'|trans, 'm.status') }}</li>
-                <li{% if medias.isSorted('m.createdAt') %} class="active"{% endif %}>{{ knp_pagination_sortable(medias, 'oktolab_media.media_index_sortby_createdAt'|trans, 'm.createdAt') }}</li>
-                <li{% if medias.isSorted('m.updatedAt') %} class="active"{% endif %}>{{ knp_pagination_sortable(medias, 'oktolab_media.media_index_sortby_updatedAt'|trans, 'm.updatedAt') }}</li>
+                <li{% if medias.isSorted('m.createdAt') %} class="active"{% endif %}>{{ knp_pagination_sortable(medias, 'oktolab_media.media_index_sortby_createdAt'|trans, 'm.createdAt', {'direction': 'desc'}) }}</li>
+                <li{% if medias.isSorted('m.updatedAt') %} class="active"{% endif %}>{{ knp_pagination_sortable(medias, 'oktolab_media.media_index_sortby_updatedAt'|trans, 'm.updatedAt', {'direction': 'desc'}) }}</li>
             </ul>
         </div>
     </div>
