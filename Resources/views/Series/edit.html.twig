@@ -7,7 +7,7 @@
 {% block body_main -%}
     <div class="page-header">
         <h1>{{ 'oktolab_media.edit_series_header'|trans({'%series_name%': form.vars.value.name}) }}</h1>
-        <a href="{{ path('oktolab_series_show', {'series': form.vars.value.id}) }}" class="btn btn-default">{{ 'oktolab_media.edit_series_cancel'|trans }}</a>
+        <a href="{{ path('oktolab_series_show', {'series': form.vars.value.uniqID}) }}" class="btn btn-default">{{ 'oktolab_media.edit_series_cancel'|trans }}</a>
     </div>
 
     {{ form_start(form) }}
