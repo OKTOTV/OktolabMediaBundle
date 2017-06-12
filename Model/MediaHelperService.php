@@ -172,6 +172,7 @@ class MediaHelperService {
             $posterframe = $episode->getPosterframe();
             $episode->setPosterframe(null);
             $this->em->persist($episode);
+            // $this->em->flush();
             $this->asset_service->deleteAsset($posterframe);
         }
         $this->em->flush();

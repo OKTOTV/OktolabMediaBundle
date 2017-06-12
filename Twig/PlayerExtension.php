@@ -21,7 +21,8 @@ class PlayerExtension extends \Twig_Extension
         return array(
             new \Twig_SimpleFunction('player', [$this,'player']),
             new \Twig_SimpleFunction('playlist', [$this,'playlist']),
-            new \Twig_SimpleFunction('origin', [$this, 'origin'])
+            new \Twig_SimpleFunction('origin', [$this, 'origin']),
+            new \Twig_SimpleFunction('playerUrl', [$this, 'playerUrl'])
         );
     }
 
@@ -47,6 +48,11 @@ class PlayerExtension extends \Twig_Extension
             $player_type = $this->default_player;
         }
         return $this->getOriginForType($episode, $player_type);
+    }
+
+    public function playerUrl()
+    {
+        return $this->player_url;
     }
 
     private function getPlayerForType($episode, $player_id, $player)
