@@ -250,7 +250,7 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
         $media->setStatus(Media::OKTOLAB_MEDIA_STATUS_MEDIA_INPROGRESS);
         $media->setQuality($format);
         $media->setSortNumber($resolution['sortNumber']);
-        $media->setPublic($resolution['public']);
+        $media->setPublic(false);
         $media->setAsset(
             $this->createNewCacheAssetForResolution($episode, $resolution)
         );
@@ -311,6 +311,7 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
 
         $ffmpeg_stop = microtime(true);
         $media->setStatus(Media::OKTOLAB_MEDIA_STATUS_MEDIA_FINISHED);
+        $media->setPublic($resolution['public']);
         $this->em->persist($media);
         $this->em->flush();
 
