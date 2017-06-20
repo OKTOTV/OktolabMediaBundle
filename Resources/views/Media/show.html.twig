@@ -25,7 +25,7 @@
             </td>
             <td>
                 <div class="progress media-progress">
-                    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="{{ media.progress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{media.progress}}%">
+                    <div class="progress-bar {% if media.progress < 100 %}progress-bar-striped active{% endif %}" role="progressbar" aria-valuenow="{{ media.progress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{media.progress}}%">
                         <span>{{ 'oktolab_media_progress_percent'|trans({'%progress%': media.progress})}}</span>
                     </div>
                 </div>
@@ -76,18 +76,22 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script type="text/javascript">
-    $(document).ready(function(event){
-        setInterval("updateCurrent()", 5000);
-    });
+    {% if media.progress < 100 %}
+        <script type="text/javascript">
+            $(document).ready(function(event){
+                setInterval("updateCurrent()", 5000);
+            });
 
-    function updateCurrent() {
-        $.ajax({
-            url: "{{ url('oktolab_media_progress_media', {'media': media.id}) }}",
-            success: function(data) {
-                $('.media-progress').replaceWith(data);
+            function updateCurrent() {
+                $.ajax({
+                    url: "{{ url('oktolab_media_progress_media', {'media': media.id}) }}",
+                    success: function(data) {
+                        $('.progress-bar').css('width', data+ '%');
+                        $('.progress-bar').attr('aria-valuenow', data);
+                        $('.progress-bar').children().replaceWith('<span>'+data+'%</span>');
+                    }
+                });
             }
-        });
-    }
-    </script>
+        </script>
+    {% endif %}
 {% endblock %}

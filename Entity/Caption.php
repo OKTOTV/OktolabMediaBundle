@@ -77,6 +77,11 @@ class Caption {
      */
     private $episode;
 
+    /**
+     * @ORM\Column(name="public", type="boolean", options={"default"=false})
+     */
+    private $public;
+
     public function __toString()
     {
         return $this->label;
@@ -144,5 +149,28 @@ class Caption {
     public function getEpisode()
     {
         return $this->episode;
+    }
+
+    /**
+     * Set public
+     *
+     * @param boolean $public
+     * @return Media
+     */
+    public function setPublic($public)
+    {
+        $this->public = $public;
+
+        return $this;
+    }
+
+    /**
+     * Get public
+     *
+     * @return boolean
+     */
+    public function getPublic()
+    {
+        return $this->public;
     }
 }

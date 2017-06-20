@@ -8,6 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Oktolab\MediaBundle\Entity\Caption;
 
 
@@ -46,7 +47,9 @@ class CaptionType extends AbstractType
                         Caption::OKTOLAB_CAPTIONKIND_CHAP => Caption::OKTOLAB_CAPTIONKIND_CHAP,
                         Caption::OKTOLAB_CAPTIONKIND_DESC => Caption::OKTOLAB_CAPTIONKIND_DESC,
                     ]
-            ]);
+            ])
+            ->add('public', CheckboxType::class, ['label' => 'oktolab_media_caption_public_label'])
+            ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

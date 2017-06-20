@@ -133,6 +133,7 @@ class MediaController extends Controller
      */
     public function progressAction(Request $request, Media $media)
     {
+        return new JsonResponse($media->getProgress());
         return ['media' => $media];
     }
 }

@@ -89,8 +89,10 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
                             );
                             $episode->setDuration($metainfo['video']['duration']);
                             $cmd = sprintf(
-                                    'ffmpeg -i "%s" -movflags +faststart -c:v copy -c:a aac -strict -2',
-                                    $uri
+                                    'ffmpeg -i "%s" -movflags +faststart -c:v copy -c:a %s -ar %s -strict -2',
+                                    $uri,
+                                    $resolution['audio_codec'],
+                                    $resolution['audio_sample_rate']
                                 );
                             break;
 
@@ -134,6 +136,7 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
                                     $resolution['audio_sample_rate'],
                                     $resolution['preset']
                                 );
+                            break;
 
                         case $this::ENCODING_OPTION_VIDEO_ONLY_COPY:
                             // the file has no audio, but the video stream can be copied.
@@ -144,7 +147,7 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
                             );
                             $episode->setDuration($metainfo['video']['duration']);
                             $cmd = sprintf(
-                                    'ffmpeg -i "%s" -movflags +faststart -c:v copy -c:a copy',
+                                    'ffmpeg -i "%s" -movflags +faststart -c:v copy -an',
                                     $uri
                                 );
                             break;
@@ -184,23 +187,22 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
                             break;
 
                         case $this::ENCODING_OPTION_AUDIO_CONVERT:
-                        // the file is audio only, but the stream can be encoded
-                        $this->logbook->info(
-                            'oktolab_media.encodeEpisodeJob_audio_encode',
-                            ["%format%" => $format],
-                            $this->args['uniqID']
-                        );
-                        $episode->setDuration($metainfo['audio']['duration']);
-                        $cmd = sprintf(
-                                'ffmpeg -i "%s" -c:a %s -r %s -b:a %s -preset %s',
-                                $uri,
-                                $resolution['crf_rate'],
-                                $resolution['audio_codec'],
-                                $resolution['audio_sample_rate'],
-                                $resolution['audio_bitrate'],
-                                $resolution['preset']
+                            // the file is audio only, but the stream can be encoded
+                            $this->logbook->info(
+                                'oktolab_media.encodeEpisodeJob_audio_encode',
+                                ["%format%" => $format],
+                                $this->args['uniqID']
                             );
-
+                            $episode->setDuration($metainfo['audio']['duration']);
+                            $cmd = sprintf(
+                                    'ffmpeg -i "%s" -c:a %s -r %s -b:a %s -preset %s',
+                                    $uri,
+                                    $resolution['crf_rate'],
+                                    $resolution['audio_codec'],
+                                    $resolution['audio_sample_rate'],
+                                    $resolution['audio_bitrate'],
+                                    $resolution['preset']
+                                );
                             break;
 
                         default:
@@ -356,6 +358,7 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
                 $can_encode_audio = $this->audioCanBeEncoded($resolution, $metainfo['audio']);
                 $can_copy_video = $this->videoCanBeCopied($resolution, $metainfo['video']);
                 $can_encode_video = $this->videoCanBeEncoded($resolution, $metainfo['video']);
+
                 if ($can_copy_audio && $can_copy_video) {
                     return $this::ENCODING_OPTION_VIDEO_COPY_ALL;
                 }
@@ -400,25 +403,12 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
             $resolution['video_codec'] == $metainfo['codec_name'] &&
             // framerate is the same (for example 50)
             $resolution['video_framerate'] == $metainfo['avg_frame_rate'] &&
-            // average bitrate is lower or same as in resolution
-            $resolution['video_bitrate'] >= $metainfo['bit_rate'] &&
             // resolution is the same
             $resolution['video_width'] == $metainfo['width'] &&
 
-            $resolution['video_height'] == $metainfo['height']
-        ;
-    }
-
-    /**
-     * determines if the stream can be copied (audiostreams)
-     * important factors are codec, sample_rate and bitrate
-     */
-    private function audioCanBeCopied($resolution, $metainfo)
-    {
-        return
-            $resolution['audio_codec'] == $metainfo['codec_name'] &&
-            $resolution['audio_sample_rate'] == $metainfo['sample_rate'] &&
-            $resolution['audio_bitrate'] >= $metainfo['max_bit_rate']
+            $resolution['video_height'] == $metainfo['height'] &&
+            // average bitrate is lower or same as in resolution
+            $resolution['video_bitrate'] >= $metainfo['bit_rate']
         ;
     }
 
@@ -434,13 +424,26 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
     }
 
     /**
+     * determines if the stream can be copied (audiostreams)
+     * important factors are codec, sample_rate and bitrate
+     */
+    private function audioCanBeCopied($resolution, $metainfo)
+    {
+        return
+            $resolution['audio_codec'] == $metainfo['codec_name'] &&
+            $resolution['audio_sample_rate'] == $metainfo['sample_rate'] &&
+            $resolution['audio_bitrate'] >= $metainfo['bit_rate']
+        ;
+    }
+
+    /**
      * determines if the the audiotrack meets minimum standards to be encoded
      */
     private function audioCanBeEncoded($resolution, $metainfo)
     {
         return
             $resolution['audio_sample_rate'] >= $metainfo['sample_rate'] &&
-            $resolution['audio_bitrate'] <= $metainfo['max_bit_rate']
+            $resolution['audio_bitrate'] <= $metainfo['bit_rate']
         ;
     }
 
