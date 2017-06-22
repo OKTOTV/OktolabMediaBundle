@@ -30,7 +30,7 @@ class MediaController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $class = $this->container->getParameter("oktolab_media.media_class");
-        $dql = "SELECT m, e FROM ".$class." m LEFT JOIN m.episode e";
+        $dql = "SELECT m, e FROM ".$class." m LEFT JOIN m.episode e ORDER BY m.updatedAt DESC";
         $query = $em->createQuery($dql);
         $paginator  = $this->get('knp_paginator');
         $medias = $paginator->paginate(

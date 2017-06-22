@@ -57,11 +57,11 @@ class Episode implements EpisodeMergerInterface
 
     /**
      * @var string
-     * @Assert\Length(max = 700, maxMessage = "oktolab_media.max_description_limit")
+     * @Assert\Length(max = 950, maxMessage = "oktolab_media.max_description_limit")
      * @JMS\Expose
      * @JMS\Type("string")
      * @JMS\Groups({"search", "oktolab"})
-     * @ORM\Column(name="description", type="text", length=750, nullable=true)
+     * @ORM\Column(name="description", type="text", length=950, nullable=true)
      */
     private $description;
 
