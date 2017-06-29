@@ -71,6 +71,11 @@ class FinalizeVideoJob extends BprsContainerAwareJob
             }
         }
 
+        // if episode medias are 0, set is_active to false.
+        if (!count($episode->getMedia())) {
+            $is_active = false;
+        }
+
         return $is_active;
     }
 }

@@ -321,12 +321,12 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
             'oktolab_media.episode_end_saving_media',
             [
                 '%format%' => $format,
-                '%seconds%' => $ffmpeg_stop - $ffmpeg_start
+                '%seconds%' => round($ffmpeg_stop - $ffmpeg_start)
             ],
             $this->args['uniqID']
         );
 
-        // move encoded media from "cache" to adapter of the original file
+        // move encoded media from "cache" to config adapter or adapter of the original file
         $this->getContainer()->get('bprs.asset_job')->addMoveAssetJob(
             $media->getAsset(),
             $resolution['adapter'] ? $resolution['adapter'] : $media->getEpisode()->getVideo()->getAdapter()
