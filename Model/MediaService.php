@@ -11,7 +11,7 @@ use Oktolab\MediaBundle\OktolabMediaEvent;
 use Oktolab\MediaBundle\Event\ImportedEpisodeMetadataEvent;
 use Oktolab\MediaBundle\Event\ImportedEpisodePosterframeEvent;
 use Oktolab\MediaBundle\Event\ImportedSeriesPosterframeEvent;
-use Oktolab\MediaBundle\Event\FinalizeEpisodeEvent;
+use Oktolab\MediaBundle\Event\FinalizedEpisodeEvent;
 use Oktolab\MediaBundle\Event\ImportedSeriesMetadataEvent;
 use Oktolab\MediaBundle\Event\EpisodeAssetDataEvent;
 
@@ -299,9 +299,9 @@ class MediaService
         $this->dispatcher->dispatch(OktolabMediaEvent::IMPORTED_SERIES_POSTERFRAME, $event);
     }
 
-    public function dispatchFinalizedEpisodeEvent($uniqID)
+    public function dispatchFinalizedEpisodeEvent($args)
     {
-        $event = new FinalizeEpisodeEvent($uniqID);
+        $event = new FinalizedEpisodeEvent($args);
         $this->dispatcher->dispatch(OktolabMediaEvent::FINALIZED_EPISODE, $event);
     }
 

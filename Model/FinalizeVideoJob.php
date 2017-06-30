@@ -5,6 +5,8 @@ use Bprs\CommandLineBundle\Model\BprsContainerAwareJob;
 use Oktolab\MediaBundle\Entity\Episode;
 use GuzzleHttp\Client;
 use Symfony\Component\HttpFoundation\Response;
+use Oktolab\MediaBundle\OktolabMediaEvent;
+use Oktolab\MediaBundle\Event\FinalizedEpisodeEvent;
 
 /**
  * checks if all media of an episode respond with 200 and sets the active flag accordingly
@@ -37,7 +39,7 @@ class FinalizeVideoJob extends BprsContainerAwareJob
                 $this->em->persist($episode);
                 $this->em->flush();
                 $this->media_service->setEpisodeStatus($this->args['uniqID'], Episode::STATE_READY);
-                $this->media_service->dispatchFinalizedEpisodeEvent($this->args['uniqID']);
+                $this->media_service->dispatchFinalizedEpisodeEvent($this->args);
             } else {
                 $episode->setIsActive(false);
                 $this->em->persist($episode);
