@@ -10,7 +10,7 @@
     </div>
 
 {{ form_start(form)}}
-    {% include "BprsAssetBundle::singleUpload.html.twig" with {'widget': form.asset, 'adapter': 'video', 'asset': form.vars.value.asset} %}
+    {% include "BprsAssetBundle::singleUpload.html.twig" with {'widget': form.asset, 'adapter': 'cache', 'asset': form.vars.value.asset} %}
 {{ form_end(form)}}
 {% endblock %}
 
