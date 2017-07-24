@@ -20,7 +20,7 @@ class MediaType extends AbstractType
     {
         $builder
             ->add('quality', TextType::class, ['label' => 'oktolab_media_quality_label'])
-            ->add('public', CheckboxType::class, ['label' => 'oktolab_media_public_label'])
+            ->add('public', CheckboxType::class, ['required' => false, 'label' => 'oktolab_media_public_label'])
             ->add('sortNumber', IntegerType::class, ['label' => 'oktolab_media_sortNumber_label'])
             ->add('asset', AssetType::class, ['label' => 'oktolab_media_asset_label']);
     }
