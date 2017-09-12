@@ -183,6 +183,29 @@ class MediaHelperService {
         );
     }
 
+    public function deleteEpisodeSprite($episode)
+    {
+        $this->logbook->info(
+            'oktolab_media.logbook_delete_sprite_start',
+            [],
+            $episode->getUniqID()
+        );
+
+        if ($episode->getSprite()) {
+            $sprite = $episode->getSprite();
+            $episode->setSprite(null);
+            $this->em->persist($episode);
+            // $this->em->flush();
+            $this->asset_service->deleteAsset($sprite);
+        }
+        $this->em->flush();
+        $this->logbook->info(
+            'oktolab_media.logbook_delete_sprite_end',
+            [],
+            $episode->getUniqID()
+        );
+    }
+
     public function deleteSeriesPosterframe($series)
     {
         $this->logbook->info(

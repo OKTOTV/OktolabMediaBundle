@@ -35,9 +35,14 @@ class OktolabMediaExtension extends Extension
         $container->setParameter('oktolab_media.player_url', $config['player_url']);
         $container->setParameter('oktolab_media.origin', $config['origin']);
         $container->setParameter('oktolab_media.posterframe_filesystem', $config['posterframe_filesystem']);
+        $container->setParameter('oktolab_media.sprite_filesystem', $config['sprite_filesystem']);
         $container->setParameter('oktolab_media.default_filesystem', $config['default_filesystem']);
         $container->setParameter('oktolab_media.serializing_schema', $config['serializing_schema']);
         $container->setParameter('oktolab_media.worker_queue', $config['worker_queue']);
+
+        $container->setParameter('oktolab_media.sprite_width', $config['sprite_width']);
+        $container->setParameter('oktolab_media.sprite_height', $config['sprite_height']);
+        $container->setParameter('oktolab_media.sprite_interval', $config['sprite_interval']);
 
         $this->addApiUrlParameter($container, $config['api_urls']);
     }

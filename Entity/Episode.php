@@ -147,6 +147,15 @@ class Episode implements EpisodeMergerInterface
     private $posterframe;
 
     /**
+     * @JMS\Expose
+     * @JMS\Groups({"oktolab", "episode_sprite"})
+     * @ORM\OneToOne(targetEntity="Bprs\AssetBundle\Entity\AssetInterface", fetch="EAGER", cascade={"remove", "persist"})
+     * @ORM\JoinColumn(name="sprite_id", referencedColumnName="id")
+     * @JMS\Type("string")
+     */
+    private $sprite;
+
+    /**
      * @ORM\Column(name="technical_status", type="integer", nullable=true, options={"default" = 0})
      */
     private $technical_status;
@@ -441,6 +450,29 @@ class Episode implements EpisodeMergerInterface
     public function setPosterframe($posterframe = null)
     {
         $this->posterframe = $posterframe;
+
+        return $this;
+    }
+
+    /**
+     * Get Sprite
+     *
+     * @return \Oktolab\MediaBundle\Entity\Asset
+     */
+    public function getSprite()
+    {
+        return $this->sprite;
+    }
+
+    /**
+     * Set Sprite
+     *
+     * @param \Bprs\AssetBundle\Entity\Asset $sprite
+     * @return Episode
+     */
+    public function setSprite($sprite = null)
+    {
+        $this->sprite = $sprite;
 
         return $this;
     }

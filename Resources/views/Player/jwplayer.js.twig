@@ -17,6 +17,12 @@
                     {% endfor %}
                 ],
                 tracks: [
+                    {% if episode.sprite is not empty %}
+                        {
+                            file: "{{ url('oktolab_media_sprite_for_episode', {'uniqID': episode.uniqID}) }}",
+                            kind: "{{ constant('Oktolab\\MediaBundle\\Entity\\Caption::OKTOLAB_CAPTIONKIND_THUMB') }}"
+                        },
+                    {% endif %}
                     {% for caption in episode.captions %}
                         {
                             file: "{{ url('oktolab_media_caption_for_episode', {'uniqID': caption.uniqID}) }}",

@@ -165,6 +165,10 @@ oktolab_media_caption_for_episode:
     path:       /oktolab_media/api/public/caption
     defaults:   { _controller: OktolabMediaBundle:PublicApi:caption }
 
+oktolab_media_sprite_for_episode:
+    path:       /oktolab_media/api/public/sprite
+    defaults:   { _controller: OktolabMediaBundle:PublicApi:sprite }
+
 oktolab_media_origin_for_episode:
     path:       /oktolab_media/api/public/origin.{_format}
     defaults:   { _controller: OktolabMediaBundle:PublicApi:origin, _format: json }

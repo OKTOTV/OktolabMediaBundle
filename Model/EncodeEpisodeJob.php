@@ -220,6 +220,11 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
 
                 // delete original file after encoding processes
                 $this->deleteOriginalIfConfigured();
+
+                // add sprite generation job
+                $this->generateSprite($episode);
+
+                // add finalize episode job, set new episode status
                 $this->finalizeEpisode($episode);
 
             }
@@ -474,6 +479,11 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
             return $this::MEDIA_TYPE_VIDEO;
         }
         return $this::MEDIA_TYPE_UNKNOWN;
+    }
+
+    public function generateSprite($episode)
+    {
+        $this->getContainer()->get('oktolab_media')->addGenerateThumbnailSpriteJob($episode->getUniqID());
     }
 
     private function finalizeEpisode($episode)

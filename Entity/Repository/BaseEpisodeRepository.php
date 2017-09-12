@@ -41,5 +41,14 @@ class BaseEpisodeRepository extends EntityRepository
         }
         return $query->getResult();
     }
+
+    public function findWithoutSprites($episode_class)
+    {
+        $query = $this->getEntityManager()->createQuery(
+                'SELECT e FROM '.$episode_class.' e WHERE e.sprite IS NULL'
+            );
+
+        return $query->getResult();
+    }
 }
  ?>

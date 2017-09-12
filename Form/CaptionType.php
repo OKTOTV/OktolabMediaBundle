@@ -11,7 +11,6 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Oktolab\MediaBundle\Entity\Caption;
 
-
 class CaptionType extends AbstractType
 {
     /**

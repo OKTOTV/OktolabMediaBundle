@@ -17,10 +17,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Caption {
 
-    const OKTOLAB_CAPTIONKIND_SUB = "subtitles";
-    const OKTOLAB_CAPTIONKIND_CAP = "captions";
-    const OKTOLAB_CAPTIONKIND_CHAP = "chapters";
-    const OKTOLAB_CAPTIONKIND_DESC = "description";
+    const OKTOLAB_CAPTIONKIND_SUB = "subtitles"; // for languages (not used by jw player)
+    const OKTOLAB_CAPTIONKIND_CAP = "captions";  // for the deaf or hearing impaired
+    const OKTOLAB_CAPTIONKIND_CHAP = "chapters"; // start times of chapters in a clip
+    const OKTOLAB_CAPTIONKIND_DESC = "description"; // damn, i forgot and cant find a reference anymore
+    const OKTOLAB_CAPTIONKIND_THUMB = "thumbnails"; // reference images in a sprite for the player
 
     /**
      * @var integer
@@ -50,7 +51,7 @@ class Caption {
      * @JMS\Type("string")
      * @JMS\Groups({"oktolab"})
      * @Assert\NotBlank()
-     * @ORM\Column(type="string", length=20)
+     * @ORM\Column(type="string", length=20, nullable=true)
      */
     private $label;
 

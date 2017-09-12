@@ -56,6 +56,30 @@ class PublicApiController extends Controller
     }
 
     /**
+     * @Route("/sprite", name="oktolab_media_sprite_for_episode")
+     * @Method("GET")
+     */
+    public function spriteAction(Request $request)
+    {
+        $uniqID = $request->query->get('uniqID', false);
+        $episode = $this->get('oktolab_media')->getEpisode($uniqID);
+        $sprite = $episode->getSprite();
+        if ($sprite) {
+            $response = new Response();
+            $response->headers->set('Content-Type', "text/vtt");
+            $response->headers->set(
+                'Content-Disposition',
+                'attachment; filename='.$uniqID.'.vtt'
+            );
+            $response->sendHeaders();
+            $response->setContent($this->get('oktolab_sprite')->getSpriteWebvttForEpisode($episode, $request->query->get('player_type', 'jwplayer')));
+            return $response;
+        }
+
+        return new Response("", Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
     * @Route("/origin.{_format}",
     *   defaults={"_format": "json"},
     *   requirements={"_format": "json"},
@@ -85,28 +109,4 @@ class PublicApiController extends Controller
         $episode = $this->get('oktolab_media')->getEpisode($uniqID);
         return ['episode' => $episode];
     }
-
-    // /**
-    //  * @Route("/posterframe/series", name="oktolab_media_series_show_posterframe")
-    //  * @Method("GET")
-    //  * @Template()
-    //  */
-    // public function showSeriesPosterframeAction(Request $request)
-    // {
-    //     $uniqID = $request->query->get('uniqID');
-    //     if ($uniqID) {
-    //         $series = $this->get('oktolab_media')->getSeries($uniqID);
-    //         if ($series) {
-    //             if ($series->getPosterframe()) {
-    //                 return new RedirectResponse(
-    //                     $this->get('bprs.asset_helper')->getAbsoluteUrl($series->getPosterframe())
-    //                 );
-    //             }
-    //             return new RedirectResponse(
-    //                 $this->get('bprs.asset_helper')->get404()
-    //             );
-    //         }
-    //     }
-    //     return new Response("", Response::HTTP_BAD_REQUEST);
-    // }
 }

@@ -93,6 +93,22 @@ class MediaService
         );
     }
 
+    public function addImportEpisodeFileFromUrlJob($uniqID, $url, $worker_queue = false)
+    {
+        if (!$worker_queue) {
+            $worker_queue = $this->worker_queue;
+        }
+        $this->setEpisodeStatus($uniqID, Episode::STATE_IN_PROGRESS_QUEUE);
+        $this->jobService->addJob(
+            "Oktolab\MediaBundle\Model\ImportEpisodeFileFromUrlJob",
+            [
+                'uniqID' => $uniqID,
+                'url' => $url
+            ],
+            $worker_queue
+        );
+    }
+
     /**
     * starts an import worker for a series by uniqID from the given Keychain
     */
@@ -112,6 +128,14 @@ class MediaService
     {
         $this->jobService->addJob(
             "Oktolab\MediaBundle\Model\EpisodeAssetDataJob",
+            ['uniqID' => $uniqID]
+        );
+    }
+
+    public function addGenerateThumbnailSpriteJob($uniqID)
+    {
+        $this->jobService->addJob(
+            "Oktolab\MediaBundle\Model\GenerateThumbnailSpriteJob",
             ['uniqID' => $uniqID]
         );
     }

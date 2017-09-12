@@ -250,6 +250,7 @@ oktolab_media_asset_adapter:            "Adapter"
 oktolab_media.caption_new_button:       '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Neue Textspur'
 oktolab_media.new_caption_header:       "Neue Textspur"
 oktolab_media.caption_name_label:       "Label"
+oktolab_media_caption_public_label:     "Öffentlich schalten"
 oktolab_media.caption_label_placeholder:    "Label im Player"
 oktolab_media.caption_content_placeholder:  "Inhalt der Textspur"
 description:                            "Beschreibung"
@@ -274,6 +275,7 @@ oktolab_media.error_edit_caption:       "Änderungen konnten nicht übernommen w
 
 # Logbook messages -------------------------------------------------------------
 # Oktolab/MediaBundle/Model/ImportEpisodeMetadataJob.php
+oktolab_media.event_episode_created:        "Episode angelegt"
 oktolab_media.episode_metadata_start_import: "Beginne Episoden Metadatenimport"
 oktolab_media.episode_metadata_error_end_import: "Beim Import ist ein Fehler aufgetreten"
 oktolab_media.episode_overwrite_not_allowed: "Der Importauftrag durfte die Episode nicht überschreiben"
@@ -331,6 +333,10 @@ oktolab_media.encodeEpisodeJob_video_only_encode:   "Datei besitzt nur eine Vide
 oktolab_media.encodeEpisodeJob_audio_copy:          "Datei ist wahrscheinlich ein Soundfile. Episodenformat [%format%] kopiert Audiospur"
 oktolab_media.encodeEpisodeJob_audio_encode:        "Datei ist wahrscheinlich ein Soundfile. Episodenformat [%format%] kann Audiospur umrechnen"
 oktolab_media.encodeEpisodeJob_unknown_encoding: "Umrechnung unklar. Episodenformat [%format%]"
+
+# Oktolab\MediaBundle\Model\ImportEpisodeFileFromUrlJob.php
+oktolab_media.episode_file_from_url_start_import:   "Beginne Episodenimport von Link"
+oktolab_media.episode_file_from_url_command:        "Importiere Datei mit Befehl [%command%]"
 
 # EpisodeAssetDataJob
 oktolab_media.episode_start_assetdatajob:   "Beginne Daten aus Datei zu lesen"
