@@ -22,6 +22,7 @@ class SpriteService {
     */
     public function getSpriteWebvttForEpisode($episode, $player_type = "jwplayer")
     {
+        $this->calculateInterval($episode);
         switch ($player_type) {
             case 'jwplayer':
                 return $this->getSpriteWebvttForJwPlayer($episode);
@@ -59,6 +60,16 @@ class SpriteService {
         }
 
         return $webvtt;
+    }
+
+    // calculates the interval time for the length of an episode and considers jpeg dimension limit of 65500 px.
+    private function calculateInterval($episode)
+    {
+        $max_image = floor(65500/$this->sprite_height);
+        $calculated_interval = ceil($episode->getDuration()/$max_image);
+        if ($calculated_interval > $this->sprite_interval) {
+            $this->sprite_interval = $calculated_interval;
+        }
     }
 }
 ?>

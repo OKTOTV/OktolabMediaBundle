@@ -32,7 +32,7 @@ class GenerateThumbnailSpriteJob extends BprsContainerAwareJob {
 
         if ($episode->getVideo()) {
             $cache_asset = $this->createNewCacheAssetForSprite($episode);
-
+            $this->calculateInterval($episode);
             $this->logbook->info('oktolab_media.episode_start_gen_spritethumbs', [], $this->args['uniqID']);
             $this->generateThumbs($episode, $cache_asset);
             $this->logbook->info('oktolab_media.episode_end_gen_spritethumbs', [], $this->args['uniqID']);
@@ -42,6 +42,16 @@ class GenerateThumbnailSpriteJob extends BprsContainerAwareJob {
             $this->logbook->info('oktolab_media.episode_end_gen_sprite', [], $this->args['uniqID']);
         } else {
             $this->logbook->info('oktolab_media.episode_sprite_no_vid', [], $this->args['uniqID']);
+        }
+    }
+
+    // calculates the interval time for the length of an episode and considers jpeg dimension limit of 65500 px.
+    private function calculateInterval($episode)
+    {
+        $max_image = floor(65500/$this->sprite_height);
+        $calculated_interval = ceil($episode->getDuration()/$max_image);
+        if ($calculated_interval > $this->sprite_interval) {
+            $this->sprite_interval = $calculated_interval;
         }
     }
 
@@ -80,6 +90,9 @@ class GenerateThumbnailSpriteJob extends BprsContainerAwareJob {
     }
 
     // create sprite image from thumbs, write it to the sprite adapter, remove old thumbs from cache
+    // info: we need to break the line every 100 images to not reach jpeg limitation of 65500px per dimension.
+    // at a resolution of 360*180 every 10 seconds, we get about 50 hours of maximal video length.
+    // at a res of 1280*720
     private function stitchThumbs($episode, $cache_asset)
     {
         $path = $this->asset_helper->getPath($cache_asset, true);
@@ -115,7 +128,9 @@ class GenerateThumbnailSpriteJob extends BprsContainerAwareJob {
 
         // delete thumbnails
         for ($number = 0; $number <= $numberOfSprites; $number++) {
-            $filesystem->delete(sprintf($cache_asset->getFilekey(), $number+1));
+            if ($filesystem->has(sprintf($cache_asset->getFilekey(), $number+1))) {
+                $filesystem->delete(sprintf($cache_asset->getFilekey(), $number+1));
+            }
         }
 
         // finalize asset, write to adapter, link to episode
