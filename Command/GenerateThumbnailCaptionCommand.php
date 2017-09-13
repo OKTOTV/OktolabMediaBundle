@@ -11,10 +11,6 @@ use Symfony\Component\Console\Helper\Table;
 
 class GenerateThumbnailCaptionCommand extends ContainerAwareCommand {
 
-    // public function __construct() {
-    //     parent::__construct();
-    // }
-
     protected function configure()
     {
         $this
@@ -29,7 +25,8 @@ class GenerateThumbnailCaptionCommand extends ContainerAwareCommand {
             'Oktolab\MediaBundle\Model\GenerateThumbnailSpriteJob',
             [
                 'uniqID'=> $input->getArgument('uniqID')
-            ]
+            ],
+            $this->getContainer()->getParameter('oktolab_media.sprite_worker_queue')
         );
     }
 }

@@ -46,7 +46,8 @@ class GenerateThumbnailCaptionForAllCommand extends ContainerAwareCommand {
                     'Oktolab\MediaBundle\Model\GenerateThumbnailSpriteJob',
                     [
                         'uniqID'=> $episode->getUniqID()
-                    ]
+                    ],
+                    $this->getContainer()->getParameter('oktolab_media.sprite_worker_queue')
                 );
                 $output->write('.');
             }

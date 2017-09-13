@@ -7,7 +7,6 @@ use Oktolab\MediaBundle\Entity\Caption;
 
 /**
  * generates the final sprite and a webvtt caption to display in a player
- * TODO: delete old sprite!
  */
 class GenerateThumbnailSpriteJob extends BprsContainerAwareJob {
 
@@ -84,8 +83,10 @@ class GenerateThumbnailSpriteJob extends BprsContainerAwareJob {
     private function stitchThumbs($episode, $cache_asset)
     {
         $path = $this->asset_helper->getPath($cache_asset, true);
-        $numberOfSprites = ceil($episode->getDuration()/$this->sprite_interval); // calculate total number of thumbs based on length and timeinterval.
-        $spriteImage = imagecreatetruecolor($this->sprite_width, $numberOfSprites*$this->sprite_height); //one long image, with every image below it.
+        // calculate total number of thumbs based on length and timeinterval.
+        $numberOfSprites = ceil($episode->getDuration()/$this->sprite_interval);
+        //one long image, with every image below it.
+        $spriteImage = imagecreatetruecolor($this->sprite_width, $numberOfSprites*$this->sprite_height);
 
         // create a long image containing all thumbnails on top of each other
         for ($number = 1; $number <= $numberOfSprites; $number++) {
@@ -113,8 +114,8 @@ class GenerateThumbnailSpriteJob extends BprsContainerAwareJob {
         $filesystem = $this->asset_helper->getFilesystem($cache_asset->getAdapter());
 
         // delete thumbnails
-        for ($number = 1; $number <= $numberOfSprites; $number++) {
-            $filesystem->delete(sprintf($cache_asset->getFilekey(), $number));
+        for ($number = 0; $number <= $numberOfSprites; $number++) {
+            $filesystem->delete(sprintf($cache_asset->getFilekey(), $number+1));
         }
 
         // finalize asset, write to adapter, link to episode
@@ -125,6 +126,13 @@ class GenerateThumbnailSpriteJob extends BprsContainerAwareJob {
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
         $em->persist($episode);
         $em->flush();
+
+        // move sprite to correct destination
+        $this->getContainer()->get('bprs.asset_job')->addMoveAssetJob(
+            $cache_asset,
+            $this->getContainer()->getParameter('oktolab_media.sprite_filesystem'),
+            $this->getContainer()->getParameter('oktolab_media.sprite_worker_queue')
+        );
     }
 
     private function createNewCacheAssetForSprite($episode)

@@ -345,5 +345,19 @@ oktolab_media.episode_end_assetdatajob:     "Daten erfolgreich gelesen"
 oktolab_media.episode_assetdatajob_cantreadmeainfos: "Kann keine Informationen lesen! [%url%]"
 oktolab_media.episode_assetdatajob_nourl:   "Kann keine Url für Datei generieren"
 
+# GenerateThumbnailSpriteJob
+oktolab_media.episode_start_gen_spritethumbs: "Beginne Sprite Thumbnails anzulegen"
+oktolab_media.episode_end_gen_spritethumbs:   "Sprite Thumbnails anlegen beendet"
+
+oktolab_media.episode_start_gen_sprite:       "Beginne Sprite aus Thumbnails zu generieren"
+oktolab_media.episode_end_gen_sprite:         "Sprite generieren beendet. Verschieben der Datei in Auftrag gegeben."
+
+oktolab_media.episode_sprite_no_vid:          "Episode besitzt keine Videodatei um Sprite generieren zu können"
+
+oktolab_media.logbook_delete_sprite_start:    "Beginne bestehendes Sprite zu löschen"
+oktolab_media.logbook_delete_sprite_end:      "Bestehendes Sprite wurde gelöscht"
+oktolab_media.logbook_delete_posterframe_start: "Beginne bestehendes Posterframe zu löschen"
+oktolab_media.logbook_delete_posterframe_end:  "Bestehendes Posterframe löschen beendet"
+
 ## media Entity
 oktolab_media.media_status_choice:          "{0} Episodenformat warted darauf encodiert zu werden | {50} Episodenformat wird gerade umgerechnet | {100} Episodenformat wurde umgerechnet"

@@ -47,8 +47,12 @@ class CaptionType extends AbstractType
                         Caption::OKTOLAB_CAPTIONKIND_DESC => Caption::OKTOLAB_CAPTIONKIND_DESC,
                     ]
             ])
-            ->add('public', CheckboxType::class, ['label' => 'oktolab_media_caption_public_label'])
-            ;
+            ->add('public', CheckboxType::class,
+                [
+                    'required' => false,
+                    'label' => 'oktolab_media_caption_public_label'
+                ]
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver)
