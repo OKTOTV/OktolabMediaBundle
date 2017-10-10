@@ -8,6 +8,13 @@
                 {
                     image: "{{ playlistItem.episode.posterframe(true)|thumb(720,1280)}}",
                     title: "{{ playlistItem.episode.name }}",
+                    {% if playlistItem.episode.stereomode == 1 %}
+                        stereomode: 'monoscopic',
+                    {% elseif playlistItem.episode.stereomode == 2 %}
+                        stereomode: 'stereoscopicTopBottom',
+                    {% elseif playlistItem.episode.stereomode == 3 %}
+                        stereomode: 'stereoscopicLeftRight',
+                    {% endif %}
                     sources: [
                         {% for media in playlistItem.episode.media %}
                                 {

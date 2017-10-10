@@ -26,7 +26,10 @@ oktolab_media.episode_index_header:         "Episoden"
 oktolab_media.episode_index_action_dropdown: 'Aktionen <span class="caret"></span>'
 oktolab_media.episode_index_sort_dropdown:   'Sortieren <span class="caret"></span>'
 oktolab_media.episodes_index_total:         "Derzeit sind %episodes% Episoden vorhanden"
+oktolab_media.episodes_index_inactive_total:         "Derzeit sind %episodes% Episoden inaktiv"
 oktolab_media.episode_index_new:            '<span class="glyphicon glyphicon-plus"></span> Neue Episode'
+oktolab_media.episode_index_show_inactive:  '<span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span> Nur Inaktive zeigen'
+oktolab_media.episode_index_show_all:       '<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Alle zeigen'
 oktolab_media.episode_index_name:           "Folgenname"
 oktolab_media.episode_index_uniqID:         "UniqID"
 oktolab_media.episode_index_series_name:    "Sendereihe"
@@ -60,6 +63,7 @@ oktolab_media.episode_info_onlineStart:     "Verfügbar von"
 oktolab_media.episode_info_onlineEnd:       "Verfügbar bis"
 oktolab_media.episode_info_firstranAt:      "Erstausstrahlung"
 oktolab_media.episode_info_duration:        "Laufzeit"
+oktolab_media.episode_info_stereomode:      "Stereomodus"
 oktolab_media.episode_show_captions_header: "Textspuren"
 oktolab_media.episode_add_new_media:    "<span class='glyphicon glyphicon-plus' aria-hidden='true'></span> Episodenformat hinzufügen"
 
@@ -84,6 +88,13 @@ oktolab_media.onlineStart_label:    "Öffentlich verfügbar ab"
 oktolab_media.onlineEnd_label:      "Öffentlich verfügbar bis"
 oktolab_media.isActive_label:       "Ist Verfügbar"
 oktolab_media.uniqID_label:         "Global einzigartige ID der Episode"
+oktolab_media.stereomode_label:     "Stereomodus"
+oktolab_media.stereomode_none:      "Ohne"
+oktolab_media.stereomode_monoscopic: "Monoscopic"
+oktolab_media.stereomode_topbottom:  "Oben/Unten"
+oktolab_media.stereomode_leftright:  "Links/Rechts"
+
+oktolab_media.stereomode_choice:    "{0} Ohne | {1} Monoscopic | {2} Oben/Unten | {3} Links/Rechts"
 
 ## placeholder
 oktolab_media.firstRanAt_placeholder:   "28.11.2005 11:00"

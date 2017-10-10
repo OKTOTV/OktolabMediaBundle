@@ -54,6 +54,7 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('name')->end()
                             ->scalarNode('type')->defaultValue('video')->end()
                             ->integerNode('sortNumber')->defaultValue(1)->end()
+                            ->integerNode('stereomode')->defaultValue(0)->end()     // differentiates the resolutions to use 0 none, 1 monoscopic 2 topbottom 3 leftright
                             ->scalarNode('video_codec')->defaultValue("h264")->end()
                             ->scalarNode('video_framerate')->defaultValue("50/1")->end()
                             ->scalarNode('video_width')->end()

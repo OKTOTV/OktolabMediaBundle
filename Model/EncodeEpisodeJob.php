@@ -35,6 +35,7 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
 
     private $em;
     private $logbook;
+    private $added_finalize;
 
     public function perform() {
         $episode = $this->getContainer()->get('oktolab_media')->getEpisode($this->args['uniqID']);
@@ -55,186 +56,183 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
 
                 // get Medatinfo of episode video
                 $metainfo = $this->getStreamInformationsOfEpisode($episode);
+                $episode->setDuration($metainfo['video']['duration']);
                 $uri = $this->getContainer()->get('bprs.asset_helper')->getAbsoluteUrl($episode->getVideo());
 
                 // encode each resolution
                 $resolutions = $this->getContainer()->getParameter('oktolab_media.resolutions');
+                $this->added_finalize = false;
                 foreach($resolutions as $format => $resolution) {
                     // create new asset in "cache"
-                    $this->logbook->info('oktolab_media.episode_start_encoding_resolution', ["%format%" => $format], $this->args['uniqID']);
-                    $cmd = false;
-                    $encoding_option = $this->detectEncodingOptionForResolution($resolution, $metainfo);
-                    switch ($encoding_option) {
-
-                        case $this::ENCODING_OPTION_VIDEO_COPY_ALL:
-                            // video and audio stream can be copied
-                            $this->logbook->info(
-                                'oktolab_media.encodeEpisodeJob_video_copy_all',
-                                ["%format%" => $format],
-                                $this->args['uniqID']
-                            );
-                            $episode->setDuration($metainfo['video']['duration']);
-                            $cmd = sprintf(
-                                    'ffmpeg -i "%s" -movflags +faststart -c:v copy -c:a copy',
-                                    $uri
+                    if ($resolution['stereomode'] == $episode->getStereomode()) {
+                        $this->logbook->info('oktolab_media.episode_start_encoding_resolution', ["%format%" => $format], $this->args['uniqID']);
+                        $cmd = false;
+                        $encoding_option = $this->detectEncodingOptionForResolution($resolution, $metainfo);
+                        switch ($encoding_option) {
+                            case $this::ENCODING_OPTION_VIDEO_COPY_ALL:
+                                // video and audio stream can be copied
+                                $this->logbook->info(
+                                    'oktolab_media.encodeEpisodeJob_video_copy_all',
+                                    ["%format%" => $format],
+                                    $this->args['uniqID']
                                 );
-                            break;
 
-                        case $this::ENCODING_OPTION_VIDEO_COPY_VIDEO:
-                            // video copy, audio encode
-                            $this->logbook->info(
-                                'oktolab_media.encodeEpisodeJob_video_copy_video',
-                                ["%format%" => $format],
-                                $this->args['uniqID']
-                            );
-                            $episode->setDuration($metainfo['video']['duration']);
-                            $cmd = sprintf(
-                                    'ffmpeg -i "%s" -movflags +faststart -c:v copy -c:a %s -ar %s -strict -2',
-                                    $uri,
-                                    $resolution['audio_codec'],
-                                    $resolution['audio_sample_rate']
+                                $cmd = sprintf(
+                                        'ffmpeg -i "%s" -movflags +faststart -c:v copy -c:a copy',
+                                        $uri
+                                    );
+                                break;
+
+                            case $this::ENCODING_OPTION_VIDEO_COPY_VIDEO:
+                                // video copy, audio encode
+                                $this->logbook->info(
+                                    'oktolab_media.encodeEpisodeJob_video_copy_video',
+                                    ["%format%" => $format],
+                                    $this->args['uniqID']
                                 );
-                            break;
+                                $cmd = sprintf(
+                                        'ffmpeg -i "%s" -movflags +faststart -c:v copy -c:a %s -ar %s -strict -2',
+                                        $uri,
+                                        $resolution['audio_codec'],
+                                        $resolution['audio_sample_rate']
+                                    );
+                                break;
 
-                        case $this::ENCODING_OPTION_VIDEO_COPY_AUDIO:
-                            // video encode, audio copy
-                            $this->logbook->info(
-                                'oktolab_media.encodeEpisodeJob_video_copy_audio',
-                                ["%format%" => $format],
-                                $this->args['uniqID']
-                            );
-                            $episode->setDuration($metainfo['video']['duration']);
-                            $cmd = sprintf(
-                                    'ffmpeg -i "%s" -deinterlace -crf %s -s %sx%s -movflags +faststart -c:v %s -r %s -c:a copy -preset %s',
-                                    $uri,
-                                    $resolution['crf_rate'],
-                                    $resolution['video_width'],
-                                    $resolution['video_height'],
-                                    $resolution['video_codec'],
-                                    $resolution['video_framerate'],
-                                    $resolution['preset']
+                            case $this::ENCODING_OPTION_VIDEO_COPY_AUDIO:
+                                // video encode, audio copy
+                                $this->logbook->info(
+                                    'oktolab_media.encodeEpisodeJob_video_copy_audio',
+                                    ["%format%" => $format],
+                                    $this->args['uniqID']
                                 );
-                            break;
+                                $cmd = sprintf(
+                                        'ffmpeg -i "%s" -deinterlace -crf %s -s %sx%s -movflags +faststart -c:v %s -r %s -c:a copy -preset %s',
+                                        $uri,
+                                        $resolution['crf_rate'],
+                                        $resolution['video_width'],
+                                        $resolution['video_height'],
+                                        $resolution['video_codec'],
+                                        $resolution['video_framerate'],
+                                        $resolution['preset']
+                                    );
+                                break;
 
-                        case $this::ENCODING_OPTION_VIDEO_ENCODE_BOTH:
-                            // video and audio must be encoded
-                            $this->logbook->info(
-                                'oktolab_media.encodeEpisodeJob_video_encode_both',
-                                ["%format%" => $format],
-                                $this->args['uniqID']
-                            );
-                            $episode->setDuration($metainfo['video']['duration']);
-                            $cmd = sprintf(
-                                    'ffmpeg -i "%s" -deinterlace -crf %s -s %sx%s -movflags +faststart -c:v %s -r %s -c:a %s -ar %s -strict -2 -preset %s',
-                                    $uri,
-                                    $resolution['crf_rate'],
-                                    $resolution['video_width'],
-                                    $resolution['video_height'],
-                                    $resolution['video_codec'],
-                                    $resolution['video_framerate'],
-                                    $resolution['audio_codec'],
-                                    $resolution['audio_sample_rate'],
-                                    $resolution['preset']
+                            case $this::ENCODING_OPTION_VIDEO_ENCODE_BOTH:
+                                // video and audio must be encoded
+                                $this->logbook->info(
+                                    'oktolab_media.encodeEpisodeJob_video_encode_both',
+                                    ["%format%" => $format],
+                                    $this->args['uniqID']
                                 );
-                            break;
+                                $cmd = sprintf(
+                                        'ffmpeg -i "%s" -deinterlace -crf %s -s %sx%s -movflags +faststart -c:v %s -r %s -c:a %s -ar %s -strict -2 -preset %s',
+                                        $uri,
+                                        $resolution['crf_rate'],
+                                        $resolution['video_width'],
+                                        $resolution['video_height'],
+                                        $resolution['video_codec'],
+                                        $resolution['video_framerate'],
+                                        $resolution['audio_codec'],
+                                        $resolution['audio_sample_rate'],
+                                        $resolution['preset']
+                                    );
+                                break;
 
-                        case $this::ENCODING_OPTION_VIDEO_ONLY_COPY:
-                            // the file has no audio, but the video stream can be copied.
-                            $this->logbook->info(
-                                'oktolab_media.encodeEpisodeJob_video_only_copy',
-                                ["%format%" => $format],
-                                $this->args['uniqID']
-                            );
-                            $episode->setDuration($metainfo['video']['duration']);
-                            $cmd = sprintf(
-                                    'ffmpeg -i "%s" -movflags +faststart -c:v copy -an',
-                                    $uri
+                            case $this::ENCODING_OPTION_VIDEO_ONLY_COPY:
+                                // the file has no audio, but the video stream can be copied.
+                                $this->logbook->info(
+                                    'oktolab_media.encodeEpisodeJob_video_only_copy',
+                                    ["%format%" => $format],
+                                    $this->args['uniqID']
                                 );
-                            break;
+                                $cmd = sprintf(
+                                        'ffmpeg -i "%s" -movflags +faststart -c:v copy -an',
+                                        $uri
+                                    );
+                                break;
 
-                        case $this::ENCODING_OPTION_VIDEO_ONLY_ENCODE:
-                            // the file has no audio, but the video stream can be encoded
-                            $this->logbook->info(
-                                'oktolab_media.encodeEpisodeJob_video_only_encode',
-                                ["%format%" => $format],
-                                $this->args['uniqID']
-                            );
-                            $episode->setDuration($metainfo['video']['duration']);
-                            $cmd = sprintf(
-                                    'ffmpeg -i "%s" -deinterlace -crf %s -s %sx%s -movflags +faststart -c:v %s -r %s -preset %s',
-                                    $uri,
-                                    $resolution['crf_rate'],
-                                    $resolution['video_width'],
-                                    $resolution['video_height'],
-                                    $resolution['video_codec'],
-                                    $resolution['video_framerate'],
-                                    $resolution['preset']
+                            case $this::ENCODING_OPTION_VIDEO_ONLY_ENCODE:
+                                // the file has no audio, but the video stream can be encoded
+                                $this->logbook->info(
+                                    'oktolab_media.encodeEpisodeJob_video_only_encode',
+                                    ["%format%" => $format],
+                                    $this->args['uniqID']
                                 );
-                            break;
+                                $cmd = sprintf(
+                                        'ffmpeg -i "%s" -deinterlace -crf %s -s %sx%s -movflags +faststart -c:v %s -r %s -preset %s',
+                                        $uri,
+                                        $resolution['crf_rate'],
+                                        $resolution['video_width'],
+                                        $resolution['video_height'],
+                                        $resolution['video_codec'],
+                                        $resolution['video_framerate'],
+                                        $resolution['preset']
+                                    );
+                                break;
 
-                        case $this::ENCODING_OPTION_AUDIO_COPY:
-                            // the file is audio only, but the stream can be copied
-                            $this->logbook->info(
-                                'oktolab_media.encodeEpisodeJob_audio_copy',
-                                ["%format%" => $format],
-                                $this->args['uniqID']
-                            );
-                            $episode->setDuration($metainfo['audio']['duration']);
-                            $cmd = sprintf(
-                                    'ffmpeg -i "%s" -c:a copy',
-                                    $uri
+                            case $this::ENCODING_OPTION_AUDIO_COPY:
+                                // the file is audio only, but the stream can be copied
+                                $this->logbook->info(
+                                    'oktolab_media.encodeEpisodeJob_audio_copy',
+                                    ["%format%" => $format],
+                                    $this->args['uniqID']
                                 );
-                            break;
+                                $cmd = sprintf(
+                                        'ffmpeg -i "%s" -c:a copy',
+                                        $uri
+                                    );
+                                break;
 
-                        case $this::ENCODING_OPTION_AUDIO_CONVERT:
-                            // the file is audio only, but the stream can be encoded
-                            $this->logbook->info(
-                                'oktolab_media.encodeEpisodeJob_audio_encode',
-                                ["%format%" => $format],
-                                $this->args['uniqID']
-                            );
-                            $episode->setDuration($metainfo['audio']['duration']);
-                            $cmd = sprintf(
-                                    'ffmpeg -i "%s" -c:a %s -r %s -b:a %s -preset %s',
-                                    $uri,
-                                    $resolution['crf_rate'],
-                                    $resolution['audio_codec'],
-                                    $resolution['audio_sample_rate'],
-                                    $resolution['audio_bitrate'],
-                                    $resolution['preset']
+                            case $this::ENCODING_OPTION_AUDIO_CONVERT:
+                                // the file is audio only, but the stream can be encoded
+                                $this->logbook->info(
+                                    'oktolab_media.encodeEpisodeJob_audio_encode',
+                                    ["%format%" => $format],
+                                    $this->args['uniqID']
                                 );
-                            break;
+                                $cmd = sprintf(
+                                        'ffmpeg -i "%s" -c:a %s -r %s -b:a %s -preset %s',
+                                        $uri,
+                                        $resolution['crf_rate'],
+                                        $resolution['audio_codec'],
+                                        $resolution['audio_sample_rate'],
+                                        $resolution['audio_bitrate'],
+                                        $resolution['preset']
+                                    );
+                                break;
 
-                        default:
-                            $this->logbook->info(
-                                'oktolab_media.encodeEpisodeJob_unknown_encoding',
-                                ["%format%" => $format],
-                                $this->args['uniqID']
-                            );
-                            break;
-                    }
-                    if ($cmd) {
-                        $this->executeFFmpegForMedia($cmd, $format, $resolution, $episode);
-                    }
+                            default:
+                                $this->logbook->info(
+                                    'oktolab_media.encodeEpisodeJob_unknown_encoding',
+                                    ["%format%" => $format],
+                                    $this->args['uniqID']
+                                );
+                                break;
+                        }
+                        if ($cmd) {
+                            $this->executeFFmpegForMedia($cmd, $format, $resolution, $episode);
+                        }
+                    } //endif stereomode
                 } // foreach resolution
 
                 // delete original file after encoding processes
                 $this->deleteOriginalIfConfigured();
 
                 // add sprite generation job
-                $this->generateSprite($episode);
+                $this->getContainer()->get('oktolab_media')->addGenerateThumbnailSpriteJob($episode->getUniqID());
 
                 // add finalize episode job, set new episode status
                 $this->finalizeEpisode($episode);
 
-            }
+            } // if episode has video
+
             $this->logbook->info(
                 'oktolab_media.episode_end_encodevideo',
                 [],
                 $this->args['uniqID']
             );
 
-        } else {
+        } else { // no episode found
             $this->logbook->error(
                 'oktolab_media.episode_encodenoepisode',
                 [],
@@ -332,17 +330,22 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
         );
 
         // move encoded media from "cache" to config adapter or adapter of the original file
-        $this->getContainer()->get('bprs.asset_job')->addMoveAssetJob(
+        $this->getContainer()->get('bprs.asset')->moveAsset(
             $media->getAsset(),
             $resolution['adapter'] ? $resolution['adapter'] : $media->getEpisode()->getVideo()->getAdapter()
         );
+
+        // add finalize episode job, set new episode status
+        if (!$this->added_finalize) {
+            $this->finalizeEpisode($episode);
+            $this->added_finalize = true;
+        }
     }
 
     /**
      * returns the possible encoding option to use the correct ffmpeg command
      */
-    public function detectEncodingOptionForResolution($resolution, $metainfo)
-    {
+    public function detectEncodingOptionForResolution($resolution, $metainfo) {
         switch ($this->getMediaType($metainfo)) {
             case $this::MEDIA_TYPE_AUDIO:
                 $can_copy_audio = $this->audioCanBeCopied($resolution, $metainfo['audio']);
@@ -401,8 +404,7 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
      * determines if the stream can simply be copied. (videostreams)
      * important factors are codec, framerate and a maximum bitrate.
      */
-    private function videoCanBeCopied($resolution, $metainfo)
-    {
+    private function videoCanBeCopied($resolution, $metainfo) {
         return
             // codec is the same (for example h264)
             $resolution['video_codec'] == $metainfo['codec_name'] &&
@@ -420,8 +422,7 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
     /**
      * determines if the resolution is the minimum size required to be encoded
      */
-    private function videoCanBeEncoded($resolution, $metainfo)
-    {
+    private function videoCanBeEncoded($resolution, $metainfo) {
         return
             $resolution['video_width'] <= $metainfo['width'] &&
             $resolution['video_height'] <= $metainfo['height']
@@ -432,8 +433,7 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
      * determines if the stream can be copied (audiostreams)
      * important factors are codec, sample_rate and bitrate
      */
-    private function audioCanBeCopied($resolution, $metainfo)
-    {
+    private function audioCanBeCopied($resolution, $metainfo) {
         return
             $resolution['audio_codec'] == $metainfo['codec_name'] &&
             $resolution['audio_sample_rate'] == $metainfo['sample_rate'] &&
@@ -444,8 +444,7 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
     /**
      * determines if the the audiotrack meets minimum standards to be encoded
      */
-    private function audioCanBeEncoded($resolution, $metainfo)
-    {
+    private function audioCanBeEncoded($resolution, $metainfo) {
         return
             $resolution['audio_sample_rate'] >= $metainfo['sample_rate'] &&
             $resolution['audio_bitrate'] <= $metainfo['bit_rate']
@@ -458,8 +457,7 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
      * MEDIA_TYPE_VIDEO if videofile,
      * MEDIA_TYPE_VIDEO_ONLY if videofile without soundstream.
      */
-    public function getMediaType($metainfo)
-    {
+    public function getMediaType($metainfo) {
         if (
             $metainfo['audio'] != false &&
             (
@@ -481,13 +479,7 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
         return $this::MEDIA_TYPE_UNKNOWN;
     }
 
-    public function generateSprite($episode)
-    {
-        $this->getContainer()->get('oktolab_media')->addGenerateThumbnailSpriteJob($episode->getUniqID());
-    }
-
-    private function finalizeEpisode($episode)
-    {
+    private function finalizeEpisode($episode) {
         $event = new EncodedEpisodeEvent($episode);
         $this->getContainer()->get('event_dispatcher')->dispatch(
             OktolabMediaEvent::ENCODED_EPISODE,
@@ -512,8 +504,7 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
      * returns false if informations can't be extracted
      * returns array of video and audio info.
      */
-    private function getStreamInformationsOfEpisode($episode)
-    {
+    private function getStreamInformationsOfEpisode($episode) {
         $uri = $this->getContainer()->get('bprs.asset_helper')->getAbsoluteUrl($episode->getVideo());
         if (!$uri) { // can't create uri of episode video
             $this->logbook->error('oktolab_media.episode_encode_no_streams', [], $this->args['uniqID']);
@@ -538,8 +529,7 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
         return $metadata;
     }
 
-    public function createNewCacheAssetForResolution($episode, $resolution)
-    {
+    public function createNewCacheAssetForResolution($episode, $resolution) {
         $asset = $this->getContainer()->get('bprs.asset')->createAsset();
         $asset->setFilekey(
             sprintf('%s.%s',$asset->getFilekey(), $resolution['container'])
@@ -555,8 +545,7 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
         return $asset;
     }
 
-    private function deleteOriginalIfConfigured()
-    {
+    private function deleteOriginalIfConfigured() {
         $episode = $this->getContainer()->get('oktolab_media')->getEpisode($this->args['uniqID']);
         if (!$this->getContainer()->getParameter('oktolab_media.keep_original')) {
             $this->logbook->info('oktolab_media.episode_encode_remove_old_media', [], $this->args['uniqID']);

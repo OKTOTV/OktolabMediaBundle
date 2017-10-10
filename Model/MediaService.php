@@ -57,15 +57,7 @@ class MediaService
         $this->worker_queue = $worker_queue;
     }
 
-    /**
-     * @deprecated
-     */
-    public function addEncodeVideoJob($uniqID, $worker_queue = false)
-    {
-        $this->addEncodeEpisodeJob($uniqID, $worker_queue);
-    }
-
-    public function addEncodeEpisodeJob($uniqID, $worker_queue = false)
+    public function addEncodeEpisodeJob($uniqID, $worker_queue = false, $first = false)
     {
         if (!$worker_queue) {
             $worker_queue = $this->worker_queue;
@@ -74,14 +66,15 @@ class MediaService
         $this->jobService->addJob(
             "Oktolab\MediaBundle\Model\EncodeEpisodeJob",
             ['uniqID' => $uniqID],
-            $worker_queue
+            $worker_queue,
+            $first
         );
     }
 
     /**
     * starts an import worker for an episode by uniqID from the given Keychain
     */
-    public function addEpisodeJob(Keychain $keychain, $uniqID, $overwrite = false)
+    public function addEpisodeJob(Keychain $keychain, $uniqID, $overwrite = false, $worker_queue = false ,$first = false)
     {
         $this->jobService->addJob(
             "Oktolab\MediaBundle\Model\ImportEpisodeMetadataJob",
@@ -89,11 +82,13 @@ class MediaService
                 'keychain' => $keychain->getUniqID(),
                 'uniqID' => $uniqID,
                 'overwrite' => $overwrite
-            ]
+            ],
+            $worker_queue,
+            $first
         );
     }
 
-    public function addImportEpisodeFileFromUrlJob($uniqID, $url, $worker_queue = false)
+    public function addImportEpisodeFileFromUrlJob($uniqID, $url, $worker_queue = false, $first = false)
     {
         if (!$worker_queue) {
             $worker_queue = $this->worker_queue;
@@ -105,14 +100,15 @@ class MediaService
                 'uniqID' => $uniqID,
                 'url' => $url
             ],
-            $worker_queue
+            $worker_queue,
+            $first
         );
     }
 
     /**
     * starts an import worker for a series by uniqID from the given Keychain
     */
-    public function addSeriesJob(Keychain $keychain, $uniqID, $overwrite = false)
+    public function addSeriesJob(Keychain $keychain, $uniqID, $overwrite = false, $worker_queue = false , $first = false)
     {
         $this->jobService->addJob(
             "Oktolab\MediaBundle\Model\ImportSeriesMetadataJob",
@@ -120,23 +116,29 @@ class MediaService
                 'keychain' => $keychain->getUniqID(),
                 'uniqID' => $uniqID,
                 'overwrite' => $overwrite
-            ]
+            ],
+            $worker_queue,
+            $first
         );
     }
 
-    public function addEpisodeAssetDataJob($uniqID)
+    public function addEpisodeAssetDataJob($uniqID, $worker_queue = false, $first = false)
     {
         $this->jobService->addJob(
             "Oktolab\MediaBundle\Model\EpisodeAssetDataJob",
-            ['uniqID' => $uniqID]
+            ['uniqID' => $uniqID],
+            $worker_queue,
+            $first
         );
     }
 
-    public function addGenerateThumbnailSpriteJob($uniqID)
+    public function addGenerateThumbnailSpriteJob($uniqID, $worker_queue = false, $first = false)
     {
         $this->jobService->addJob(
             "Oktolab\MediaBundle\Model\GenerateThumbnailSpriteJob",
-            ['uniqID' => $uniqID]
+            ['uniqID' => $uniqID],
+            $worker_queue,
+            $first
         );
     }
 
@@ -249,7 +251,11 @@ class MediaService
     {
         $this->jobService->addJob(
             "Oktolab\MediaBundle\Model\ImportEpisodePosterframeJob",
-            ['uniqID' => $uniqID, 'keychain' => $keychain->getUniqID(), 'key' => $filekey]
+            [
+                'uniqID' => $uniqID,
+                'keychain' => $keychain->getUniqID(),
+                'key' => $filekey
+            ]
         );
     }
 

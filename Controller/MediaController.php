@@ -72,7 +72,7 @@ class MediaController extends Controller
                 $em->flush();
                 $this->get('session')->getFlashBag()->add('success', 'oktolab_media_success_create_media');
 
-                return $this->redirect($this->generateUrl('oktothek_backend_courses'));
+                return $this->redirect($this->generateUrl('oktolab_media_show_media', ['media' => $media->getId()]));
             } else {
                 $this->get('session')->getFlashBag()->add('error', 'oktolab_media_error_create_media');
             }

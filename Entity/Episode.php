@@ -28,12 +28,17 @@ class Episode implements EpisodeMergerInterface
     const STATE_FINALIZING_FAILED = 49;     // one or more media does not exist
     const STATE_FINALIZING = 48;            // started job to check this
     const STATE_IN_FINALIZE_QUEUE = 47;     // waiting to be checked
-    const STATE_IN_PROGRESS_NO_VIDEO = 41;   // Video does not exist in expected place.
+    const STATE_IN_PROGRESS_NO_VIDEO = 41;  // Video does not exist in expected place.
     const STATE_IN_PROGRESS = 40;           // Video exists, Media is encoding
     const STATE_IN_PROGRESS_QUEUE = 30;     // Video exists, Media encoding in queue
     const STATE_IMPORTING = 20;             // Video is importing
     const STATE_IMPORTING_QUEUE = 10;       // Video importing is in queue
     const STATE_NOT_READY = 0;              // No Video. Episode not ready for anything exept metadata
+
+    const STEREOMODE_NONE = 0;              // default 2D Video. (as is tradition)
+    const STEREOMODE_MONOSCOPIC = 1;        // 360° Video in a single View
+    const STEREOMODE_TOPBOTTOM = 2;         // Stereo video top bottom (cardboard)
+    const STEREOMODE_LEFTRIGHT = 3;         // Stereo video left right (cardboard)
 
     /**
      * @var integer
@@ -73,6 +78,14 @@ class Episode implements EpisodeMergerInterface
      * @ORM\Column(name="is_active", type="boolean")
      */
     private $isActive;
+
+    /**
+     * @JMS\Expose
+     * @JMS\Type("integer")
+     * @JMS\Groups({"oktolab"})
+     * @ORM\Column(name="stereomode", type="integer", options={"default"=0})
+     */
+    private $stereomode;
 
     /**
      * @var \DateTime
@@ -194,6 +207,7 @@ class Episode implements EpisodeMergerInterface
         $this->createdAt = new \Datetime();
         $this->updatedAt = new \Datetime();
         $this->duration = 0;
+        $this->stereomode = $this::STEREOMODE_NONE;
     }
 
     public function __toString()
@@ -590,6 +604,17 @@ class Episode implements EpisodeMergerInterface
     public function setDuration($duration)
     {
         $this->duration = $duration;
+        return $this;
+    }
+
+    public function getStereomode()
+    {
+        return $this->stereomode;
+    }
+
+    public function setStereomode($mode)
+    {
+        $this->stereomode = $mode;
         return $this;
     }
 }

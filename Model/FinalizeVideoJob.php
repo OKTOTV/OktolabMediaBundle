@@ -32,8 +32,11 @@ class FinalizeVideoJob extends BprsContainerAwareJob
         if ($episode) {
             $this->asset_helper_service = $this->getContainer()->get('bprs.asset_helper');
 
-            $this->media_service->setEpisodeStatus($this->args['uniqID'], Episode::STATE_FINALIZING);
-            sleep(180);
+            $this->media_service->setEpisodeStatus(
+                $this->args['uniqID'],
+                Episode::STATE_FINALIZING
+            );
+
             if ($this->checkMediaStatus($episode)) {
                 $episode->setIsActive(true);
                 $this->em->persist($episode);
@@ -58,18 +61,20 @@ class FinalizeVideoJob extends BprsContainerAwareJob
         $is_active = true;
 
         foreach ($episode->getMedia() as $media) {
-            if ($media->getAsset() !== null) {
-                $url = $this->asset_helper_service->getAbsoluteUrl($media->getAsset());
-                $this->logbook->info('oktolab_media.episode_finalize_url', ['%media%' => $media->getQuality(),'%url%' => $url], $this->args['uniqID']);
+            if ($media->isActive()) {
+                if ($media->getAsset() !== null && $media->getProgress() >= 100) {
+                    $url = $this->asset_helper_service->getAbsoluteUrl($media->getAsset());
+                    $this->logbook->info('oktolab_media.episode_finalize_url', ['%media%' => $media->getQuality(),'%url%' => $url], $this->args['uniqID']);
 
-                $client = new Client();
-                $response = $client->request('GET', $url);
-                if ($response->getStatusCode() != Response::HTTP_OK) {
-                    $this->logbook->warning('oktolab_media.episode_finalize_not_ok', ['%media%' => $media->getQuality(),'%url%' => $url], $this->args['uniqID']);
+                    $client = new Client();
+                    $response = $client->request('GET', $url);
+                    if ($response->getStatusCode() != Response::HTTP_OK) {
+                        $this->logbook->warning('oktolab_media.episode_finalize_not_ok', ['%media%' => $media->getQuality(),'%url%' => $url], $this->args['uniqID']);
+                        $is_active = false;
+                    }
+                } else {
                     $is_active = false;
                 }
-            } else {
-                $is_active = false;
             }
         }
 

@@ -50,5 +50,23 @@ class BaseEpisodeRepository extends EntityRepository
 
         return $query->getResult();
     }
+
+    public function findInactiveEpisodesAction($episode_class, $query_only = false)
+    {
+        $query = $this->getEntityManager()->createQuery(
+            sprintf(
+                "SELECT e, p FROM %s e
+                LEFT JOIN e.posterframe p
+                WHERE e.isActive = 0",
+                $episode_class
+                )
+            );
+
+        if ($query_only) {
+            return $query;
+        }
+
+        return $query->getResult();
+    }
 }
  ?>

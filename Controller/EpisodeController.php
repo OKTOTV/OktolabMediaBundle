@@ -4,6 +4,7 @@ namespace Oktolab\MediaBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -76,7 +77,11 @@ class EpisodeController extends Controller
         $results = $request->query->get('results', 10);
         $em = $this->getDoctrine()->getManager();
         $class = $this->container->getParameter('oktolab_media.episode_class');
-        $query = $em->getRepository($class)->findAllForClass($class, true);
+        if ($request->query->get('inactive_only', "0")) {
+            $query = $em->getRepository($class)->findInactiveEpisodesAction($class, true);
+        } else {
+            $query = $em->getRepository($class)->findAllForClass($class, true);
+        }
         $paginator = $this->get('knp_paginator');
         $episodes = $paginator->paginate($query, $page, $results);
 
@@ -309,7 +314,11 @@ class EpisodeController extends Controller
             $this->container->getParameter('oktolab_media.episode_class')
             )->findOneBy(array('uniqID' => $uniqID));
 
-        $this->get('oktolab_media')->addEncodeVideoJob($episode->getUniqID());
+        $this->get('oktolab_media')->addEncodeEpisodeJob(
+            $episode->getUniqID(),
+            $request->query->get('queue', false),
+            $request->query->get('first', false)
+        );
         $this->get('session')->getFlashBag()->add(
             'info',
             'oktolab_media.episode_encode_info'
