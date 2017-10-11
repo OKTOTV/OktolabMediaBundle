@@ -52,6 +52,11 @@ oktolab_media_export_episode:
     path:       /oktolab_media/episode/{uniqID}/export
     defaults:   { _controller: OktolabMediaBundle:Episode:export }
 
+oktolab_media_reimport_episode:
+    path:       /oktolab_media/episode/reimport/{uniqID}
+    defaults:   { _controller: OktolabMediaBundle:Episode:reimportEpisode }
+
+
 # Media
 oktolab_media_index:
     path:       /oktolab_media/media/index

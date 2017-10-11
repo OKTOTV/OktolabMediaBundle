@@ -109,6 +109,7 @@ oktolab_media.success_edit_episode:     "Änderungen erfolgreich gespeichert"
 oktolab_media.error_edit_episode:       "Änderungen konnten nicht übernommen werden"
 oktolab_media.success_delete_episode:   "Episode erfolgreich gelöscht"
 oktolab_media.error_delete_episode:     "Episode konnte nicht gelöscht werden oder ein Fehler ist während dem Löschen aufgetreten."
+oktolab_media.success_reimport_episode: "Episodenimport erneut in Auftrag gegeben"
 
 # episode new.html.twig
 oktolab_media.create_episode_button:    '<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Episode anlegen'
@@ -121,9 +122,12 @@ oktolab_media.edit_episode_header:      "Episode bearbeiten"
 
 ## episode show.html.twig
 oktolab_media.show_episode_add_to_encode_queue: '<span class="glyphicon glyphicon-compressed" aria-hidden="true"></span> Episode Encodieren'
+oktolab_media.show_episode_add_to_encode_queue_next: '<span class="glyphicon glyphicon-compressed" aria-hidden="true"></span> Als nächstes Encodieren'
 oktolab_media.show_episode_description_missing: "Keine Beschreibung verfügbar"
 oktolab_media.show_episode_technical_state:     "Technischer Status"
 oktolab_media.show_episode_technical_state_choice: "[0, 9] Nicht Bereit. Keine Videodatei |[10, 19] Episode in Queue |[20, 29] Episode wird importiert |[30,39] Medien in Queue | {40} Medien werden Encodiert |[41, 46] Episode besitzt kein Video zum Encodieren |{47} In Finalizierungsqueue |{48} Wird Finalisiert |{49} Eine oder mehrere Medien konnten nicht geprüft werden |{50} Episode bereit"
+oktolab_media.reimport_episode:                 '<span class="glyphicon glyphicon-import" aria-hidden="true"></span> Episode erneut importieren'
+oktolab_media.reimport_episode_overwrite:       '<span class="glyphicon glyphicon-import" aria-hidden="true"></span> Episode importieren und überschreiben'
 
 # series -----------------------------------------------------------------------
 ## series new.html.twig

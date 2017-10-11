@@ -10,6 +10,10 @@
         <a href="{{ path('oktolab_episode_edit', {'episode': episode.id}) }}" class="btn btn-default">{{ 'oktolab_media.episode_edit_button'|trans|raw }}</a>
         <a href="{{ path('oktolab_media_api_show_episode', {'uniqID': episode.uniqID}) }}" class="btn btn-default">{{ 'oktolab_media.episode_show_api'|trans|raw }}</a>
         <a href="{{ path('oktolab_episode_encode', {'uniqID': episode.uniqID}) }}" class="btn btn-danger">{{ 'oktolab_media.show_episode_add_to_encode_queue'|trans|raw }}</a>
+        {% if episode.keychain %}
+            <li><a href="{{ path('oktolab_media_reimport_episode', {'uniqID': episode.uniqID }) }}" id="reimport_episode">{{ 'oktolab_media.reimport_episode'|trans|raw }}</a></li>
+            <li><a href="{{ path('oktolab_media_reimport_episode', {'uniqID': episode.uniqID, 'overwrite': 1 }) }}" id="reimport_episode_overwrite">{{ 'oktolab_media.reimport_episode_overwrite'|trans|raw }}</a></li>
+        {% endif %}
     </div>
     <div class="row">
         <div class="col-md-7">

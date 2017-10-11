@@ -404,6 +404,32 @@ class EpisodeController extends Controller
     }
 
     /**
+     * @Route("/reimport/{uniqID}", name="oktolab_media_reimport_episode")
+     * @Method("GET")
+     */
+    public function reimportEpisodeAction(Request $request, $uniqID)
+    {
+        $oktolab_media = $this->get('oktolab_media');
+        $episode = $oktolab_media->getEpisode($uniqID);
+        $this->get('oktolab_media')->addEpisodeJob(
+            $episode->getKeychain(),
+            $uniqID,
+            $request->query->get('overwrite', false)
+        );
+        $this->get('session')->getFlashBag()->add(
+            'success',
+            'oktolab_media.success_reimport_episode'
+        );
+
+        return $this->redirect(
+            $this->generateUrl(
+                'oktolab_episode_show',
+                ['uniqID' => $uniqID]
+            )
+        );
+    }
+
+    /**
      * @Route("/import/{keychain}", name="oktolab_media_import_remote_episode")
      * @Method("GET")
      */
