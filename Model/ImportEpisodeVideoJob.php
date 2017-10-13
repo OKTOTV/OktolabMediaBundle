@@ -53,7 +53,7 @@ class ImportEpisodeVideoJob extends BprsContainerAwareJob
                 $em->flush();
 
                 //trigger episode encoding
-                $mediaService->addEncodeVideoJob($episode->getUniqID());
+                $mediaService->addEncodeEpisodeJob($episode->getUniqID());
             }
             $logbook->info('oktolab_media.end_import_episode_video', [], $episode->getUniqID());
         }

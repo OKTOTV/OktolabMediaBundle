@@ -62,7 +62,7 @@ class ImportEpisodeFileFromUrlJob extends BprsContainerAwareJob
             $this->em->flush();
 
             //trigger episode encoding
-            $this->mediaService->addEncodeVideoJob($episode->getUniqID());
+            $this->mediaService->addEncodeEpisodeJob($episode->getUniqID());
         } else { // no episode found!
             $this->logbook->info(
                 'oktolab_media.episode_file_from_url_no_episode',
