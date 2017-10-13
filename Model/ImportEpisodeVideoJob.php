@@ -6,7 +6,7 @@ use Bprs\CommandLineBundle\Model\BprsContainerAwareJob;
 
 /**
  * 1: Imports the video by filekey and keychain
- * 2: Triggers EncodeVideoJob if import was successful
+ * 2: Triggers EncodeEpisodeJob if import was successful
  */
 class ImportEpisodeVideoJob extends BprsContainerAwareJob
 {

@@ -594,6 +594,7 @@ class Episode implements EpisodeMergerInterface
         $this->onlineStart = $episode->getOnlineStart();
         $this->onlineEnd = $episode->getOnlineEnd();
         $this->firstranAt = $episode->getFirstranAt();
+        $this->stereomode = $episode->getStereomode();
     }
 
     public function getDuration()
