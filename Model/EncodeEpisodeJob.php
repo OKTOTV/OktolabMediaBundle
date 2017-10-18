@@ -495,7 +495,9 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
         'Oktolab\MediaBundle\Model\FinalizeVideoJob',
             [
                 'uniqID'=> $episode->getUniqID()
-            ]
+            ],
+            false,
+            true
         );
     }
 
