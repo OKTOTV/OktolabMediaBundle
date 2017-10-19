@@ -39,15 +39,15 @@ class FinalizeVideoJob extends BprsContainerAwareJob
 
             if ($this->checkMediaStatus($episode)) {
                 $episode->setIsActive(true);
+                $episode->setTechnicalStatus(Episode::STATE_READY);
                 $this->em->persist($episode);
                 $this->em->flush();
-                $this->media_service->setEpisodeStatus($this->args['uniqID'], Episode::STATE_READY);
                 $this->media_service->dispatchFinalizedEpisodeEvent($this->args);
             } else {
                 $episode->setIsActive(false);
+                $episode->setTechnicalStatus(Episode::STATE_FINALIZING_FAILED);
                 $this->em->persist($episode);
                 $this->em->flush();
-                $this->media_service->setEpisodeStatus($this->args['uniqID'], Episode::STATE_FINALIZING_FAILED);
             }
 
         } else { // episode not found
