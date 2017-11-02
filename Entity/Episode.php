@@ -53,6 +53,7 @@ class Episode implements EpisodeMergerInterface
 
     /**
      * @var string
+     * @Assert\Length(max = 100, maxMessage = "oktolab_media.max_name_limit")
      * @JMS\Expose
      * @JMS\Type("string")
      * @JMS\Groups({"search", "oktolab"})

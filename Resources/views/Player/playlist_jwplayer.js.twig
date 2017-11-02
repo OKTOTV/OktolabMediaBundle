@@ -3,6 +3,11 @@
     $(document).ready(function() {
         var playerInstance = jwplayer("{{ player_id }}");
         playerInstance.setup({
+            {% if displaytitle %}
+                displaytitle: true,
+            {% else %}
+                displaytitle: false,
+            {% endif %}
             playlist: [
                 {% for playlistitem in playlist.items %}
                 {

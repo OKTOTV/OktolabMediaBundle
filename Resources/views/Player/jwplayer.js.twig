@@ -4,6 +4,11 @@
         var playerInstance = jwplayer("{{ player_id }}");
         playerInstance.setup({
             logo:   {{ origin(episode)|raw }},
+            {% if displaytitle %}
+                displaytitle: true,
+            {% else %}
+                displaytitle: false,
+            {% endif %}
             playlist: [{
                 image: "{{ episode.posterframe|thumb(720,1280) }}",
                 title: "{{ episode.name }}",

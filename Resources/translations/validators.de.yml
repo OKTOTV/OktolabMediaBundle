@@ -1,1 +1,2 @@
-oktolab_media.max_description_limit: Der Beschreibungstext darf maximal {{ limit }} Zeichen lang sein.
+oktolab_media.max_description_limit:    Der Beschreibungstext darf maximal {{ limit }} Zeichen lang sein.
+oktolab_media.max_name_limit:           Der Episodentitel darf maximal {{ limit }} Zeichen lang sein.

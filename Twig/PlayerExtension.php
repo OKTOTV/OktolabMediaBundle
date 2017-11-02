@@ -26,20 +26,20 @@ class PlayerExtension extends \Twig_Extension
         );
     }
 
-    public function player($episode, $player_id = "player", $player_type = false)
+    public function player($episode, $player_id = "player", $player_type = false, $displaytitle = false)
     {
         if (!$player_type) {
             $player_type = $this->default_player;
         }
-        return $this->getPlayerForType($episode, $player_id, $player_type);
+        return $this->getPlayerForType($episode, $player_id, $player_type, $displaytitle);
     }
 
-    public function playlist($playlist, $player_id = "player", $player_type = false)
+    public function playlist($playlist, $player_id = "player", $player_type = false, $displaytitle = false)
     {
         if (!$player_type) {
             $player_type = $this->default_player;
         }
-        return $this->getPlaylistPlayerForType($playlist, $player_id, $player_type);
+        return $this->getPlaylistPlayerForType($playlist, $player_id, $player_type, $displaytitle);
     }
 
     public function origin($episode, $player_type = false)
@@ -55,7 +55,7 @@ class PlayerExtension extends \Twig_Extension
         return $this->player_url;
     }
 
-    private function getPlayerForType($episode, $player_id, $player)
+    private function getPlayerForType($episode, $player_id, $player, $displaytitle = false)
     {
         switch ($player) {
             case 'jwplayer':
@@ -63,7 +63,8 @@ class PlayerExtension extends \Twig_Extension
                     [
                         'episode' => $episode,
                         'player_url' => $this->player_url,
-                        'player_id' => $player_id
+                        'player_id' => $player_id,
+                        'displaytitle' => $displaytitle
                     ]
                 );
             default:
@@ -71,13 +72,14 @@ class PlayerExtension extends \Twig_Extension
                     [
                         'episode' => $episode,
                         'player_url' => $this->player_url,
-                        'player_id' => $player_id
+                        'player_id' => $player_id,
+                        'displaytitle' => $displaytitle
                     ]
                 );
         }
     }
 
-    private function getPlaylistPlayerForType($playlist, $player_id, $player_type = 'jwplayer')
+    private function getPlaylistPlayerForType($playlist, $player_id, $player_type = 'jwplayer', $displaytitle = false)
     {
         switch ($player_type) {
             case 'jwplayer':
@@ -85,7 +87,8 @@ class PlayerExtension extends \Twig_Extension
                     [
                         'playlist' => $playlist,
                         'player_url' => $this->player_url,
-                        'player_id' => $player_id
+                        'player_id' => $player_id,
+                        'displaytitle' => $displaytitle
                     ]
                 );
             default:
@@ -93,7 +96,8 @@ class PlayerExtension extends \Twig_Extension
                 [
                     'playlist' => $playlist,
                     'player_url' => $this->player_url,
-                    'player_id' => $player_id
+                    'player_id' => $player_id,
+                    'displaytitle' => $displaytitle
                 ]
             );
         }
