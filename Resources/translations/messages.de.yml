@@ -65,6 +65,7 @@ oktolab_media.episode_info_onlineEnd:       "Verfügbar bis"
 oktolab_media.episode_info_firstranAt:      "Erstausstrahlung"
 oktolab_media.episode_info_duration:        "Laufzeit"
 oktolab_media.episode_info_stereomode:      "Stereomodus"
+oktolab_media.episode_info_agerating:       "Altersfreigabe"
 oktolab_media.episode_show_captions_header: "Textspuren"
 oktolab_media.episode_add_new_media:    "<span class='glyphicon glyphicon-plus' aria-hidden='true'></span> Episodenformat hinzufügen"
 

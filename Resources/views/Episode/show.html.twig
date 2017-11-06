@@ -53,6 +53,12 @@
 
                 <dt>{{ 'oktolab_media.episode_info_uniqID'|trans}}</dt>
                 <dd>{{ episode.uniqID }}</dd>
+                <dt>
+                    {{'oktolab_media.episode_info_agerating'|trans }}
+                </dt>
+                <dd>
+                    <span class="label {% if episode.agerating > 17 %}label-danger{% elseif episode.agerating > 11 %}label-warning{% else %}label-default{% endif %}">{{ episode.agerating }}</span>
+                </dd>
             </dl>
 
             {% if episode.video is not empty %}
