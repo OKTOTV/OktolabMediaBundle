@@ -40,6 +40,29 @@ class Episode implements EpisodeMergerInterface
     const STEREOMODE_TOPBOTTOM = 2;         // Stereo video top bottom (cardboard)
     const STEREOMODE_LEFTRIGHT = 3;         // Stereo video left right (cardboard)
 
+    const AGE_RATING_FSK_FREE = 0;
+    const AGE_RATING_FSK_SIX = 6;
+    const AGE_RATING_FSK_TWELVE = 12;
+    const AGE_RATING_FSK_SIXTEEN = 16;
+    const AGE_RATING_FSK_NOTFREE = 18;
+
+    const AGE_RATING_AUSTRIA_FREE = 0;
+    const AGE_RATING_AUSTRIA_SIX = 6;
+    const AGE_RATING_AUSTRIA_EIGHT = 8;
+    const AGE_RATING_AUSTRIA_TEN = 10;
+    const AGE_RATING_AUSTRIA_TWELVE = 12;
+    const AGE_RATING_AUSTRIA_FOURTEEN = 14;
+    const AGE_RATING_AUSTRIA_SIXTEEN = 16;
+
+    const AGE_RATING_USA_G = 0;
+    const AGE_RATING_USA_R = 17;
+    const AGE_RATING_USA_NC17 = 18;
+
+    const AGE_RATING_GB_U = 0;
+    const AGE_RATING_GB_12 = 12;
+    const AGE_RATING_GB_15 = 15;
+    const AGE_RATING_GB_18 = 18;
+
     /**
      * @var integer
      *
@@ -53,7 +76,6 @@ class Episode implements EpisodeMergerInterface
 
     /**
      * @var string
-     * @Assert\Length(max = 100, maxMessage = "oktolab_media.max_name_limit")
      * @JMS\Expose
      * @JMS\Type("string")
      * @JMS\Groups({"search", "oktolab"})
@@ -112,7 +134,6 @@ class Episode implements EpisodeMergerInterface
      * @ORM\Column(name="firstran_at", type="datetime", nullable=true)
      */
     private $firstranAt;
-
 
     /**
      * @var \DateTime
@@ -200,6 +221,14 @@ class Episode implements EpisodeMergerInterface
      */
     private $duration;
 
+    /**
+     * @JMS\Expose
+     * @JMS\Groups({"oktolab"})
+     * @JMS\Type("integer")
+     * @ORM\Column(name="agerating", type="smallint", options={"default"=0})
+     */
+    private $agerating;
+
     public function __construct()
     {
         $this->technical_status = $this::STATE_NOT_READY;
@@ -208,6 +237,7 @@ class Episode implements EpisodeMergerInterface
         $this->createdAt = new \Datetime();
         $this->updatedAt = new \Datetime();
         $this->duration = 0;
+        $this->agerating = 0;
         $this->stereomode = $this::STEREOMODE_NONE;
     }
 
@@ -596,6 +626,7 @@ class Episode implements EpisodeMergerInterface
         $this->onlineEnd = $episode->getOnlineEnd();
         $this->firstranAt = $episode->getFirstranAt();
         $this->stereomode = $episode->getStereomode();
+        $this->agerating = $episode->getAgerating();
     }
 
     public function getDuration()
@@ -617,6 +648,17 @@ class Episode implements EpisodeMergerInterface
     public function setStereomode($mode)
     {
         $this->stereomode = $mode;
+        return $this;
+    }
+
+    public function getAgerating()
+    {
+        return $this->agerating;
+    }
+
+    public function setAgerating($rating)
+    {
+        $this->agerating = $rating;
         return $this;
     }
 }
