@@ -14,6 +14,7 @@ use Oktolab\MediaBundle\Event\ImportedSeriesPosterframeEvent;
 use Oktolab\MediaBundle\Event\FinalizedEpisodeEvent;
 use Oktolab\MediaBundle\Event\ImportedSeriesMetadataEvent;
 use Oktolab\MediaBundle\Event\EpisodeAssetDataEvent;
+use Oktolab\MediaBundle\Event\EnqueuedEncodeEpisodeEvent;
 
 /**
 * handles import worker, jobs for worker and permission handling
@@ -38,11 +39,10 @@ class MediaService
     private $asset_class; // the asset class
     private $adapters; // the adapter paths to save the assets to
     private $applinkservice; // service for api urls
-    private $logbook; // loggingservice
     private $dispatcher; // event dispatcher
     private $worker_queue;
 
-    public function __construct($jobService, $entity_manager, $serializer, $episode_class, $series_class, $asset_class, $adapters, $applinkservice, $logbook, $dispatcher, $worker_queue)
+    public function __construct($jobService, $entity_manager, $serializer, $episode_class, $series_class, $asset_class, $adapters, $applinkservice, $dispatcher, $worker_queue)
     {
         $this->jobService = $jobService;
         $this->em = $entity_manager;
@@ -52,7 +52,6 @@ class MediaService
         $this->asset_class= $asset_class;
         $this->adapters = $adapters;
         $this->applinkservice = $applinkservice;
-        $this->logbook = $logbook;
         $this->dispatcher = $dispatcher;
         $this->worker_queue = $worker_queue;
     }
@@ -339,5 +338,11 @@ class MediaService
     {
         $event = new EpisodeAssetDataEvent($assetData);
         $this->dispatcher->dispatch(OktolabMediaEvent::EPISODE_ASSETDATA, $event);
+    }
+
+    public function dispatchEnqueuedEncodeEpisodeEvent($args)
+    {
+        $event = new EnqueuedEncodeEpisodeEvent($args);
+        $this->dispatcher->dispatch(OktlabMediaEvent::ENQUEUED_ENCODE_EPISODE, $event);
     }
 }

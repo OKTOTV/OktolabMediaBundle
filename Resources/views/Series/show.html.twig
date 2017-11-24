@@ -30,10 +30,10 @@
                 <dd>{{ 'oktolab_media.series_info_isActive_choice'|transchoice( series.isActive ) }}</dd>
 
                 <dt>{{ 'oktolab_media.series_info_createdAt'|trans }}</dt>
-                <dd>{{ series.createdAt|date("d.m.Y H:i") }}</dd>
+                <dd>{{ series.createdAt|date("oktolab_media.series_info_createdAt_date"|trans) }}</dd>
 
                 <dt>{{ 'oktolab_media.series_info_updatedAt'|trans }}</dt>
-                <dd>{{ series.updatedAt|date("d.m.Y H:i") }}</dd>
+                <dd>{{ series.updatedAt|date("oktolab_media.series_info_updatedAt_date"|trans) }}</dd>
 
                 <dt>{{ 'oktolab_media.series_info_uniqID'|trans}}</dt>
                 <dd>{{ series.uniqID }}</dd>

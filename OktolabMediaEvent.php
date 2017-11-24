@@ -68,4 +68,10 @@ final class OktolabMediaEvent
      * contains all the metainformations read with ffprobe
      */
     const EPISODE_ASSETDATA = 'oktolab_media.episode_assetdata';
+
+    /**
+     * Dispatched each time a new encode episode job is enqueued.
+     * usefull for logging stuff 
+     */
+    const ENQUEUED_ENCODE_EPISODE = 'oktolab_media.enqueued_encode_episode';
 }
