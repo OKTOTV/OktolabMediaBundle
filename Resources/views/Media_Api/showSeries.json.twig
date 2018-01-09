@@ -1,0 +1,2 @@
+{% set groups = ['oktolab']|merge([serialization_group]) %}
+{{ series|serialize('json', serialization_context().setGroups(groups))|raw }}

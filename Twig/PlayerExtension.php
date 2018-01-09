@@ -109,7 +109,7 @@ class PlayerExtension extends \Twig_Extension
             case 'jwplayer':
                 $origin = $this->origin->getOrigin($episode->getUniqID(), $player_type);
                 return $this->twig->render(
-                    'OktolabMediaBundle:PublicApi:origin_jwplayer.json.twig',
+                    'OktolabMediaBundle:Public_Api:origin_jwplayer.json.twig',
                     ['origin' => $origin]
                 );
         }
