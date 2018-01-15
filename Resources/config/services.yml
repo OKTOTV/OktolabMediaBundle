@@ -1,15 +1,15 @@
 services:
     oktolab_media:
         class:  Oktolab\MediaBundle\Model\MediaService
-        arguments: [ "@bprs_jobservice", "@doctrine.orm.entity_manager", "@jms_serializer", %oktolab_media.episode_class%, %oktolab_media.series_class%, %bprs_asset.class%, %bprs_asset.adapters%, "@bprs_applink", "@event_dispatcher", "%oktolab_media.worker_queue%" ]
+        arguments: [ "@bprs_jobservice", "@doctrine.orm.entity_manager", "@jms_serializer", "%oktolab_media.episode_class%", "%oktolab_media.series_class%", "%bprs_asset.class%", "%bprs_asset.adapters%", "@bprs_applink", "@event_dispatcher", "%oktolab_media.worker_queue%" ]
 
     oktolab_media_helper:
         class:  Oktolab\MediaBundle\Model\MediaHelperService
-        arguments: [ "@doctrine.orm.entity_manager", "@bprs.asset", "@bprs_logbook", "@event_dispatcher", %bprs_asset.adapters%]
+        arguments: [ "@doctrine.orm.entity_manager", "@bprs.asset", "@bprs_logbook", "@event_dispatcher", "%bprs_asset.adapters%"]
 
     oktolab_sprite:
         class:  Oktolab\MediaBundle\Model\SpriteService
-        arguments: [ "@bprs.asset_helper", %oktolab_media.sprite_height%, %oktolab_media.sprite_width%, %oktolab_media.sprite_interval% ]
+        arguments: [ "@bprs.asset_helper", "%oktolab_media.sprite_height%", "%oktolab_media.sprite_width%", "%oktolab_media.sprite_interval%" ]
 
     origin:
         class: Oktolab\MediaBundle\Model\OriginService
@@ -21,7 +21,7 @@ services:
 
     oktolab_media.asset_listener:
         class: Oktolab\MediaBundle\Event\AssetListener
-        arguments: [ "@doctrine.orm.entity_manager", %oktolab_media.episode_class%, %oktolab_media.series_class%, %oktolab_media.media_class% ]
+        arguments: [ "@doctrine.orm.entity_manager", "%oktolab_media.episode_class%", "%oktolab_media.series_class%", "%oktolab_media.media_class%" ]
         tags:
             - { name: kernel.event_listener, event: bprs_asset.delete, method: onAssetDelete }
 
@@ -38,7 +38,7 @@ services:
     oktolab_media.twig_extension:
         class: Oktolab\MediaBundle\Twig\PlayerExtension
         public: false
-        arguments: [ "@twig", %oktolab_media.player_url%, %oktolab_media.player_type%, "@origin" ]
+        arguments: [ "@twig", "%oktolab_media.player_url%", "%oktolab_media.player_type%", "@origin" ]
         tags:
             - { name: twig.extension }
 
@@ -59,7 +59,7 @@ services:
     # BPRSAppLinkAPIUrl
     oktolab_media_api:
         class: Oktolab\MediaBundle\Model\ApiUrlService
-        arguments: [ "@router", %oktolab_media.api_urls%]
+        arguments: [ "@router", "%oktolab_media.api_urls%" ]
 
 # LifecycleEvents
 # cant inject specifig needed services due to
