@@ -149,7 +149,7 @@ class MediaApiController extends Controller
         //get usertoken, get url, use url + uniqid
         $uniqID = $request->query->get('uniqID');
         if ($uniqID) {
-            $apiuser = $this->get('security.context')->getToken()->getUser();
+            $apiuser = $this->getUser();
             $this->get('oktolab_media')->addSeriesJob(
                 $apiuser,
                 $uniqID,
@@ -170,7 +170,7 @@ class MediaApiController extends Controller
     {
         $uniqID = $request->query->get('uniqID');
         if ($uniqID) {
-            $apiuser = $this->get('security.context')->getToken()->getUser();
+            $apiuser = $this->getUser();
             $this->get('oktolab_media')->addEpisodeJob(
                 $apiuser,
                 $uniqID,
