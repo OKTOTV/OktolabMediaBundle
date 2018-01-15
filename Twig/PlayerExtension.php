@@ -59,7 +59,7 @@ class PlayerExtension extends \Twig_Extension
     {
         switch ($player) {
             case 'jwplayer':
-                return $this->twig->render('OktolabMediaBundle:Player:jwplayer.js.twig',
+                return $this->twig->render('OktolabMediaBundle:player:jwplayer.js.twig',
                     [
                         'episode' => $episode,
                         'player_url' => $this->player_url,
@@ -68,7 +68,7 @@ class PlayerExtension extends \Twig_Extension
                     ]
                 );
             default:
-                return $this->twig->render('OktolabMediaBundle:Player:jwplayer.js.twig',
+                return $this->twig->render('OktolabMediaBundle:player:jwplayer.js.twig',
                     [
                         'episode' => $episode,
                         'player_url' => $this->player_url,
@@ -83,7 +83,7 @@ class PlayerExtension extends \Twig_Extension
     {
         switch ($player_type) {
             case 'jwplayer':
-                return $this->twig->render('OktolabMediaBundle:Player:playlist_jwplayer.js.twig',
+                return $this->twig->render('OktolabMediaBundle:player:playlist_jwplayer.js.twig',
                     [
                         'playlist' => $playlist,
                         'player_url' => $this->player_url,
@@ -92,7 +92,7 @@ class PlayerExtension extends \Twig_Extension
                     ]
                 );
             default:
-            return $this->twig->render('OktolabMediaBundle:Player:playlist_jwplayer.js.twig',
+            return $this->twig->render('OktolabMediaBundle:player:playlist_jwplayer.js.twig',
                 [
                     'playlist' => $playlist,
                     'player_url' => $this->player_url,
@@ -109,7 +109,7 @@ class PlayerExtension extends \Twig_Extension
             case 'jwplayer':
                 $origin = $this->origin->getOrigin($episode->getUniqID(), $player_type);
                 return $this->twig->render(
-                    'OktolabMediaBundle:Public_Api:origin_jwplayer.json.twig',
+                    'OktolabMediaBundle:public_api:origin_jwplayer.json.twig',
                     ['origin' => $origin]
                 );
         }
