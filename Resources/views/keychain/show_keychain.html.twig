@@ -8,7 +8,7 @@
 {% block body_main %}
     <div class="page-header">
         <h1>{{ keychain.url }}</h1>
-        <p><a href="{{ path('oktolab_media_list_keychains') }}">{{ 'oktolab_media_show_keychain.back_to_keychains'|trans }}</a></p>
+        <p><a href="{{ path('oktolab_media_list_keychains') }}">{{ 'oktolab_media_show_keychain.back_to_keychains'|trans|raw }}</a></p>
     </div>
     {% if response.navigation.prev is defined %}
         <a href="{{ path('oktolab_media_show_keychain', {'keychain': keychain.id, 'url': response.navigation.prev}) }}" class="btn btn-default">{{ 'oktolab_media.keychain_show_prev_results'|trans }}</a>
