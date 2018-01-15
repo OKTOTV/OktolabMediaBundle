@@ -1,5 +1,0 @@
-{% if player_type == "jwplayer" %}
-    {% include "OktolabMediaBundle:PublicApi:jwplayer.json.twig" with {'episode': episode} %}
-{% elseif player_type == "flowplayer" %}
-    {% include "OktolabMediaBundle:PublicApi:flowplayer.json.twig" with {'episode': episode} %}
-{% endif %}

@@ -1,7 +1,0 @@
-{% spaceless %}
-{% set groups = ['oktolab']|merge([serialization_group]) %}
-{
-    "episodes": {{ episodes.items | serialize('json', serialization_context().setGroups(groups)) }},
-    "navigation": {{ knp_pagination_render(episodes, "OktolabMediaBundle:MediaApi:jsonPagination.html.twig")}}
-}
-{% endspaceless %}
