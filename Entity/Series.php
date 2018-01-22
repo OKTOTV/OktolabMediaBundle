@@ -41,7 +41,7 @@ class Series implements SeriesMergerInterface
      * @JMS\Expose
      * @JMS\Type("string")
      * @JMS\Groups({"search", "oktolab"})
-     * @Assert\Lenght(max=255, min=1)
+     * @Assert\Length(max=255, min=1)
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
@@ -50,7 +50,7 @@ class Series implements SeriesMergerInterface
     * @JMS\Expose
     * @JMS\Type("string")
     * @JMS\Groups({"oktolab"})
-    * @Assert\Lenght(max=255, min=1)
+    * @Assert\Length(max=255, min=1)
     * @ORM\Column(name="webtitle", type="string", length=255, unique=true)
     */
     private $webtitle;
@@ -60,7 +60,7 @@ class Series implements SeriesMergerInterface
      * @JMS\Expose
      * @JMS\Type("string")
      * @JMS\Groups({"search", "oktolab"})
-     * @Assert\Lenght(max=650)
+     * @Assert\Length(max=650)
      * @ORM\Column(name="description", type="string", length=700)
      */
     private $description;
