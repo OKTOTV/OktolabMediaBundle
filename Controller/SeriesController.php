@@ -158,7 +158,7 @@ class SeriesController extends Controller
                 return $this->redirect(
                     $this->generateUrl(
                         'oktolab_media_export_series',
-                        ['series' => $uniqID]
+                        ['series' => $series]
                     )
                 );
             } else {
