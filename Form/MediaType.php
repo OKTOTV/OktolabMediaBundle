@@ -22,6 +22,7 @@ class MediaType extends AbstractType
             ->add('quality', TextType::class, ['label' => 'oktolab_media_quality_label'])
             ->add('public', CheckboxType::class, ['required' => false, 'label' => 'oktolab_media_public_label'])
             ->add('sortNumber', IntegerType::class, ['label' => 'oktolab_media_sortNumber_label'])
+            ->add('progress', IntegerType::class, ['label' => 'oktolab_media_progress_label'])
             ->add('asset', AssetType::class, ['label' => 'oktolab_media_asset_label']);
     }
 

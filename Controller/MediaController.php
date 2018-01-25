@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oktolab\MediaBundle\Entity\Media;
 use Oktolab\MediaBundle\Form\MediaType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /**
  * Media controller.
@@ -61,8 +62,8 @@ class MediaController extends Controller
         $episode = $this->get('oktolab_media')->getEpisode($uniqID);
         $media = new Media();
         $media->setEpisode($episode);
-        $form = $this->createForm(new MediaType(), $media);
-        $form->add('submit', 'submit', ['label' => 'oktolab_media_media_create_button', 'attr' => ['class' => 'btn btn-primary']]);
+        $form = $this->createForm(MediaType::class, $media);
+        $form->add('submit', SubmitType::class, ['label' => 'oktolab_media_media_create_button', 'attr' => ['class' => 'btn btn-primary']]);
 
         if ($request->getMethod() == "POST") { //sends form
             $form->handleRequest($request);
@@ -96,9 +97,9 @@ class MediaController extends Controller
      */
     public function editAction(Request $request, Media $media)
     {
-        $form = $this->createForm(new MediaType(), $media);
-        $form->add('delete', 'submit', ['label' => 'oktolab_media_delete_media_button', 'attr' => ['class' => 'btn btn-danger']]);
-        $form->add('submit', 'submit', ['label' => 'oktolab_media_edit_media_button', 'attr' => ['class' => 'btn btn-primary']]);
+        $form = $this->createForm(MediaType::class, $media);
+        $form->add('delete', SubmitType::class, ['label' => 'oktolab_media_delete_media_button', 'attr' => ['class' => 'btn btn-danger']]);
+        $form->add('submit', SubmitType::class, ['label' => 'oktolab_media_edit_media_button', 'attr' => ['class' => 'btn btn-primary']]);
 
         if ($request->getMethod() == "POST") { //sends form
             $form->handleRequest($request);
@@ -112,7 +113,11 @@ class MediaController extends Controller
                 } else { //delete media
                     $uniqID = $media->getEpisode()->getUniqID();
                     if ($media->getAsset()) {
-                        $this->get('bprs.asset_helper')->deleteAsset($media->getAsset());
+                        if ($media->getAsset() !== $media->getEpisode()->getVideo()) {
+                            $this->get('bprs.asset_helper')->deleteAsset($media->getAsset());
+                        } else {
+                            $media->setAsset();
+                        }
                     }
                     $em->remove($media);
                     $em->flush();
