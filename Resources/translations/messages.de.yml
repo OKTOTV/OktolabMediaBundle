@@ -188,6 +188,7 @@ oktolab_media.series_export_modal:  'Exportieren'
 oktolab_media.series_export_modal_desc: 'Möchtest du die Sendereihe "%series%" mitsamt allen verknüpften Episoden an %url% exportieren? Diese Aktion kann abhängig von größe der Sendereihe, länge der Episoden, verfügbarer Serverleistung und Bandbreite mehrere Tage dauern. Existierende Informationen mit selber uniqID werden überschrieben. Diese Aktion kann nicht rückgängig gemacht werden.'
 oktolab_media.series_export_modal_cancel: 'Abbrechen'
 oktolab_media.series_export_modal_export: '<span class="glyphicon glyphicon-export" aria-hidden="true"></span> Exportieren'
+oktolab_media.success_export_series:        'Exportauftrag für Sendereihe erfolgreich übermittelt'
 
 ## series index.html.twig
 oktolab_media.series_index_total_series_choice: "{0} Derzeit ist keine Sendereihe vorhanden|{1} Derzeit ist %count% Sendereihe vorhanden|]1,Inf]Derzeit sind %count% Sendereihen vorhanden"
