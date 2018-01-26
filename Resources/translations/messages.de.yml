@@ -323,6 +323,7 @@ oktolab_media.episode_finalize_not_ok:      "Media [%media%] [%url%] antwortet n
 oktolab_media.episode_start_import:         "Episodenimport gestartet"
 oktolab_media.episode_end_import:           "Episodenimport beendet"
 oktolab_media.episode_import_error:         "Es ist ein Fehler beim Episodenimport aufgetreten"
+oktolab_media.start_import_episode_video:   "Beginne Video zu importieren"
 
 oktolab_media.series_start_import:          "Sendereihenimport gestartet"
 oktolab_media.series_end_import:            "Sendereihenimport beendet"
@@ -381,6 +382,10 @@ oktolab_media.logbook_delete_sprite_start:    "Beginne bestehendes Sprite zu lö
 oktolab_media.logbook_delete_sprite_end:      "Bestehendes Sprite wurde gelöscht"
 oktolab_media.logbook_delete_posterframe_start: "Beginne bestehendes Posterframe zu löschen"
 oktolab_media.logbook_delete_posterframe_end:  "Bestehendes Posterframe löschen beendet"
+
+# Oktolab\MediaBundle\Model\ImportEpisodePosterframeJob.php
+oktolab_media.start_import_episode_posterframe: "Beginne Posterframe zu importieren"
+
 
 ## media Entity
 oktolab_media.media_status_choice:          "{0} Episodenformat warted darauf encodiert zu werden | {50} Episodenformat wird gerade umgerechnet | {100} Episodenformat wurde umgerechnet"
