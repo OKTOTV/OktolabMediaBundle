@@ -226,7 +226,6 @@ oktolab_media.media_index_sortby_updatedAt: "Aktualisiert am"
 
 oktolab_media.media_index_info_quality:     "Format"
 oktolab_media.media_index_info_episode:     "Episode"
-oktolab_media.media_index_info_progress:    "Fortschritt"
 oktolab_media.media_index_info_progress:    "Status"
 oktolab_media.media_index_info_createdAt:   "Angelegt am"
 oktolab_media.media_index_info_updatedAt:   "Aktualisiert am"
@@ -324,6 +323,7 @@ oktolab_media.episode_start_import:         "Episodenimport gestartet"
 oktolab_media.episode_end_import:           "Episodenimport beendet"
 oktolab_media.episode_import_error:         "Es ist ein Fehler beim Episodenimport aufgetreten"
 oktolab_media.start_import_episode_video:   "Beginne Video zu importieren"
+oktolab_media.end_import_episode_video:     "Video importieren beendet"
 
 oktolab_media.series_start_import:          "Sendereihenimport gestartet"
 oktolab_media.series_end_import:            "Sendereihenimport beendet"
@@ -343,7 +343,6 @@ oktolab_media.logbook_delete_media_start:   "Beginne Episodenformate zu löschen
 oktolab_media.logbook_delete_video_start:   "Beginne Episodendatei zu löschen"
 oktolab_media.logbook_delete_video_end:     "Episodendatei löschen beendet"
 oktolab_media.logbook_delete_media_end:     "Episodenformate löschen beendet"
-oktolab_media.logbook_delete_episode_end:   "Episode löschen beendet"
 
 # Oktolab\MediaBundle\Model\EncodeEpisodeJob.php
 oktolab_media.episode_start_encodevideo:            "Beginne Episode zu encodieren"
