@@ -9,7 +9,7 @@
                 displaytitle: false,
             {% endif %}
             playlist: [
-                {% for playlistitem in playlist.items %}
+                {% for playlistItem in playlist.items %}
                 {
                     image: "{{ playlistItem.episode.posterframe(true)|thumb(720,1280)}}",
                     title: "{{ playlistItem.episode.name }}",
@@ -30,7 +30,7 @@
                         {% endfor %}
                     ],
                     tracks: [
-                        {% for caption in playlistitem.episode.captions %}
+                        {% for caption in playlistItem.episode.captions %}
                             {
                                 file: "{{ url('oktolab_media_caption_for_episode', {'uniqID': caption.uniqID}) }}",
                                 label: "{{ caption.label }}",
