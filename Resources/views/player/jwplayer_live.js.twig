@@ -1,0 +1,25 @@
+<script src="{{ player_url|raw }}"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        var playerInstance = jwplayer("{{ player_id }}");
+        playerInstance.setup({
+            {% if displaytitle %}
+                displaytitle: true,
+            {% else %}
+                displaytitle: false,
+            {% endif %}
+            playlist: [{
+                {# image: "{{ stream.posterframe|thumb(720,1280) }}", #}
+                title: "{{ stream.name }}",
+                {% if stream.stereomode == 1 %}
+                    stereomode: 'monoscopic',
+                {% elseif stream.stereomode == 2 %}
+                    stereomode: 'stereoscopicTopBottom',
+                {% elseif stream.stereomode == 3 %}
+                    stereomode: 'stereoscopicLeftRight',
+                {% endif %}
+                file: "{{ stream|publicAdressForStream }}"
+            }]
+        });
+    });
+</script>

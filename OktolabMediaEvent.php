@@ -71,7 +71,27 @@ final class OktolabMediaEvent
 
     /**
      * Dispatched each time a new encode episode job is enqueued.
-     * usefull for logging stuff 
+     * usefull for logging stuff
      */
     const ENQUEUED_ENCODE_EPISODE = 'oktolab_media.enqueued_encode_episode';
+
+    // ============================== STREAM =================================
+
+    /**
+     * dispatched each time a stream successfully starts recording at the rtmp server
+     * contains the stream object
+     */
+    const STREAM_START_RECORDING = 'oktolab_media.stream_start_recording';
+
+    /**
+     * dispatched each time a stream succesffully ends recording at the rtmp server
+     * contains the stream object
+     */
+    const STREAM_END_RECORDING = 'oktolab_media.stream_end_recording';
+
+    /**
+     * dispatched each time a stream ends at the rtmp server.
+     * could potentially be because something went wrong.
+     */
+    const STREAM_ENDED = 'oktolab_media.stream_ended';
 }

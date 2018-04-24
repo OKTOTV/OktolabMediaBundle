@@ -96,6 +96,35 @@ oktolab_caption_new:
     path:       /oktolab_media/caption/new/{uniqID}
     defaults:   { _controller: OktolabMediaBundle:Caption:new }
 
+# Stream
+oktolab_media_stream_new:
+    path:       /oktolab_media/stream
+    defaults:   { _controller: OktolabMediaBundle:Stream:new }
+
+oktolab_media_stream_index:
+    path:       /oktolab_media/stream/index
+    defaults:   { _controller: OktolabMediaBundle:Stream:index }
+
+oktolab_media_stream_show:
+    path:       /oktolab_media/stream/show/{uniqID}
+    defaults:   { _controller: OktolabMediaBundle:Stream:show }
+
+oktolab_media_stream_edit:
+    path:       /oktolab_media/stream/edit/{uniqID}
+    defaults:   { _controller: OktolabMediaBundle:Stream:edit }
+
+oktolab_media_stream_record:
+    path:       /oktolab_media/stream/record
+    defaults:   { _controller: OktolabMediaBundle:Stream:record }
+
+oktolab_media_stream_redirect:
+    path:       /oktolab_media/stream/redirect
+    defaults:   { _controller: OktolabMediaBundle:Stream:redirect }
+
+oktolab_media_stream_drop:
+    path:       /oktolab_media/stream/drop
+    defaults:   { _controller: OktolabMediaBundle:Stream:drop }
+
 # keychain
 oktolab_media_list_keychains:
     path:       /oktolab_media/list_keychains
@@ -187,4 +216,16 @@ oktolab_media_embed_episode:
 oktolab_media_series_show_posterframe:
     path:       /oktolab_media/api/public/posterframe/series
     defaults:   { _controller: OktolabMediaBundle:PublicApi:showSeriesPosterframe }
+
+oktolab_media_check_streamstatus:
+    path:       /oktolab_media/api/public/check_streamstatus
+    defaults:   { _controller: OktolabMediaBundle:PublicApi:checkStreamStatus }
+
+oktolab_media_check_streamkey:
+    path:       /oktolab_media/api/public/check_streamkey
+    defaults:   { _controller: OktolabMediaBundle:PublicApi:checkStreamkey }
+
+oktolab_media_end_stream:
+    path:       /oktolab_media/api/public/end_stream
+    defaults:   { _controller: OktolabMediaBundle:PublicApi:endStream }
 # ------------------------------------------------------------------------------

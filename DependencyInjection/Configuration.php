@@ -30,6 +30,18 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('logo')->end()
                     ->end()
                 ->end()
+                ->scalarNode('stream_class')->isRequired()->end() // the class of your stream entity
+                ->scalarNode('default_streamserver')->defaultValue('server_1')->end() // the default server to use
+                ->arrayNode('streamservers')
+                    //->requiresAtLeastOneElement()
+                    ->prototype('array')
+                        ->children()
+                            ->scalarNode('player_url')->defaultValue('')->end() // public player url
+                            ->scalarNode('rtmp_url')->defaultValue('')->end()   // "private" rtmp server url
+                            ->scalarNode('rtmp_control')->defaultValue('')->end()        // app on the rtmp server to use
+                        ->end()
+                    ->end()
+                ->end()
                 ->scalarNode('player_type')->defaultValue('jwplayer')->end()
                 ->scalarNode('player_url')->isRequired()->end()
                 ->scalarNode('episode_class')->isRequired()->end()

@@ -215,9 +215,17 @@ class MediaService
 
     public function getSeries($uniqID)
     {
-        return $this->em->getRepository($this->series_class)->findByUniqID(
+        return $this->getSeriesRepo()->findByUniqID(
             $this->series_class,
             $uniqID
+        );
+    }
+
+    public function getSeriesByStreakey($streamkey)
+    {
+        return $this->getSeriesRepo()->findOneByStreamkey(
+            $this->series_class,
+            $streamkey
         );
     }
 

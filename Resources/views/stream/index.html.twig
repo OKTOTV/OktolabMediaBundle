@@ -1,0 +1,100 @@
+{%- extends "BprsStyleBundle::layout.html.twig" -%}
+
+{%- block nav_head -%}
+    {% include 'BprsStyleBundle::menu.html.twig' with {'selected': 'backend', 'dropdown': ''} %}
+{%- endblock -%}
+
+{%- block body_main -%}
+    <ul class="nav nav-tabs">
+        <li role="presentation">
+            <a href="{{ path('oktolab_series') }}">
+                {{ 'oktolab_media.series_index_header'|trans }}
+            </a>
+        </li>
+        <li role="presentation">
+            <a href="{{ path('oktolab_episode_index') }}">
+                {{ 'oktolab_media.episode_index_header'|trans }}
+            </a>
+        </li>
+        <li role="presentation">
+            <a href="{{ path('oktolab_media_index') }}">
+                {{ 'oktolab_media.media_index_header'|trans }}
+            </a>
+        </li>
+        <li role="presentation" class="active">
+            <a href="{{ path('oktolab_media_stream_index') }}">
+                {{ 'oktolab_media.stream_index_header'|trans }}
+            </a>
+        </li>
+    </ul>
+
+    <div class="page-header">
+        <p>
+            {{ 'oktolab_media.stream_index_total'|trans({'%streams%': streams.getTotalItemCount}) }}
+        </p>
+        <!-- Single button -->
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{ 'oktolab_media.stream_index_action_dropdown'|trans|raw }}
+            </button>
+            <ul class="dropdown-menu">
+                <li>
+                    <a href="{{ path('oktolab_media_stream_new') }}">
+                        {{ 'oktolab_media.stream_index_new'|trans|raw }}
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{ 'oktolab_media.stream_index_sort_dropdown'|trans|raw }}
+            </button>
+            <ul class="dropdown-menu">
+                <li{% if streams.isSorted('s.name') %} class="active"{% endif %}>{{ knp_pagination_sortable(streams, 'oktolab_media.stream_index_name'|trans, 's.name') }}</li>
+                <li{% if streams.isSorted('s.createdAt') %} class="active"{% endif %}>{{ knp_pagination_sortable(streams, 'oktolab_media.stream_index_createdAt'|trans, 's.createdAt', {'direction': 'desc'}) }}</li>
+                <li{% if streams.isSorted('s.updatedAt') %} class="active"{% endif %}>{{ knp_pagination_sortable(streams, 'oktolab_media.stream_index_updatedAt'|trans, 's.updatedAt', {'direction': 'desc'}) }}</li>
+                <li{% if streams.isSorted('s.uniqID') %} class="active"{% endif %}>{{ knp_pagination_sortable(streams, 'oktolab_media.stream_index_uniqID'|trans, 's.uniqID') }}</li>
+                <li{% if streams.isSorted('s.technical_status') %} class="active"{% endif %}>{{ knp_pagination_sortable(streams, 'oktolab_media.stream_index_technical_status'|trans, 's.technical_status') }}</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="navigation">
+        {{ knp_pagination_render(streams) }}
+    </div>
+    <div class="row">
+            {% for stream in streams %}
+                    <div class="col-md-12 col-lg-4">
+                        <div class="col-md-6">
+                            {# <a href="{{ path('oktolab_media_stream_show', {'uniqID': stream.uniqID}) }}">
+                                <img src="{{ stream.posterframe(true)|thumb(720,1280)}}" class="img-responsive" />
+                            </a> #}
+                        </div>
+                        <div class="col-md-6">
+                            <dl class="dl-horizontal">
+                                <dt>{{ 'oktolab_media.stream_index_name'|trans }}</dt>
+                                <dd><a href="{{ path('oktolab_media_stream_show', {'uniqID': stream.uniqID}) }}">{{ stream.name }}</a></dd>
+
+                                <dt>{{ 'oktolab_media.stream_index_createdAt'|trans }}</dt>
+                                <dd>{{ stream.createdAt|date('d.m.Y')}}</dd>
+
+                                <dt>{{ 'oktolab_media.stream_index_updatedAt'|trans }}</dt>
+                                <dd>{{ stream.updatedAt|date('H:i:s d.m.Y')}}</dd>
+
+                                <dt>{{ 'oktolab_media.episode_index_description'|trans }}</dt>
+                                <dd>
+                                    {% if stream.description|length > 400 %}
+                                        {{ stream.description|slice(0, 397) ~ '...'|nl2br }}
+                                    {% else %}
+                                        {{ stream.description|nl2br }}
+                                    {% endif %}
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+            {% endfor %}
+            </div>
+    <div class="navigation">
+        {{ knp_pagination_render(streams) }}
+    </div>
+{%- endblock -%}

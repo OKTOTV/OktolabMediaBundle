@@ -388,3 +388,30 @@ oktolab_media.start_import_episode_posterframe: "Beginne Posterframe zu importie
 
 ## media Entity
 oktolab_media.media_status_choice:          "{0} Episodenformat warted darauf encodiert zu werden | {50} Episodenformat wird gerade umgerechnet | {100} Episodenformat wurde umgerechnet"
+
+
+# Stream
+
+## new.html.twig
+oktolab_media.new_stream_header:       "Neuer Livestream"
+oktolab_media.stream_rtmp_server_label: "RTMP Serveradresse"
+oktolab_media.stream_rtmp_app_label:    "RTMP Server Applikation (meistens teil der Adresse)"
+oktolab_media.new_stream_button:        '<span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span> Stream anlegen'
+
+## show.html.twig
+oktolab_media.stream_show_back_to_index:    '<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Zurück zum Index'
+oktolab_media.stream_show_edit:             '<span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Streaminfo bearbeiten'
+oktolab_media.stream_info_rtmp_server:      "RTMP Serveradresse"
+oktolab_media.stream_info_rtmp_app:         "RTMP Applikation"
+oktolab_media.stream_info_technical_status: "Technischer Status"
+oktolab_media.stream_info_createdAt:        "Angelegt am"
+oktolab_media.stream_info_updatedAt:        "Zuletzt geändert am"
+oktolab_media.stream_show_prepareRTMPStream: "Der Server ist nun bereit deinen Stream zu empfangen. Trage die nachfolgende Adresse in deinen Encoder ein. Sobald der Server deinen Stream beginnt zu verarbeiten, wird automatisch eine Vorschau geladen."
+oktolab_media.show_start_recording:         '<span class="glyphicon glyphicon-record" aria-hidden="true"></span> Jetzt Aufnehmen'
+oktolab_media.show_end_stream:              '<span class="glyphicon glyphicon-stop" aria-hidden="true"></span> Stream beenden'
+
+## edit.html.twig
+oktolab_media.edit_stream_header:       "Livestream bearbeiten"
+oktolab_media.stream_edit_back_button:  "Abbrechen"
+oktolab_media.edit_stream_button:           '<span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span> Stream aktualisieren'
+oktolab_media.delete_stream_button:     '<span class="glyphicon glyphicon-trash" aria-hidden="true"> Löschen'

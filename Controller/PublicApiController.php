@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Oktolab\MediaBundle\Entity\Series;
 use Oktolab\MediaBundle\Entity\Episode;
-
+use Oktolab\MediaBundle\Entity\Stream;
 
 /**
  * @Route("/oktolab_media/api/public")
@@ -98,7 +98,7 @@ class PublicApiController extends Controller
     }
 
     /**
-     * TODO: oneOrNone result, respond with empy embed
+     * TODO: oneOrNone result, respond with empty embed
      * @Route("/embed/episode", name="oktolab_media_embed_episode")
      * @Method("GET")
      * @Template()
@@ -108,5 +108,74 @@ class PublicApiController extends Controller
         $uniqID = $request->query->get('uniqID');
         $episode = $this->get('oktolab_media')->getEpisode($uniqID);
         return ['episode' => $episode];
+    }
+
+    /**
+     * @Route("/check_streamstatus", name="oktolab_media_check_streamstatus")
+     * @Method("GET")
+     */
+    public function checkStreamStatusAction(Request $request)
+    {
+        $stream_service = $this->get('oktolab_media_stream');
+        $stream = $stream_service->getStream($request->query->get('name'));
+        if ($stream) {
+            return new Response($stream->getTechnicalStatus(), Response::HTTP_OK);
+        }
+        return new Response('', Response::HTTP_NOT_FOUND);
+    }
+
+    /**
+     * can be used to check if the rtmp stream of nginx is allowed to send
+     * @Route("/check_streamkey", name="oktolab_media_check_streamkey")
+     * @Method({"POST"})
+     */
+    public function checkStreamkeyAction(Request $request)
+    {
+        $streamkey = $request->get('name', false);
+        if ($streamkey === false) {
+            return new Response('', Response::HTTP_BAD_REQUEST);
+        }
+        $streamservice = $this->get('oktolab_media_stream');
+        $stream = $streamservice->getStream($streamkey);
+
+        if ($stream) {
+            $this->get('bprs_logbook')->info(
+                'oktolab_media.stream_checked_streamkey',
+                ['streamkey' => $streamkey], $stream->getUniqID());
+            $streamservice->setStreamStatus($stream, Stream::STATE_RECEIVING);
+            return new Response('', Response::HTTP_OK);
+        }
+
+        return new Response('', Response::HTTP_UNAUTHORIZED);
+    }
+
+    /**
+     * @Route("/end_stream", name="oktolab_media_end_stream")
+     * @Method("POST")
+     */
+    public function endStreamAction(Request $request)
+    {
+        # code...
+        // TODO: send out stream ended event (with series with streamkey)
+        // WORKER grab recorded streamfile, create episode, encode episode.
+        $streamkey = $request->get('name', false);
+        if ($streamkey === false) {
+            return new Response('', Response::HTTP_BAD_REQUEST);
+        }
+
+        $streamservice = $this->get('oktolab_media_stream');
+        $stream = $streamservice->getStream($streamkey);
+
+        if ($stream) {
+            $this->get('bprs_logbook')->info(
+                'oktolab_media.stream_end',
+                ['streamkey' => $streamkey],
+                $stream->getUniqID()
+            );
+            $streamservice->setStreamStatus($stream, Stream::STATE_ENDED);
+            return new Response('', Response::HTTP_OK);
+        }
+
+        return new Response('', Response::HTTP_UNAUTHORIZED);
     }
 }

@@ -45,6 +45,10 @@ class OktolabMediaExtension extends Extension
         $container->setParameter('oktolab_media.sprite_height', $config['sprite_height']);
         $container->setParameter('oktolab_media.sprite_interval', $config['sprite_interval']);
 
+        $container->setParameter('oktolab_media.streamservers', $config['streamservers']);
+        $container->setParameter('oktolab_media.default_streamserver', $config['default_streamserver']);
+        $container->setParameter('oktolab_media.stream_class', $config['stream_class']);
+
         $this->addApiUrlParameter($container, $config['api_urls']);
     }
 

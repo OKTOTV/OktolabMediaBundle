@@ -7,13 +7,15 @@ class PlayerExtension extends \Twig_Extension
     private $twig;
     private $player_url;
     private $origin;
+    private $streamservice;
 
-    public function __construct($twig, $player_url, $default_player, $origin)
+    public function __construct($twig, $player_url, $default_player, $origin, $streamservice)
     {
         $this->twig = $twig;
         $this->player_url = $player_url;
         $this->default_player = $default_player;
         $this->origin = $origin;
+        $this->streamservice = $streamservice;
     }
 
 
@@ -22,8 +24,54 @@ class PlayerExtension extends \Twig_Extension
             new \Twig_SimpleFunction('player', [$this,'player']),
             new \Twig_SimpleFunction('playlist', [$this,'playlist']),
             new \Twig_SimpleFunction('origin', [$this, 'origin']),
-            new \Twig_SimpleFunction('playerUrl', [$this, 'playerUrl'])
+            new \Twig_SimpleFunction('playerUrl', [$this, 'playerUrl']),
+            new \Twig_SimpleFunction('streamPlayer', [$this, 'streamPlayer'])
         );
+    }
+
+    public function getFilters()
+    {
+        return [
+            new \Twig_SimpleFilter('publicAdressForStream', [$this, 'publicAdressForStream']),
+            new \Twig_SimpleFilter('adressForStream', [$this, 'adressForStream'])
+        ];
+    }
+
+    public function streamPlayer($stream, $player_id = "player", $player_type = false, $displaytitle = false)
+    {
+        if (!$player_type) {
+            $player_type = $this->default_player;
+        }
+        switch ($player_type) {
+            case 'jwplayer':
+                return $this->twig->render(
+                    '@OktolabMedia/player/jwplayer_live.js.twig',
+                    [
+                        'stream' => $stream,
+                        'displaytitle' => $displaytitle,
+                        'player_url' => $this->player_url,
+                        'player_id' => $player_id
+                    ]);
+            default:
+                return $this->twig->render(
+                    '@OktolabMedia/player/jwplayer_live.js.twig',
+                    [
+                        'stream' => $stream,
+                        'displaytitle' => $displaytitle,
+                        'player_url' => $this->player_url,
+                        'player_id' => $player_id
+                    ]);
+        }
+    }
+
+    public function publicAdressForStream($stream)
+    {
+        return $this->streamservice->getPublicServeradress($stream);
+    }
+
+    public function adressForStream($stream)
+    {
+        return $this->streamservice->getServeradress($stream);
     }
 
     public function player($episode, $player_id = "player", $player_type = false, $displaytitle = false)

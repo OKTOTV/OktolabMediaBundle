@@ -1,0 +1,106 @@
+{% extends "BprsStyleBundle::layout.html.twig" %}
+
+{% block nav_head%}
+    {% include 'BprsStyleBundle::menu.html.twig' with {'selected': '', 'dropdown': ''} %}
+{% endblock %}
+
+{% block body_main %}
+    <div class="page-header">
+        <h1>{{ stream.name }}</h1>
+        <a href="{{ path('oktolab_media_stream_index') }}" class="btn btn-default">{{ 'oktolab_media.stream_show_back_to_index'|trans|raw }}</a>
+        <a href="{{ path('oktolab_media_stream_edit', {'uniqID': stream.uniqID}) }}" class="btn btn-default">{{ 'oktolab_media.stream_show_edit'|trans|raw }}</a>
+    </div>
+    <div class="row">
+        <div class="col-md-7">
+            {% if stream.technicalStatus == constant('Oktolab\\MediaBundle\\Entity\\Stream::STATE_SETUP') %}
+                {# stream is in setup. you'll need to send a stream to the rtmp server!#}
+                <p>{{ 'oktolab_media.stream_show_prepareRTMPStream'|trans }}</p>
+                <div class="well well-sm">
+                    {{ stream|adressForStream }}
+                </div>
+            {% elseif stream.technicalStatus <= constant('Oktolab\\MediaBundle\\Entity\\Stream::STATE_RECORDING') %}
+                <div id="player">
+                </div>
+                <div class="row">
+                    <button class="btn btn-primary start_record">{{ 'oktolab_media.show_start_recording'|trans|raw }}</button>
+                    <button class="btn btn-default end_stream">{{ 'oktolab_media.show_end_stream'|trans|raw }}</button>
+                </div>
+            {% elseif stream.technicalStatus == constant('Oktolab\\MediaBundle\\Entity\\Stream::STATE_ENDED') %}
+            {% endif %}
+            {# TODO: add server info where to stream to #}
+        </div>
+        <div class="col-md-5">
+            <dl class="dl-horizontal">
+                <dt>{{ 'oktolab_media.stream_info_rtmp_server'|trans }}</dt>
+                <dd>{{ stream|adressForStream }}</dd>
+
+                <dt>{{ 'oktolab_media.stream_info_updatedAt'|trans }}</dt>
+                <dd>{{ stream.updatedAt|date("d.m.Y H:i") }}</dd>
+
+                <dt>{{ 'oktolab_media.stream_info_createdAt'|trans }}</dt>
+                <dd>{{ stream.createdAt|date("d.m.Y H:i") }}</dd>
+
+                <dt>{{ 'oktolab_media.stream_info_technical_status'|trans }}</dt>
+                <dd>{{ stream.technicalStatus }}</dd>
+
+                <dt>{{ 'oktolab_media.stream_info_description'|trans }}</dt>
+                <dd>{{ stream.description|default('oktolab_media.show_stream_description_missing'|trans)|nl2br }}</dd>
+            </dl>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% if stream.technicalStatus == constant('Oktolab\\MediaBundle\\Entity\\Stream::STATE_SETUP') %}
+        <script type="text/javascript">
+        $(document).ready(function(event){
+            setInterval("checkStatus()", 5000);
+        });
+
+        function checkStatus() {
+            $.ajax({
+                url: "{{ url('oktolab_media_check_streamstatus', {'name': stream.uniqID}) }}",
+                success: function(data) {
+                    if (data == {{ constant('Oktolab\\MediaBundle\\Entity\\Stream::STATE_RECEIVING') }}) {
+                        location.reload();
+                    }
+                }
+            });
+        }
+        </script>
+    {% elseif stream.technicalStatus <= constant('Oktolab\\MediaBundle\\Entity\\Stream::STATE_RECORDING') %}
+        {{ streamPlayer(stream)|raw }}
+
+        <script type="text/javascript">
+            $(document).on('click', '.start_record', function() {
+                $.ajax({
+                    method: "GET",
+                    url: "{{ url('oktolab_media_stream_record') }}",
+                    data: {'uniqID': "{{stream.uniqID}}", 'start': "0"},
+                    success: function(data) {
+                        console.log(this);
+                        $(this).removeClass('start_record');
+                        $(this).addClass('end_record');
+                    }
+                });
+            });
+
+            $(document).on('click', '.end_record', function() {
+                $.ajax({
+                    method: "GET",
+                    url: "{{ url('oktolab_media_stream_record') }}",
+                    data: {'uniqID': "{{stream.uniqID}}", 'start': "0"},
+                    success: function(data) {
+                        $(this).addClass('start_record');
+                        $(this).removeClass('end_record');
+                    }
+                });
+            });
+
+            $(document).on('click', '.end_stream', function() {
+
+            });
+        </script>
+    {% endif %}
+{% endblock %}

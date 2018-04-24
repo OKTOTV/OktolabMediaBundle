@@ -35,11 +35,15 @@ services:
         class:      Oktolab\MediaBundle\Model\KeychainService
         arguments:  [ "@bprs_applink", "@jms_serializer", "%oktolab_media.serializing_schema%", "%oktolab_media.series_class%", "%oktolab_media.episode_class%"]
 
+    oktolab_media_stream:
+        class:      Oktolab\MediaBundle\Model\StreamService
+        arguments:  [ "%oktolab_media.stream_class%", "@event_dispatcher", "@doctrine.orm.entity_manager", "%oktolab_media.streamservers%", "%oktolab_media.default_streamserver%"]
+
     # TWIG Extension
     oktolab_media.twig_extension:
         class: Oktolab\MediaBundle\Twig\PlayerExtension
         public: false
-        arguments: [ "@twig", "%oktolab_media.player_url%", "%oktolab_media.player_type%", "@origin" ]
+        arguments: [ "@twig", "%oktolab_media.player_url%", "%oktolab_media.player_type%", "@origin", "@oktolab_media_stream" ]
         tags:
             - { name: twig.extension }
 
@@ -61,6 +65,12 @@ services:
     oktolab_media_api:
         class: Oktolab\MediaBundle\Model\ApiUrlService
         arguments: [ "@router", "%oktolab_media.api_urls%" ]
+
+    # forms
+    oktolab_media.stream_type:
+        class:  Oktolab\MediaBundle\Form\StreamType
+        arguments: [ "%oktolab_media.streamservers%" ]
+        tags: [form.type]
 
 # LifecycleEvents
 # cant inject specifig needed services due to

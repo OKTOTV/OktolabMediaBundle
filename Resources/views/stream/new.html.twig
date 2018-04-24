@@ -1,0 +1,17 @@
+{% extends "BprsStyleBundle::layout.html.twig" %}
+
+{% block nav_head%}
+    {% include 'BprsStyleBundle::menu.html.twig' with {'selected': 'oktolab_media', 'dropdown': ''} %}
+{% endblock %}
+
+{% block body_main %}
+    <div class="page-header">
+        <h1>{{ 'oktolab_media.new_stream_header'|trans }}</h1>
+    </div>
+
+    {{ form_start(form) }}
+        {{ form_errors(form) }}
+        {{ form_row(form.name) }}
+        {{ form_row(form.description) }}
+    {{ form_end(form) }}
+{% endblock %}
