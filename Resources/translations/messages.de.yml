@@ -268,6 +268,9 @@ oktolab_media_asset:                    "Datei"
 oktolab_media_asset_empty:              "Keine Datei vorhanden"
 oktolab_media_asset_adapter:            "Adapter"
 
+# media_for_episode.html.twig
+oktolab_media.media_for_episode_description:    %name% (%progress%%)
+
 # caption ----------------------------------------------------------------------
 oktolab_media.caption_new_button:       '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Neue Textspur'
 oktolab_media.new_caption_header:       "Neue Textspur"

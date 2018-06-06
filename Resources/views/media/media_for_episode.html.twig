@@ -1,6 +1,8 @@
 <div class="list-group">
     {% for media in medias %}
-        <a href="{{ path('oktolab_media_show_media', {'media': media.id })}}" class="list-group-item">{{ media.quality }}</a>
+        <a href="{{ path('oktolab_media_show_media', {'media': media.id })}}" class="list-group-item">
+            {{ 'oktolab_media.media_for_episode_description'|trans({'%name%': media.quality, '%progress%': media.progress}) }}
+        </a>
     {% endfor %}
     {% if medias is empty %}
         <a href="#">{{ 'oktolab_media_media_fore_episode_empty'|trans }}</a>

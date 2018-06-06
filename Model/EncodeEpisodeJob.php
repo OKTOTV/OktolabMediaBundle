@@ -445,6 +445,7 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
      * determines if the the audiotrack meets minimum standards to be encoded
      */
     private function audioCanBeEncoded($resolution, $metainfo) {
+        return true;
         return
             $resolution['audio_sample_rate'] >= $metainfo['sample_rate'] &&
             $resolution['audio_bitrate'] <= $metainfo['bit_rate']
@@ -525,6 +526,9 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
             }
             if ($stream['codec_type'] == "video") {
                 $metadata['video'] = $stream;
+                if (!array_key_exists('duration', $metadata['video'])) {
+                    $metadata['video']['duration'] = 0;
+                }
             }
         }
 

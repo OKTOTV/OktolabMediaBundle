@@ -217,7 +217,7 @@ class Episode implements EpisodeMergerInterface
 
     /**
      * the duration of the episode in seconds.milliseconds
-     * @ORM\Column(name="duration", type="integer", options={"default" = 0})
+     * @ORM\Column(name="duration", type="integer", options={"default" = 0}, nullable=true)
      */
     private $duration;
 
