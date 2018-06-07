@@ -1,6 +1,7 @@
 # OktolabMediaBundle
-In- and exportable media-metainformations with Api
+In- and exportable media-metainformations with Api. 
 
+Notice: Standalone, the OktolabMediaBundle isn't very useful. It is intended to be overwritten and extended. Check out the OktoMediaBundle (https://github.com/OKTOTV/OktoMediaBundle) for a more finished and ready to use Bundle.
 ## Installation
 ```
 composer require oktolab/media-bundle
