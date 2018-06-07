@@ -1,5 +1,5 @@
 # OktolabMediaBundle
-In- and exportable media-metainformations with RESTful Api
+In- and exportable media-metainformations with Api
 
 ## Installation
 ```
