@@ -27,10 +27,10 @@ orm:
         Oktolab\MediaBundle\Entity\EpisodeInterface: Okto\MediaBundle\Entity\Episode
 
 oktolab_media:
-    episode_class: "Your\Name\Space\For\Episode" #link to your Episode
-    series_class: "Your\Name\Space\For\Series" # link to your Series
+    episode_class: "Your\Name\Space\For\Episode" # namespace to your Episode
+    series_class: "Your\Name\Space\For\Series" # namespace to your Series
     asset_class: "Your\Name\Space\For\Asset" # see the BprsAssetBundle for more information!
-    keep_original: true # if you want to keep the original uploaded video
+    keep_original: true # if you want to keep the original uploaded video when encoding
     resolutions:
         720p: # your resolution
             name: 720p # name that can be displayed in your player/media
@@ -102,3 +102,4 @@ oktolab_media:
 ```
 You can always adapt and overwrite this Bundle AND the routing with Bundle Inheritance and an advanced routing loader
 This bundle comes with a predefined jms serializer configuration for series and episodes (and can be directly used with elastica bundle)
+Notice: Bundle Inheritance is deprecated starting with Symfony3. You can still overwrite any part of this Bundle (https://symfony.com/doc/3.4/bundles/override.html)
