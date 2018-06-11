@@ -221,7 +221,7 @@ class MediaService
         );
     }
 
-    public function getSeriesByStreakey($streamkey)
+    public function getSeriesByStreamkey($streamkey)
     {
         return $this->getSeriesRepo()->findOneByStreamkey(
             $this->series_class,
