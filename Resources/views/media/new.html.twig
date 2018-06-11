@@ -4,9 +4,14 @@
     {% include 'BprsStyleBundle::menu.html.twig' with {'selected': '', 'dropdown': ''} %}
 {% endblock %}
 
+{% block title %}
+    {{ 'oktolab_media_new_media_title'|trans({'%episode%': form.vars.value.episode, '%project%': name}) }}
+{% endblock %}
+
 {% block body_main %}
     <div class="page-header">
-        <h1>{{ 'oktolab_media_edit_media_header'|trans }}</h1>
+        <h1>{{ 'oktolab_media_new_media_header'|trans({'%episode%': form.vars.value.episode}) }}</h1>
+        <a href="{{ path('oktolab_episode_show', {'uniqID': form.vars.value.episode.uniqID}) }}" class="btn btn-default">{{ 'oktolab_media_new_media_back_to_episode'|trans|raw }}</a>
     </div>
 
 {{ form_start(form)}}

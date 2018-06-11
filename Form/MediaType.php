@@ -19,7 +19,16 @@ class MediaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('quality', TextType::class, ['label' => 'oktolab_media_quality_label'])
+            ->add(
+                'quality',
+                TextType::class,
+                [
+                    'label' => 'oktolab_media_quality_label',
+                    'attr' => [
+                        'placeholder' => 'oktolab_media_media_quality_placeholder'
+                    ]
+                ]
+            )
             ->add('public', CheckboxType::class, ['required' => false, 'label' => 'oktolab_media_public_label'])
             ->add('sortNumber', IntegerType::class, ['label' => 'oktolab_media_sortNumber_label'])
             ->add('progress', IntegerType::class, ['label' => 'oktolab_media_progress_label'])

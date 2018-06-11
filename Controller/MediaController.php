@@ -50,7 +50,7 @@ class MediaController extends Controller
     public function mediaForEpisodeAction($uniqID)
     {
         $episode = $this->get('oktolab_media')->getEpisode($uniqID);
-        return ['medias' => $episode->getMedia()];
+        return ['medias' => $episode->getMedia(), 'episode' => $episode];
     }
 
     /**

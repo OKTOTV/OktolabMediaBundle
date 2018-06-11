@@ -94,6 +94,7 @@ class Media
     public function __construct()
     {
         $this->status = $this::OKTOLAB_MEDIA_STATUS_MEDIA_TOPROGRESS;
+        $this->sortNumber = 0;
         $this->progress = 0;
     }
 

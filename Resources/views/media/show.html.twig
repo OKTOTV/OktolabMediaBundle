@@ -4,6 +4,10 @@
     {% include 'BprsStyleBundle::menu.html.twig' with {'selected': '', 'dropdown': ''} %}
 {% endblock %}
 
+{% block title %}
+    {{ 'oktolab_media_show_media_title'|trans({'%media%': media.quality, '%episode%': media.episode, '%project%': name}) }}
+{% endblock %}
+
 {% block body_main %}
     <div class="page-header">
         <h1><a href="{{ path('oktolab_episode_show', {'uniqID': media.episode.uniqID })}}">{{ media.episode.name }}</a></h1>
@@ -70,6 +74,10 @@
                     {{ media.asset.adapter }}
                 {% endif %}
             </td>
+        </tr>
+        <tr>
+            <td>{{ 'oktolab_media_asset_size'|trans }}</td>
+            <td>{{ media.asset|filesize }}</td>
         </tr>
     </table>
 {% endblock %}
