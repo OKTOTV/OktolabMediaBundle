@@ -44,7 +44,7 @@ oktolab_media.episode_index_isActiveChoice:     "{0} Nein | {1} Ja"
 
 ## episode new.html.twig
 oktolab_media.new_episode_header:           "Neue Episode"
-oktolab_media.new_episode_back_to_list:     "Zurück zu Sendereihen"
+oktolab_media.new_episode_back_to_list:     "Abbrechen"
 oktolab_media.new_episode_create_button:    "Episode anlegen"
 
 ## episode show.html.twig

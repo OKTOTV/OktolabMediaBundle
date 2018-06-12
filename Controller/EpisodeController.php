@@ -13,6 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Oktolab\MediaBundle\Entity\Episode;
 use Oktolab\MediaBundle\Form\EpisodeType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Bprs\AppLinkBundle\Entity\Keychain;
 use GuzzleHttp\Client;
 use Oktolab\MediaBundle\Model\MediaService;
@@ -33,7 +34,7 @@ class EpisodeController extends Controller
      */
     public function createAction(Request $request)
     {
-        $entity = new Episode();
+        $entity = $this->get('oktolab_media')->createEpisode();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
@@ -97,14 +98,14 @@ class EpisodeController extends Controller
      */
     private function createCreateForm(Episode $entity)
     {
-        $form = $this->createForm(new EpisodeType(), $entity, array(
+        $form = $this->createForm(EpisodeType::class, $entity, array(
             'action' => $this->generateUrl('oktolab_episode_create'),
             'method' => 'POST',
         ));
 
         $form->add(
             'submit',
-            'submit',
+            SubmitType::class,
             [
                 'label' => 'oktolab_media.new_episode_create_button',
                 'attr' => ['class' => 'btn btn-primary']

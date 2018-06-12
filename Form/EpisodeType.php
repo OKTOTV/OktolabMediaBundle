@@ -12,7 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Bprs\AssetBundle\Form\Type\AssetType;
-use Oktolab\Media\Entity\Episode;
+use Oktolab\MediaBundle\Entity\Episode;
 
 class EpisodeType extends AbstractType
 {
