@@ -22,7 +22,6 @@ class ImportEpisodePosterframeJob extends BprsContainerAwareJob
             if ($response->getStatusCode() == 200) {
                 $remote_asset = json_decode($response->getBody());
                 $asset = $asset_service->createAsset();
-                // $asset->setFilekey($this->args['key']);
                 $asset->setAdapter($cacheFS);
                 $asset->setName($remote_asset->name);
                 $asset->setMimetype($remote_asset->mimetype);
