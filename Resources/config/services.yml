@@ -34,6 +34,7 @@ services:
     oktolab_keychain:
         class:      Oktolab\MediaBundle\Model\KeychainService
         arguments:  [ "@bprs_applink", "@jms_serializer", "%oktolab_media.serializing_schema%", "%oktolab_media.series_class%", "%oktolab_media.episode_class%"]
+        public: true
 
     oktolab_media_stream:
         class:      Oktolab\MediaBundle\Model\StreamService
