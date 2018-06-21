@@ -171,6 +171,7 @@ oktolab_media.edit_series_button:       '<span class="glyphicon glyphicon-floppy
 oktolab_media.delete_series_button:     '<span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Sendereihe löschen'
 
 ## series show.html.twig
+oktolab_media.series_not_found:                     'Keine Sendereihe gefunden.'
 oktolab_media.series_show_actions:                  'Aktionen <span class="caret"></span>'
 oktolab_media.series_export_button:                 '<span class="glyphicon glyphicon-export" aria-hidden="true"></span> Exportieren'
 oktolab_media.series_show_api:                      '<span class="glyphicon glyphicon-link" aria-hidden="true"></span> API zugriff'
