@@ -28,56 +28,50 @@
             </ul>
         </div>
     </div>
-</div>
-<div class="container">
     <div class="navigation">
         {{ knp_pagination_render(medias) }}
     </div>
-    <div class="row">
-        {% for media in medias %}
-        <div class="col-md-12">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <a href="{{ path('oktolab_media_show_media', { 'media': media.id }) }}"><img src="{{ media.episode.posterframe|thumb(720,1280) }}" class="img-responsive center-block" /></a>
-                        </div>
-                        <div class="col-md-9">
-                            <dl class="dl-horizontal">
-                                <dt>{{ 'oktolab_media.media_index_info_quality'|trans }}</dt>
-                                <dd><a href="{{ path('oktolab_media_show_media', { 'media': media.id }) }}">{{ media.quality }}</a></dd>
+    {% for media in medias %}
+        <div class="row">
+            <div class="col-md-3">
+                <a href="{{ path('oktolab_media_show_media', { 'media': media.id }) }}"><img src="{{ media.episode.posterframe|thumb(720,1280) }}" class="img-responsive center-block" /></a>
+            </div>
+            <div class="col-md-9">
+                <dl class="dl-horizontal">
+                    <dt>{{ 'oktolab_media.media_index_info_quality'|trans }}</dt>
+                    <dd><a href="{{ path('oktolab_media_show_media', { 'media': media.id }) }}">{{ media.quality }}</a></dd>
 
-                                <dt>{{ 'oktolab_media.media_index_info_progress'|trans }}</dt>
-                                <dd><a href="{{ path('oktolab_media_show_media', { 'media': media.id }) }}">{{ media.progress }}</a></dd>
+                    <dt>{{ 'oktolab_media.media_index_info_progress'|trans }}</dt>
+                    <dd><a href="{{ path('oktolab_media_show_media', { 'media': media.id }) }}">{{ media.progress }}</a></dd>
 
-                                <dt>{{ 'oktolab_media.media_index_info_status'|trans }}</dt>
-                                <dd><a href="{{ path('oktolab_media_show_media', { 'media': media.id }) }}">{{ 'oktolab_media.media_index_status_choice'|transchoice(media.status) }}</a></dd>
+                    <dt>{{ 'oktolab_media.media_index_info_status'|trans }}</dt>
+                    <dd><a href="{{ path('oktolab_media_show_media', { 'media': media.id }) }}">{{ 'oktolab_media.media_index_status_choice'|transchoice(media.status) }}</a></dd>
 
-                                <dt>{{ 'oktolab_media.media_index_info_episode'|trans }}</dt>
-                                <dd>
-                                    {% if media.episode is not empty %}
-                                        <a href="{{ path('oktolab_episode_show', { 'uniqID': media.episode.uniqID }) }}">
-                                            {{ media.episode }}
-                                        </a>
-                                    {% endif %}
-                                </dd>
+                    <dt>{{ 'oktolab_media.media_index_info_episode'|trans }}</dt>
+                    <dd>
+                        {% if media.episode is not empty %}
+                            <a href="{{ path('oktolab_episode_show', { 'uniqID': media.episode.uniqID }) }}">
+                                {{ media.episode }}
+                            </a>
+                        {% endif %}
+                    </dd>
 
-                                <dt>{{ 'oktolab_media.media_index_info_size'|trans }}</dt>
-                                <dd>
-                                    {% if media.asset is not empty %}
-                                        {{ media.asset|filesize}}
-                                    {% endif %}
-                                </dd>
+                    <dt>{{ 'oktolab_media.media_index_info_size'|trans }}</dt>
+                    <dd>
+                        {% if media.asset is not empty %}
+                            {{ media.asset|filesize}}
+                        {% endif %}
+                    </dd>
 
-                                <dt>{{ 'oktolab_media.media_index_info_createdAt'|trans }}</dt>
-                                <dd>{{ media.createdAt|date('d.m.Y H:i:s') }}</dd>
+                    <dt>{{ 'oktolab_media.media_index_info_createdAt'|trans }}</dt>
+                    <dd>{{ media.createdAt|date('d.m.Y H:i:s') }}</dd>
 
-                                <dt>{{ 'oktolab_media.media_index_info_updatedAt'|trans }}</dt>
-                                <dd>{{ media.updatedAt|date('d.m.Y H:i:s') }}</dd>
-                            </dl>
-                        </div>
-                    </div>
+                    <dt>{{ 'oktolab_media.media_index_info_updatedAt'|trans }}</dt>
+                    <dd>{{ media.updatedAt|date('d.m.Y H:i:s') }}</dd>
+                </dl>
+            </div>
         </div>
-        {% endfor %}
-    </div>
+    {% endfor %}
     <div class="navigation">
         {{ knp_pagination_render(medias) }}
     </div>
