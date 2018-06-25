@@ -47,16 +47,23 @@ oktolab_media:
     resolutions:
         720p: # your resolution
             name: 720p # name that can be displayed in your player/media
+            type: "video" # video | audio  Audio isn't used very much, but should work
             sortNumber: 1 # sorts episode media by number
+            stereomode: 0 # 0 = regular video, 1 = monoscopic, 2 = top/bottom 3 = left/right
             video_codec: h264 # the name of the codec you want to use
             video_framerate: 50/1 # frames per second you want to use
             video_width: 1280 # pixel width of video
             video_height: 720 # pixel height of video
+            video_bitrate: 5000000 # maximum average bitrate to accept before reencoding
+            crf_rate: 23 # see h264 crf_rate at ffmpeg doku. the lower, the better the videoquality but the file will be bigger
+            preset: "veryslow" # ultrafast|superfast|veryfast|faster|fast|medium|slow|slower|veryslow|placebo gives the encoder more time to be efficient, resulting in a smaller file with equal quality. Increases the time it takes to encode by A LOT.
+            
             audio_codec: aac # codec you want to use for your audio
             audio_sample_rate: 48000 #sample rate for your audio
+            audio_bitrate: 256000 #bitrate for your audio
             container: mov # container you want to use
             public: true # flag for your media. can be used to show or hide media
-            
+            adapter: "video" # the filesystem adapter to use after encoding for this resolution
      #work in progress
     streamservers:
         player_url: #the public side stream CDN link
