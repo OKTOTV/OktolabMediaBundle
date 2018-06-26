@@ -46,7 +46,13 @@
                 <dd>{{ episode.onlineStart|date("d.m.Y H:i") }}</dd>
 
                 <dt>{{ 'oktolab_media.episode_info_onlineEnd'|trans}}</dt>
-                <dd>{% if episode.onlineEnd %}{{ episode.onlineEnd|date("d.m.Y H:i") }}{% endif %}</dd>
+                <dd>
+                    {% if episode.onlineEnd %}
+                        {{ episode.onlineEnd|date("d.m.Y H:i") }}
+                    {% else %}
+                        {{ 'oktolab_media.episode_info_onlineEnd_not_defined'|trans }}
+                    {% endif %}
+                </dd>
 
                 <dt>{{ 'oktolab_media.episode_info_firstranAt'|trans }}</dt>
                 <dd>{{ episode.firstranAt|date("d.m.Y H:i") }}</dd>

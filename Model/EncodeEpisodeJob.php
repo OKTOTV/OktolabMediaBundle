@@ -13,19 +13,19 @@ use Oktolab\MediaBundle\OktolabMediaEvent;
  */
 class EncodeEpisodeJob extends BprsContainerAwareJob {
     // VIDEO FILES
-    const ENCODING_OPTION_VIDEO_COPY_ALL   = 100; // the video and auido stream can be copied for this resolution
-    const ENCODING_OPTION_VIDEO_COPY_VIDEO = 90;  // the video stream can be copied, audio must be converted
-    const ENCODING_OPTION_VIDEO_COPY_AUDIO = 80;  // the video must be converted, audio can be copied
+    const ENCODING_OPTION_VIDEO_COPY_ALL    = 100; // the video and audio stream can be copied for this resolution
+    const ENCODING_OPTION_VIDEO_COPY_VIDEO  = 90;  // the video stream can be copied, audio must be converted
+    const ENCODING_OPTION_VIDEO_COPY_AUDIO  = 80;  // the video must be converted, audio can be copied
     const ENCODING_OPTION_VIDEO_ENCODE_BOTH = 70; // audio and video must be converted
 
-    const ENCODING_OPTION_VIDEO_ONLY_COPY  = 60;  // video file without audio. but the video can be copied
+    const ENCODING_OPTION_VIDEO_ONLY_COPY   = 60;  // video file without audio. but the video can be copied
     const ENCODING_OPTION_VIDEO_ONLY_ENCODE = 50; // video file without audio. the video stream must be encoded for this resolution
 
     // AUDIO FILES
-    const ENCODING_OPTION_AUDIO_COPY       = 40;  // audio file! stream can be copied
-    const ENCODING_OPTION_AUDIO_CONVERT    = 30;  // audio file! stream must be encoded
+    const ENCODING_OPTION_AUDIO_COPY        = 40;  // audio file! stream can be copied
+    const ENCODING_OPTION_AUDIO_CONVERT     = 30;  // audio file! stream must be encoded
 
-    const ENCODING_OPTION_NONE             = 0;   // no reliable information in file found
+    const ENCODING_OPTION_NONE              = 0;   // no reliable information in file found
 
     // Media types
     const MEDIA_TYPE_VIDEO                  = 20; // mediatype seems to be a videofile
@@ -345,7 +345,7 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
     /**
      * returns the possible encoding option to use the correct ffmpeg command
      */
-    public function detectEncodingOptionForResolution($format, $resolution, $metainfo) {
+    private function detectEncodingOptionForResolution($format, $resolution, $metainfo) {
         switch ($this->getMediaType($metainfo)) {
             case $this::MEDIA_TYPE_AUDIO:
                 $can_copy_audio = $this->audioCanBeCopied($resolution, $metainfo['audio']);
@@ -476,7 +476,7 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
      * MEDIA_TYPE_VIDEO if videofile,
      * MEDIA_TYPE_VIDEO_ONLY if videofile without soundstream.
      */
-    public function getMediaType($metainfo) {
+    private function getMediaType($metainfo) {
         // has audio stream and no video stream, or video stream is the album cover
         // is most probably an audio file
         if (
@@ -563,7 +563,11 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
         return $metadata;
     }
 
-    public function createNewCacheAssetForResolution($episode, $resolution) {
+    /**
+     * returns an empty asset to be used in an encoding situation.
+     * the filekey, mimetype and adapter are already set for ffmpeg
+     */
+    private function createNewCacheAssetForResolution($episode, $resolution) {
         $asset = $this->getContainer()->get('bprs.asset')->createAsset();
         $asset->setFilekey(
             sprintf('%s.%s',$asset->getFilekey(), $resolution['container'])
@@ -579,6 +583,11 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
         return $asset;
     }
 
+    /**
+     * if the configuration flag keep_original is set to false,
+     * the uploaded original video will be replaced with the media with
+     * the highest sortnumber directly after encoding
+     */
     private function deleteOriginalIfConfigured() {
         $episode = $this->getContainer()->get('oktolab_media')->getEpisode($this->args['uniqID']);
         if (!$this->getContainer()->getParameter('oktolab_media.keep_original')) {
@@ -599,6 +608,9 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName() {
         return 'Encode Video';
     }
