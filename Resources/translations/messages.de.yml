@@ -335,6 +335,7 @@ oktolab_media.episode_encode_error:             "Es ist ein Fehler beim Encodier
 oktolab_media.episode_encode_no_streams:        "Es konnte keine Streaminformation des Videos gelesen werden"
 oktolab_media.episode_encode_remove_old_media:  "Encodierte Medien werden bereinigt"
 oktolab_media.episode_cannot_encoderesolution:  "Das Format [%format%] kann nicht encodiert werden. Das Ausgangsformat ist wahrscheinlich zu klein."
+oktolab_media_media_type_video_detection:       "[%format%] Erkannte Infos: Kann Video kopieren: %can_copy_video%, Kann Video encodieren %can_encode_video%, Kann Audio kopieren %can_copy_audio%, Kann Audio encodieren %can_encode_audio%"
 
 oktolab_media.episode_start_finalize:       "Episode wird finalisiert"
 oktolab_media.episode_end_finalize:         "Episoden finalisierung beendet"

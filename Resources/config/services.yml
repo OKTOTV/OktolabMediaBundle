@@ -73,6 +73,11 @@ services:
         arguments: [ "%oktolab_media.streamservers%" ]
         tags: [form.type]
 
+    Oktolab\MediaBundle\Form\MediaType:
+        arguments: [ "@translator" ]
+        tags:
+            - { name: form.type }
+
 # LifecycleEvents
 # cant inject specifig needed services due to
 # https://github.com/doctrine/DoctrineBundle/issues/300

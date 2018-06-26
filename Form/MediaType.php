@@ -8,10 +8,19 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Bprs\AssetBundle\Form\Type\AssetType;
+use Oktolab\MediaBundle\Entity\Media;
 
 class MediaType extends AbstractType
 {
+    private $trans;
+
+    public function __construct($trans)
+    {
+        $this->trans = $trans;
+    }
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -29,6 +38,13 @@ class MediaType extends AbstractType
                     ]
                 ]
             )
+            ->add('status', ChoiceType::class, [
+                'choices' => [
+                    $this->trans->transchoice('oktolab_media.media_status_choice', Media::OKTOLAB_MEDIA_STATUS_MEDIA_TOPROGRESS) => Media::OKTOLAB_MEDIA_STATUS_MEDIA_TOPROGRESS,
+                    $this->trans->transchoice('oktolab_media.media_status_choice', Media::OKTOLAB_MEDIA_STATUS_MEDIA_INPROGRESS) => Media::OKTOLAB_MEDIA_STATUS_MEDIA_INPROGRESS,
+                    $this->trans->transchoice('oktolab_media.media_status_choice', Media::OKTOLAB_MEDIA_STATUS_MEDIA_FINISHED) => Media::OKTOLAB_MEDIA_STATUS_MEDIA_FINISHED
+                ]
+            ])
             ->add('public', CheckboxType::class, ['required' => false, 'label' => 'oktolab_media_public_label'])
             ->add('sortNumber', IntegerType::class, ['label' => 'oktolab_media_sortNumber_label'])
             ->add('progress', IntegerType::class, ['label' => 'oktolab_media_progress_label'])

@@ -67,7 +67,7 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
                     if ($resolution['stereomode'] == $episode->getStereomode()) {
                         $this->logbook->info('oktolab_media.episode_start_encoding_resolution', ["%format%" => $format], $this->args['uniqID']);
                         $cmd = false;
-                        $encoding_option = $this->detectEncodingOptionForResolution($resolution, $metainfo);
+                        $encoding_option = $this->detectEncodingOptionForResolution($format, $resolution, $metainfo);
                         switch ($encoding_option) {
                             case $this::ENCODING_OPTION_VIDEO_COPY_ALL:
                                 // video and audio stream can be copied
@@ -345,7 +345,7 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
     /**
      * returns the possible encoding option to use the correct ffmpeg command
      */
-    public function detectEncodingOptionForResolution($resolution, $metainfo) {
+    public function detectEncodingOptionForResolution($format, $resolution, $metainfo) {
         switch ($this->getMediaType($metainfo)) {
             case $this::MEDIA_TYPE_AUDIO:
                 $can_copy_audio = $this->audioCanBeCopied($resolution, $metainfo['audio']);
@@ -366,6 +366,18 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
                 $can_encode_audio = $this->audioCanBeEncoded($resolution, $metainfo['audio']);
                 $can_copy_video = $this->videoCanBeCopied($resolution, $metainfo['video']);
                 $can_encode_video = $this->videoCanBeEncoded($resolution, $metainfo['video']);
+
+                $this->logbook->info(
+                    'oktolab_media_media_type_video_detection',
+                    [
+                        '%can_copy_audio%' => (string)$can_copy_audio,
+                        '%can_encode_audio%' => (string)$can_encode_audio,
+                        '%can_copy_video%' => (string)$can_copy_video,
+                        '%can_encode_video%' => (string)$can_encode_video,
+                        '%format%' => $format
+                    ],
+                    $this->args['uniqID']
+                );
 
                 if ($can_copy_audio && $can_copy_video) {
                     return $this::ENCODING_OPTION_VIDEO_COPY_ALL;
@@ -435,9 +447,12 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
      */
     private function audioCanBeCopied($resolution, $metainfo) {
         return
+            // is the coded the same?
             $resolution['audio_codec'] == $metainfo['codec_name'] &&
+            // is the sample rate the same?
             $resolution['audio_sample_rate'] == $metainfo['sample_rate'] &&
-            $resolution['audio_bitrate'] >= $metainfo['bit_rate']
+            // is the audiobitrate in the file lower or equal to the format requirement?
+            $resolution['audio_bitrate'] >= $metainfo['max_bit_rate']
         ;
     }
 
@@ -445,10 +460,13 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
      * determines if the the audiotrack meets minimum standards to be encoded
      */
     private function audioCanBeEncoded($resolution, $metainfo) {
-        return true;
         return
+            // sample rate of file is better or as good as defined in resolution
             $resolution['audio_sample_rate'] >= $metainfo['sample_rate'] &&
-            $resolution['audio_bitrate'] <= $metainfo['bit_rate']
+            // bitrate of file is better or as good as defined in resolution
+            $resolution['audio_bitrate'] <= $metainfo['max_bit_rate'] ||
+            // or we allow worse quality to be used for encoding
+            filter_var($resolution['allow_lower_audio_bitrate'], FILTER_VALIDATE_BOOLEAN)
         ;
     }
 
@@ -459,6 +477,8 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
      * MEDIA_TYPE_VIDEO_ONLY if videofile without soundstream.
      */
     public function getMediaType($metainfo) {
+        // has audio stream and no video stream, or video stream is the album cover
+        // is most probably an audio file
         if (
             $metainfo['audio'] != false &&
             (
@@ -470,16 +490,24 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
             return $this::MEDIA_TYPE_AUDIO;
         }
 
+        // has video stream and audio stream, is probably a video file
         if ($metainfo['video'] != false && $metainfo['audio'] == false) {
             return $this::MEDIA_TYPE_VIDEO_ONLY;
         }
 
+        // has video stream but no audio stream, is probably a video without audio
         if ($metainfo['video'] != false && $metainfo['audio'] != false) {
             return $this::MEDIA_TYPE_VIDEO;
         }
+
+        // i have no idea what kind of media this is.
         return $this::MEDIA_TYPE_UNKNOWN;
     }
 
+    /**
+     * sets the episode state to encoded, adds finalize job
+     * and dispatch encoded_episode event
+     */
     private function finalizeEpisode($episode) {
         $event = new EncodedEpisodeEvent($episode);
         $this->getContainer()->get('event_dispatcher')->dispatch(
@@ -503,7 +531,7 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
     }
 
     /**
-     * extracts streaminformations of an episode from its video.
+     * extracts streaminformations of an episode from its media.
      * returns false if informations can't be extracted
      * returns array of video and audio info.
      */
