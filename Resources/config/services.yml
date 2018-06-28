@@ -1,16 +1,35 @@
 services:
     oktolab_media:
         class:  Oktolab\MediaBundle\Model\MediaService
-        arguments: [ "@bprs_jobservice", "@doctrine.orm.entity_manager", "@jms_serializer", "%oktolab_media.episode_class%", "%oktolab_media.series_class%", "%oktolab_media.asset_class%", "%bprs_asset.adapters%", "@bprs_applink", "@event_dispatcher", "%oktolab_media.worker_queue%" ]
+        arguments:
+            - "@bprs_jobservice"
+            - "@doctrine.orm.entity_manager"
+            - "@jms_serializer"
+            - "%oktolab_media.episode_class%"
+            - "%oktolab_media.series_class%"
+            - "%oktolab_media.asset_class%"
+            - "%bprs_asset.adapters%"
+            - "@bprs_applink"
+            - "@event_dispatcher"
+            - "%oktolab_media.worker_queue%"
         public: true
 
     oktolab_media_helper:
         class:  Oktolab\MediaBundle\Model\MediaHelperService
-        arguments: [ "@doctrine.orm.entity_manager", "@bprs.asset", "@bprs_logbook", "@event_dispatcher", "%bprs_asset.adapters%"]
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@bprs.asset"
+            - "@bprs_logbook"
+            - "@event_dispatcher"
+            - "%bprs_asset.adapters%"
 
     oktolab_sprite:
         class:  Oktolab\MediaBundle\Model\SpriteService
-        arguments: [ "@bprs.asset_helper", "%oktolab_media.sprite_height%", "%oktolab_media.sprite_width%", "%oktolab_media.sprite_interval%" ]
+        arguments:
+            - "@bprs.asset_helper"
+            - "%oktolab_media.sprite_height%"
+            - "%oktolab_media.sprite_width%"
+            - "%oktolab_media.sprite_interval%"
 
     origin:
         class: Oktolab\MediaBundle\Model\OriginService
@@ -22,7 +41,11 @@ services:
 
     oktolab_media.asset_listener:
         class: Oktolab\MediaBundle\Event\AssetListener
-        arguments: [ "@doctrine.orm.entity_manager", "%oktolab_media.episode_class%", "%oktolab_media.series_class%", "%oktolab_media.media_class%" ]
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "%oktolab_media.episode_class%"
+            - "%oktolab_media.series_class%"
+            - "%oktolab_media.media_class%"
         tags:
             - { name: kernel.event_listener, event: bprs_asset.delete, method: onAssetDelete }
 
@@ -33,12 +56,35 @@ services:
 
     oktolab_keychain:
         class:      Oktolab\MediaBundle\Model\KeychainService
-        arguments:  [ "@bprs_applink", "@jms_serializer", "%oktolab_media.serializing_schema%", "%oktolab_media.series_class%", "%oktolab_media.episode_class%"]
+        arguments:
+            - "@bprs_applink"
+            - "@jms_serializer"
+            - "%oktolab_media.serializing_schema%"
+            - "%oktolab_media.series_class%"
+            - "%oktolab_media.episode_class%"
         public: true
 
     oktolab_media_stream:
-        class:      Oktolab\MediaBundle\Model\StreamService
-        arguments:  [ "%oktolab_media.stream_class%", "@event_dispatcher", "@doctrine.orm.entity_manager", "%oktolab_media.streamservers%", "%oktolab_media.default_streamserver%"]
+        class: Oktolab\MediaBundle\Model\StreamService
+        arguments:
+            - "%oktolab_media.stream_class%"
+            - "@event_dispatcher"
+            - "@doctrine.orm.entity_manager"
+            - "%oktolab_media.streamservers%"
+            - "%oktolab_media.default_streamserver%"
+
+    oktolab_media_ffprobe:
+        class:  Oktolab\MediaBundle\Model\FFprobeService
+        arguments: [ "@bprs.asset_helper" ]
+        public: true
+
+    oktolab_media_ffmpeg:
+        class:      Oktolab\MediaBundle\Model\FFmpegService
+        arguments:
+            - "@bprs.asset_helper"
+            - "@bprs_logbook"
+            - "@doctrine.orm.entity_manager"
+        public: true
 
     # TWIG Extension
     oktolab_media.twig_extension:

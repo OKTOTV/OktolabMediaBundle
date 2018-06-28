@@ -96,7 +96,7 @@ class MediaHelperService {
         foreach ($episode->getMedia() as $media) {
             $this->logbook->info(
                 'oktolab_media.logbook_delete_media',
-                ['%format%', $media->getQuality()],
+                ['%format%' => $media->getQuality()],
                 $episode->getUniqID()
             );
 
