@@ -354,7 +354,11 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
     private function deleteOriginalIfConfigured() {
         $episode = $this->oktolab_media->getEpisode($this->args['uniqID']);
         if (!$this->getContainer()->getParameter('oktolab_media.keep_original')) {
-            $this->logbook->info('oktolab_media.episode_encode_remove_old_media', [], $this->args['uniqID']);
+            $this->logbook->info(
+                'oktolab_media.episode_encode_remove_old_media',
+                [],
+                $this->args['uniqID']
+            );
             if (count($episode->getMedia())) {
                 $this->getContainer()->get('oktolab_media_helper')->deleteVideo($episode);
                 $best_media = $episode->getMedia()[0];
