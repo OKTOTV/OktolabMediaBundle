@@ -23,7 +23,7 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
      * {@inheritdoc}
      */
     public function perform() {
-        $oktolab_media = $this->getContainer()->get('oktolab_media');
+        $this->oktolab_media = $this->getContainer()->get('oktolab_media');
         $episode = $this->oktolab_media->getEpisode($this->args['uniqID']);
         $this->logbook = $this->getContainer()->get('bprs_logbook');
 
