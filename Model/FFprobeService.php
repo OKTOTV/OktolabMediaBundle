@@ -246,6 +246,8 @@ class FFprobeService {
                 $metadata['video'] = $stream;
                 if (!array_key_exists('duration', $metadata['video'])) {
                     $metadata['video']['duration'] = 0;
+                } else {
+                    $episode->setDuration($metadata['video']['duration']);
                 }
             }
         }

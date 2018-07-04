@@ -105,12 +105,7 @@ class MediaController extends Controller
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
-                if ($form->get('submit')->isClicked()) {
-                    $em->persist($media);
-                    $em->flush();
-                    $this->get('session')->getFlashBag()->add('success', 'oktolab_media_success_update_media');
-                    return $this->redirect($this->generateUrl('oktolab_media_show_media', ['media' => $media->getId()]));
-                } else { //delete media
+                if ($form->get('delete')->isClicked()) { //delete media
                     $uniqID = $media->getEpisode()->getUniqID();
                     if ($media->getAsset()) {
                         if ($media->getAsset() !== $media->getEpisode()->getVideo()) {
@@ -123,6 +118,11 @@ class MediaController extends Controller
                     $em->flush();
                     $this->get('session')->getFlashBag()->add('success', 'oktolab_media_success_delete_media');
                     return $this->redirect($this->generateUrl('oktolab_episode_show', ['uniqID' => $uniqID]));
+                } else { //persist media
+                    $em->persist($media);
+                    $em->flush();
+                    $this->get('session')->getFlashBag()->add('success', 'oktolab_media_success_update_media');
+                    return $this->redirect($this->generateUrl('oktolab_media_show_media', ['media' => $media->getId()]));
                 }
             } else {
                 $this->get('session')->getFlashBag()->add('error', 'oktolab_media_error_update_media');

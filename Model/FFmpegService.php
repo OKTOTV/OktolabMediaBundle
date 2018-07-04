@@ -64,6 +64,9 @@ class FFmpegService {
                     list($hours,$minutes,$seconds) = explode(":",$matches[1]);
                     // calculate the duration in seconds. Used to calculate overall progress in percent.
                     $durationInSeconds = (($hours * 3600) + ($minutes * 60) + $seconds);
+                    $episode->setDuration($durationInSeconds);
+                    $this->em->persist($episode);
+                    $this->em->flush();
                 }
             }
 
