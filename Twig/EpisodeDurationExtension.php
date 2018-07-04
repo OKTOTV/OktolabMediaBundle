@@ -17,9 +17,9 @@ class EpisodeDurationExtension extends \Twig_Extension
         $seconds = ($duration - $hours*3600 - $minutes*60);
 
         if ($hours) {
-            return sprintf("%s:%s:%s", $hours, $minutes, $seconds);
+            return sprintf("%02d:%02d:%02d", $hours, $minutes, $seconds);
         }
-        return sprintf("%s:%s", $minutes, $seconds);
+        return sprintf("%02d:%02d", $minutes, $seconds);
     }
 
     public function getName() {
