@@ -5,9 +5,9 @@ namespace Oktolab\MediaBundle\Twig;
 class EpisodeDurationExtension extends \Twig_Extension
 {
     public function getFilters() {
-        return array(
+        return [
             new \Twig_SimpleFilter('duration', [$this,'duration'])
-        );
+        ];
     }
 
     public function duration($duration)

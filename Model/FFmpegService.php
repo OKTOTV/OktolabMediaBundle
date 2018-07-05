@@ -58,6 +58,7 @@ class FFmpegService {
             $chunk = fread($fp, 1024);
 
             // try to get the duration information at the beginning of the ffmpeg output.
+            // it is important to know how long an episode is for future jobs and percentage calculations.
             if (!$durationInSeconds) {
                 preg_match("/Duration: (.*?), start:/", $chunk, $matches);
                 if (array_key_exists(1, $matches)) {

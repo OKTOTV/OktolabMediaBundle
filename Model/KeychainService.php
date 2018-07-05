@@ -63,7 +63,7 @@ class KeychainService {
             ]
         );
 
-        $episode = $this->jms_serializer->deserialize($response->getBody(), $this->episode_class, 'json');
+        $episode = $this->jms_serializer->deserialize((string)$response->getBody(), $this->episode_class, 'json');
         return $episode;
     }
 
