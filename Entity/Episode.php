@@ -621,7 +621,6 @@ class Episode implements EpisodeMergerInterface
         $this->name = $episode->getName();
         $this->description = $episode->getDescription();
         $this->uniqID = $episode->getUniqID();
-        $this->isActive = $episode->getIsActive();
         $this->onlineStart = $episode->getOnlineStart();
         $this->onlineEnd = $episode->getOnlineEnd();
         $this->firstranAt = $episode->getFirstranAt();
