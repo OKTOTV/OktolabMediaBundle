@@ -40,9 +40,21 @@ class MediaService
     private $adapters; // the adapter paths to save the assets to
     private $applinkservice; // service for api urls
     private $dispatcher; // event dispatcher
-    private $worker_queue;
+    private $worker_queue; // the default worker queue
+    private $sprite_worker_queue; // worker queue for sprites
 
-    public function __construct($jobService, $entity_manager, $serializer, $episode_class, $series_class, $asset_class, $adapters, $applinkservice, $dispatcher, $worker_queue)
+    public function __construct(
+        $jobService,
+        $entity_manager,
+        $serializer,
+        $episode_class,
+        $series_class,
+        $asset_class,
+        $adapters,
+        $applinkservice,
+        $dispatcher,
+        $worker_queue
+        $sprite_worker_queue)
     {
         $this->jobService = $jobService;
         $this->em = $entity_manager;
@@ -54,6 +66,7 @@ class MediaService
         $this->applinkservice = $applinkservice;
         $this->dispatcher = $dispatcher;
         $this->worker_queue = $worker_queue;
+        $this->sprite_worker_queue = $sprite_worker_queue;
     }
 
     public function addEncodeEpisodeJob($uniqID, $worker_queue = false, $first = false)
@@ -133,6 +146,11 @@ class MediaService
 
     public function addGenerateThumbnailSpriteJob($uniqID, $worker_queue = false, $first = false)
     {
+        // if no queue given, use the queue for sprite jobs
+        if (!$worker_queue) {
+            $worker_queue = $this->sprite_worker_queue;
+        }
+
         $this->jobService->addJob(
             "Oktolab\MediaBundle\Model\GenerateThumbnailSpriteJob",
             ['uniqID' => $uniqID],
