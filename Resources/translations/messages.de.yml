@@ -53,6 +53,7 @@ oktolab_media.episode_show_actions:                 'Aktionen <span class="caret
 oktolab_media.episode_show_api:                     '<span class="glyphicon glyphicon-link" aria-hidden="true"></span> API zugriff'
 oktolab_media.episode_edit_button:                  '<span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Bearbeiten'
 oktolab_media.show_episode_export:                  '<span class="glyphicon glyphicon-export" aria-hidden="true"></span> Exportieren'
+oktolab_media.show_episode_finalize:                '<span class="glyphicon glyphicon-flag" aria-hidden="true"></span> Finalisieren'
 oktolab_media.episode_download_video_button:        '<span class="glyphicon glyphicon-film" aria-hidden="true"></span> Video'
 oktolab_media.episode_download_posterframe_button:  '<span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Posterframe'
 oktolab_media_info_for_episode_header:              "Informationen"
@@ -75,6 +76,7 @@ oktolab_media.episode_add_new_media:                "<span class='glyphicon glyp
 oktolab_media.episode_captions_header:              "Textspuren"
 oktolab_media.episode_show_captions_add:            '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Neue Textspur hinzufügen'
 oktolab_media.episode_show_tags_edit:               '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Schlagwörter bearbeiten'
+oktolab_media.episode_finalize_info:                "Episode zur Überprüfung eingereiht"
 
 ## episode export.html.twig
 oktolab_media.episode_export_show_button:       "<span class='glyphicon glyphicon-arrow-left'></span> Zurück zur Ansicht"
@@ -254,8 +256,8 @@ oktolab_media_error_create_media:       "Media konnte nicht angelegt werden"
 oktolab_media_edit_media_title:          "Format %media% bearbeiten (%episode%) | %project%"
 oktolab_media_edit_media_header:        "Episodenformat bearbeiten"
 oktolab_media_edit_media_back_to_episode: '<span class="glyphicon glyphicon-arrow-left"></span> Zurück zur Episode'
-oktolab_media_delete_media_button:      "Media löschen"
-oktolab_media_edit_media_button:        "Änderungen speichern"
+oktolab_media_delete_media_button:      '<span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Media löschen'
+oktolab_media_edit_media_button:        '<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Änderungen speichern'
 oktolab_media_success_update_media:     "Media erfolgreich aktualisiert"
 oktolab_media_success_delete_media:     "Media erfolgreich gelöscht"
 oktolab_media_error_update_media:       "Media konnte nicht aktualisiert werden"

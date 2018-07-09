@@ -134,6 +134,49 @@ class EpisodeController extends Controller
     }
 
     /**
+     * @Route("/finalize", name="oktolab_episode_finalize")
+     * @Method({"GET"})
+     */
+    public function finalizeEpisodeAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $uniqID = $request->query->get('uniqID', false);
+        if ($uniqID) {
+            $oktolab_media = $this->get('oktolab_media');
+            $episode = $oktolab_media->getEpisode($uniqID);
+            if ($episode) {
+                $oktolab_media->addFinalizeEpisodeJob($uniqID, false, true);
+                $this->get('session')->getFlashBag()->add(
+                    'info',
+                    'oktolab_media.episode_finalize_info'
+                );
+                return $this->redirect(
+                    $this->generateUrl(
+                        'oktolab_episode_show',
+                        ['uniqID' => $uniqID]
+                    )
+                );
+            } else {
+                $this->get('session')->getFlashBag()->add(
+                    'info',
+                    'oktolab_media.episode_not_found_info'
+                );
+            }
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                'info',
+                'oktolab_media.episode_not_found_info'
+            );
+        }
+
+        return $this->redirect(
+            $this->generateUrl(
+                'oktolab_episode_index'
+            )
+        );
+    }
+
+    /**
      * Finds and displays a Episode entity.
      *
      * @Route("/{uniqID}", name="oktolab_episode_show")

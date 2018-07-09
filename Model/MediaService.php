@@ -159,6 +159,20 @@ class MediaService
         );
     }
 
+    public function addFinalizeEpisodeJob($uniqID, $worker_queue = false, $first = false)
+    {
+        if (!$worker_queue) {
+            $worker_queue = $this->worker_queue;
+        }
+
+        $this->jobService->addJob(
+            "Oktolab\MediaBundle\Model\FinalizeVideoJob",
+            ['uniqID' => $uniqID],
+            $worker_queue,
+            $first
+        );
+    }
+
     public function addReadPermission(Keychain $keychain)
     {
         if (!in_array($this::ROLE_READ, $keychain->getRoles())) {

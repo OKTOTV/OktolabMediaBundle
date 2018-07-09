@@ -98,8 +98,9 @@ class MediaController extends Controller
     public function editAction(Request $request, Media $media)
     {
         $form = $this->createForm(MediaType::class, $media);
-        $form->add('delete', SubmitType::class, ['label' => 'oktolab_media_delete_media_button', 'attr' => ['class' => 'btn btn-danger']]);
         $form->add('submit', SubmitType::class, ['label' => 'oktolab_media_edit_media_button', 'attr' => ['class' => 'btn btn-primary']]);
+        $form->add('delete', SubmitType::class, ['label' => 'oktolab_media_delete_media_button', 'attr' => ['class' => 'btn btn-danger']]);
+
 
         if ($request->getMethod() == "POST") { //sends form
             $form->handleRequest($request);
