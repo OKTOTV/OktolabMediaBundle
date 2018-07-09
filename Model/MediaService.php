@@ -53,7 +53,7 @@ class MediaService
         $adapters,
         $applinkservice,
         $dispatcher,
-        $worker_queue
+        $worker_queue,
         $sprite_worker_queue)
     {
         $this->jobService = $jobService;
