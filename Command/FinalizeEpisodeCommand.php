@@ -20,16 +20,16 @@ class FinalizeEpisodeCommand extends ContainerAwareCommand {
         $this
             ->setName('oktolab:media:finalize_episode')
             ->setDescription('Finalizes an episode')
-            ->addArgument('uniqID', InputArgument::REQUIRED, 'the uniqID of your episode');
+            ->addArgument('uniqID', InputArgument::REQUIRED, 'the uniqID of your episode')
+            ->addOption('next', null, InputOption::VALUE_NONE, 'if you want to enqueue as next job instead of last');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->getContainer()->get('bprs_jobservice')->addJob(
-        'Oktolab\MediaBundle\Model\FinalizeVideoJob',
-            [
-                'uniqID'=> $input->getArgument('uniqID')
-            ]
+        $this->getContainer()->get('oktolab_media')->addFinalizeEpisodeJob(
+            $input->getArgument('uniqID'),
+            false,
+            $input->getOption('next')
         );
     }
 }
