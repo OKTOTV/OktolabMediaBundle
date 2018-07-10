@@ -301,8 +301,8 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
     }
 
     /**
-     * sets the episode state to encoded, adds finalize job
-     * and dispatch encoded_episode event
+     * adds finalize job
+     * and dispatches encoded_episode event
      */
     private function finalizeEpisode($episode) {
         $event = new EncodedEpisodeEvent($episode);
@@ -311,12 +311,11 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
             $event
         );
 
-        $this->oktolab_media->setEpisodeStatus(
+        $this->oktolab_media->addFinalizeEpisodeJob(
             $episode->getUniqID(),
-            Episode::STATE_IN_FINALIZE_QUEUE
+            false,
+            true
         );
-
-        $this->oktolab_media->addFinalizeEpisodeJob($uniqID, false, true);
     }
 
     /**

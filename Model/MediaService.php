@@ -165,6 +165,11 @@ class MediaService
             $worker_queue = $this->worker_queue;
         }
 
+        $this->setEpisodeStatus(
+            $uniqID,
+            Episode::STATE_IN_FINALIZE_QUEUE
+        );
+
         $this->jobService->addJob(
             "Oktolab\MediaBundle\Model\FinalizeVideoJob",
             ['uniqID' => $uniqID],
