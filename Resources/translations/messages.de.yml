@@ -138,7 +138,7 @@ oktolab_media.show_episode_add_to_encode_queue:         '<span class="glyphicon 
 oktolab_media.show_episode_add_to_encode_queue_next:    '<span class="glyphicon glyphicon-compressed" aria-hidden="true"></span> Als nächstes Encodieren'
 oktolab_media.show_episode_description_missing:         "Keine Beschreibung verfügbar"
 oktolab_media.show_episode_technical_state:             "Technischer Status"
-oktolab_media.show_episode_technical_state_choice:      "[0, 9] Nicht Bereit. Keine Videodatei |[10, 19] Episode in Queue |[20, 29] Episode wird importiert |[30,39] Medien in Queue | {40} Medien werden Encodiert |[41, 44] Episode besitzt kein Video zum Encodieren |[45, 46] Umrechnung fehlgeschlagen |{47} In Finalizierungsqueue |{48} Wird Finalisiert |{49} Eine oder mehrere Medien konnten nicht geprüft werden |{50} Episode bereit"
+oktolab_media.show_episode_technical_state_choice:      "[0, 9] Nicht Bereit. Keine Videodatei |[10, 19] Episode in Queue |[20, 29] Episode wird importiert |[30,39] Medien in Queue | {40} Medien werden Encodiert |[41, 44] Episode besitzt kein Video zum Encodieren |[45, 46] Umrechnung fehlgeschlagen |{47} In Finalizierungsqueue |{48} Wird Finalisiert |{49} Prüfung der Medien fehlgeschlagen |{50} Episode bereit"
 oktolab_media.reimport_episode:                         '<span class="glyphicon glyphicon-import" aria-hidden="true"></span> Episode erneut importieren'
 oktolab_media.reimport_episode_overwrite:               '<span class="glyphicon glyphicon-import" aria-hidden="true"></span> Episode importieren und überschreiben'
 oktolab_media.show_episode_caption_list_entry:          '<span class="glyphicon glyphicon-subtitles" aria-hidden="true"></span> %caption%'
