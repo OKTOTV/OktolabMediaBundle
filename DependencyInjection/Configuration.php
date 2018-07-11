@@ -56,6 +56,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('serializing_schema')->end()
                 ->scalarNode('worker_queue')->defaultValue('oktolab_media')->end()
                 ->scalarNode('sprite_worker_queue')->defaultValue('oktolab_media_sprite')->end()
+                ->scalarNode('finalize_worker_queue')->defaultValue('oktolab_media_finalize')->end()
                 ->integerNode('sprite_height')->defaultValue(180)->end()
                 ->integerNode('sprite_width')->defaultValue(320)->end()
                 ->integerNode('sprite_interval')->defaultValue(5)->end()

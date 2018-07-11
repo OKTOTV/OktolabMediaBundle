@@ -40,6 +40,7 @@ class OktolabMediaExtension extends Extension
         $container->setParameter('oktolab_media.serializing_schema', $config['serializing_schema']);
         $container->setParameter('oktolab_media.worker_queue', $config['worker_queue']);
         $container->setParameter('oktolab_media.sprite_worker_queue', $config['sprite_worker_queue']);
+        $container->setParameter('oktolab_media.finalize_worker_queue', $config['finalize_worker_queue']);
 
         $container->setParameter('oktolab_media.sprite_width', $config['sprite_width']);
         $container->setParameter('oktolab_media.sprite_height', $config['sprite_height']);

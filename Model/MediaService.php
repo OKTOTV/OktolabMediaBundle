@@ -42,6 +42,7 @@ class MediaService
     private $dispatcher; // event dispatcher
     private $worker_queue; // the default worker queue
     private $sprite_worker_queue; // worker queue for sprites
+    private $finalize_worker_queue; // worker  queue for finalize jobs
 
     public function __construct(
         $jobService,
@@ -54,7 +55,8 @@ class MediaService
         $applinkservice,
         $dispatcher,
         $worker_queue,
-        $sprite_worker_queue)
+        $sprite_worker_queue,
+        $finalize_worker_queue)
     {
         $this->jobService = $jobService;
         $this->em = $entity_manager;
@@ -67,6 +69,7 @@ class MediaService
         $this->dispatcher = $dispatcher;
         $this->worker_queue = $worker_queue;
         $this->sprite_worker_queue = $sprite_worker_queue;
+        $this->finalize_worker_queue = $finalize_worker_queue;
     }
 
     public function addEncodeEpisodeJob($uniqID, $worker_queue = false, $first = false)
@@ -162,7 +165,7 @@ class MediaService
     public function addFinalizeEpisodeJob($uniqID, $worker_queue = false, $first = false)
     {
         if (!$worker_queue) {
-            $worker_queue = $this->worker_queue;
+            $worker_queue = $this->finalize_worker_queue;
         }
 
         $this->setEpisodeStatus(

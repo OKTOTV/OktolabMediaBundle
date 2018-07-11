@@ -13,6 +13,7 @@ services:
             - "@event_dispatcher"
             - "%oktolab_media.worker_queue%"
             - "%oktolab_media.sprite_worker_queue%"
+            - "%oktolab_media.finalize_worker_queue%"
         public: true
 
     oktolab_media_helper:
