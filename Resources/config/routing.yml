@@ -82,6 +82,10 @@ oktolab_media_progress_media:
     path:       /oktolab_media/media/{media}/progress
     defaults:   { _controller: OktolabMediaBundle:Media:progress }
 
+oktolab_media_set_as_master:
+    path:       /oktolab_media/media/{media}/set_as_master
+    defaults:   { _controller: OktolabMediaBundle:Media:setAsMaster }
+
 # Caption
 oktolab_caption_index:
     path:       /oktolab_media/caption/

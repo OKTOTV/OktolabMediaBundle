@@ -134,6 +134,36 @@ class MediaController extends Controller
     }
 
     /**
+     * @Route("/{media}/set_as_master", name="oktolab_media_set_as_master")
+     */
+    public function setAsMasterAction(Request $request, Media $media)
+    {
+        if ($media->getProgress() == 100) {
+            $helper = $this->get('oktolab_media_helper');
+            $helper->deleteVideo($media->getEpisode());
+            $media->getEpisode()->setVideo($media->getAsset());
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($media->getEpisode());
+            $em->flush();
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                'oktolab_media_success_set_media_as_video'
+            );
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                'oktolab_media_error_set_media_as_video'
+            );
+        }
+        return $this->redirect(
+            $this->generateUrl(
+                'oktolab_media_show_media',
+                ['media' => $media->getId()]
+            )
+        );
+    }
+
+    /**
      * @Route("/{media}/progress", name="oktolab_media_progress_media")
      * @Template()
      */

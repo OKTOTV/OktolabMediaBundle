@@ -10,10 +10,48 @@
 
 {% block body_main %}
     <div class="page-header">
-        <h1><a href="{{ path('oktolab_episode_show', {'uniqID': media.episode.uniqID })}}">{{ media.episode.name }}</a></h1>
-        <a href="{{ path('oktolab_media_edit_media', {'media': media.id}) }}" class="btn btn-default">{{ 'oktolab_media_edit_media'|trans|raw }}</a>
-        <a href="{{ path('oktolab_media_new_media', {'uniqID': media.episode.uniqID}) }}" class="btn btn-default">{{ 'oktolab_media_create_new_media'|trans|raw }}</a>
+        <h1>
+            <a href="{{ path('oktolab_episode_show', {'uniqID': media.episode.uniqID })}}">
+                {{ media.episode.name }}
+            </a>
+        </h1>
+        <a href="{{ path('oktolab_episode_show', {'uniqID': media.episode.uniqID })}}" class="btn btn-default">
+            {{ 'oktolab_media_show_episode'|trans|raw }}
+        </a>
+
+        <!-- Single button -->
+        <div class="btn-group">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{ 'oktolab_media_show_dropdown'|trans|raw }}
+          </button>
+          <ul class="dropdown-menu">
+              <li>
+                  <a href="{{ path('oktolab_media_edit_media', {'media': media.id}) }}">
+                      {{ 'oktolab_media_edit_media'|trans|raw }}
+                  </a>
+              </li>
+              <li>
+                  <a href="{{ path('oktolab_media_new_media', {'uniqID': media.episode.uniqID}) }}">
+                      {{ 'oktolab_media_create_new_media'|trans|raw }}
+                  </a>
+              </li>
+              {% if media.asset is not empty %}
+                  <li>
+                      <a href="{{ path('bprs_asset_show', {'filekey': media.asset.filekey}) }}">
+                          {{ 'oktolab_media_show_asset'|trans|raw }}
+                      </a>
+                  </li>
+              {% endif %}
+              <li role="separator" class="divider"></li>
+              <li>
+                  <a href="{{ path('oktolab_media_set_as_master', {'media': media.id}) }}">
+                      {{ 'oktolab_media_set_as_master'|trans|raw }}
+                  </a>
+              </li>
+          </ul>
+        </div>
     </div>
+
     <table class="table">
         <tr>
             <td>{{'oktolab_media_quality_label'|trans}}</td>

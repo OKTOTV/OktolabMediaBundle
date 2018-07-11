@@ -138,7 +138,7 @@ oktolab_media.show_episode_add_to_encode_queue:         '<span class="glyphicon 
 oktolab_media.show_episode_add_to_encode_queue_next:    '<span class="glyphicon glyphicon-compressed" aria-hidden="true"></span> Als nächstes Encodieren'
 oktolab_media.show_episode_description_missing:         "Keine Beschreibung verfügbar"
 oktolab_media.show_episode_technical_state:             "Technischer Status"
-oktolab_media.show_episode_technical_state_choice:      "[0, 9] Nicht Bereit. Keine Videodatei |[10, 19] Episode in Queue |[20, 29] Episode wird importiert |[30,39] Medien in Queue | {40} Medien werden Encodiert |[41, 46] Episode besitzt kein Video zum Encodieren |{47} In Finalizierungsqueue |{48} Wird Finalisiert |{49} Eine oder mehrere Medien konnten nicht geprüft werden |{50} Episode bereit"
+oktolab_media.show_episode_technical_state_choice:      "[0, 9] Nicht Bereit. Keine Videodatei |[10, 19] Episode in Queue |[20, 29] Episode wird importiert |[30,39] Medien in Queue | {40} Medien werden Encodiert |[41, 44] Episode besitzt kein Video zum Encodieren |[45, 46] Umrechnung fehlgeschlagen |{47} In Finalizierungsqueue |{48} Wird Finalisiert |{49} Eine oder mehrere Medien konnten nicht geprüft werden |{50} Episode bereit"
 oktolab_media.reimport_episode:                         '<span class="glyphicon glyphicon-import" aria-hidden="true"></span> Episode erneut importieren'
 oktolab_media.reimport_episode_overwrite:               '<span class="glyphicon glyphicon-import" aria-hidden="true"></span> Episode importieren und überschreiben'
 oktolab_media.show_episode_caption_list_entry:          '<span class="glyphicon glyphicon-subtitles" aria-hidden="true"></span> %caption%'
@@ -262,6 +262,9 @@ oktolab_media_success_update_media:     "Media erfolgreich aktualisiert"
 oktolab_media_success_delete_media:     "Media erfolgreich gelöscht"
 oktolab_media_error_update_media:       "Media konnte nicht aktualisiert werden"
 
+oktolab_media_success_set_media_as_video:   "Master der Episode wurde erfolgreich geändert"
+oktolab_media_error_set_media_as_video:     "Video des Episodenformats konnte nicht als Master verwendet werden."
+
 oktolab_media_show_media_title:         "Format %media% (%episode%) | %project%"
 
 oktolab_media_quality_label:            "Qualitätsname"
@@ -278,8 +281,12 @@ oktolab_media_episode_label:            "Episode"
 
 oktolab_media_public_choice:            "{0} Nicht Öffentlich|{1} Öffentlich"
 
-oktolab_media_edit_media:               "Media bearbeiten"
-oktolab_media_create_new_media:         "Neues Media anlegen"
+oktolab_media_show_dropdown:            "Aktionen <span class='caret'></span>"
+oktolab_media_edit_media:               '<span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Media bearbeiten'
+oktolab_media_create_new_media:         '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Neues Media anlegen'
+oktolab_media_set_as_master:            '<span class="glyphicon glyphicon-check" aria-hidden="true"></span> Format als Master festlegen'
+oktolab_media_show_asset:               '<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Datei anzeigen'
+oktolab_media_show_episode:             '<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Zurück zur Episode'
 
 oktolab_media_media_for_episode_header: "Episodenformate"
 oktolab_media_media_fore_episode_empty: "Derzeit keine Formate vorhanden"
@@ -337,6 +344,7 @@ oktolab_media.episode_encode_media_end:         "Episode Media %media% encodieru
 oktolab_media.episode_encode_error:             "Es ist ein Fehler beim Encodieren aufgetreten"
 oktolab_media.episode_encode_no_streams:        "Es konnte keine Streaminformation des Videos gelesen werden"
 oktolab_media.episode_encode_remove_old_media:  "Encodierte Medien werden bereinigt"
+oktolab_media.episode_encode_media_failed:      "Eine oder mehrere Umrechnungen sind fehlgeschlagen"
 oktolab_media.episode_cannot_encoderesolution:  "Das Format [%format%] kann nicht encodiert werden. Das Ausgangsformat ist wahrscheinlich zu klein."
 oktolab_media_media_type_video_detection:       "[%format%] Erkannte Infos: Kann Video kopieren: %can_copy_video%, Kann Video encodieren %can_encode_video%, Kann Audio kopieren %can_copy_audio%, Kann Audio encodieren %can_encode_audio%"
 

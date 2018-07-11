@@ -54,43 +54,49 @@ class FFmpegService {
         // open (ffmpeg) process, read stdout
         $fp = popen($cmd, "r");
         while(!feof($fp)) {
+
             // read outputstream of ffmpeg
             $chunk = fread($fp, 1024);
 
-            // try to get the duration information at the beginning of the ffmpeg output.
-            // it is important to know how long an episode is for future jobs and percentage calculations.
-            if (!$durationInSeconds) {
-                preg_match("/Duration: (.*?), start:/", $chunk, $matches);
-                if (array_key_exists(1, $matches)) {
-                    list($hours,$minutes,$seconds) = explode(":",$matches[1]);
-                    // calculate the duration in seconds. Used to calculate overall progress in percent.
-                    $durationInSeconds = (($hours * 3600) + ($minutes * 60) + $seconds);
-                    $episode->setDuration($durationInSeconds);
-                    $this->em->persist($episode);
-                    $this->em->flush();
-                }
-            }
-
-            // try to get the current encoding information of ffmpeg
-            preg_match("/time=(.*?) bitrate/", $chunk, $progress);
-            if (array_key_exists(1, $progress)) {
-                list($hours,$minutes,$seconds) = explode(":",$progress[1]);
-                $seconds = round(($hours * 3600) + ($minutes * 60) + $seconds);
-
-                // calculate percentage using the duration in seconds and current second
-                if ($durationInSeconds) {
-                    $percent = round((($seconds * 100)/($durationInSeconds)));
-                    if ($percent > $media->getProgress()) {
-                        // disable rounding errors to show 101 percent encoding
-                        if ($percent > 100) {
-                            $percent = 100;
-                        }
-                        // update information of the media. happens every percentage update
-                        $media->setProgress($percent);
-                        $this->em->persist($media);
+            try {
+                // try to get the duration information at the beginning of the ffmpeg output.
+                // it is important to know how long an episode is for future jobs and percentage calculations.
+                if (!$durationInSeconds) {
+                    preg_match("/Duration: (.*?), start:/", $chunk, $matches);
+                    if (array_key_exists(1, $matches)) {
+                        list($hours,$minutes,$seconds) = explode(":",$matches[1]);
+                        // calculate the duration in seconds. Used to calculate overall progress in percent.
+                        $durationInSeconds = (($hours * 3600) + ($minutes * 60) + $seconds);
+                        $episode->setDuration($durationInSeconds);
+                        $this->em->persist($episode);
                         $this->em->flush();
                     }
                 }
+
+                // try to get the current encoding information of ffmpeg
+                preg_match("/time=(.*?) bitrate/", $chunk, $progress);
+                if (array_key_exists(1, $progress)) {
+                    list($hours,$minutes,$seconds) = explode(":",$progress[1]);
+                    $seconds = round(($hours * 3600) + ($minutes * 60) + $seconds);
+
+                    // calculate percentage using the duration in seconds and current second
+                    if ($durationInSeconds) {
+                        $percent = round((($seconds * 100)/($durationInSeconds)));
+                        if ($percent > $media->getProgress()) {
+                            // disable rounding errors to show 101 percent encoding
+                            if ($percent > 100) {
+                                $percent = 100;
+                            }
+                            // update information of the media. happens every percentage update
+                            $media->setProgress($percent);
+                            $this->em->persist($media);
+                            $this->em->flush();
+                        }
+                    }
+                }
+
+            } catch (Exception $e) {
+                // something went really haywire.
             }
             // flush the content to the browser
             flush();

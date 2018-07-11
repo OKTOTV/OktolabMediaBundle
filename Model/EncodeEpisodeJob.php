@@ -339,9 +339,10 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
     }
 
     /**
-     * if the configuration flag keep_original is set to false,
-     * the uploaded original video will be replaced with the media with
-     * the highest sortnumber directly after encoding
+     * if the configuration flag keep_original is set to false and encoding
+     * of all media was successful (100%), the uploaded original video
+     * will be replaced with the media with the highest sortnumber
+     * directly after encoding
      */
     private function deleteOriginalIfConfigured() {
         $episode = $this->oktolab_media->getEpisode($this->args['uniqID']);
@@ -352,15 +353,30 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
                 $this->args['uniqID']
             );
             if (count($episode->getMedia())) {
-                $this->getContainer()->get('oktolab_media_helper')->deleteVideo($episode);
-                $best_media = $episode->getMedia()[0];
+                // check if any media is incomplete.
+                $all_media_ok = true;
                 foreach ($episode->getMedia() as $media) {
-                    if ($media->getSortNumber() > $best_media->getSortNumber()) {
-                        $best_media = $media;
+                    if ($media->getProgress() < 100) {
+                        $all_media_ok = false;
                     }
                 }
-                $episode->setVideo($best_media->getAsset());
-
+                if ($all_media_ok) { // if all media ok, replace original file
+                    $this->getContainer()->get('oktolab_media_helper')->deleteVideo($episode);
+                    $best_media = $episode->getMedia()[0];
+                    foreach ($episode->getMedia() as $media) {
+                        if ($media->getSortNumber() > $best_media->getSortNumber()) {
+                            $best_media = $media;
+                        }
+                    }
+                    $episode->setVideo($best_media->getAsset());
+                } else { // some media were not okay. keep original for further encoding.
+                    $episode->setTechnicalStatus(Episode::STATE_PROGRESS_FAILED);
+                    $this->logbook->info(
+                        'oktolab_media.episode_encode_media_failed',
+                        [],
+                        $this->args['uniqID']
+                    );
+                }
                 $this->em->persist($episode);
                 $this->em->flush();
             }
