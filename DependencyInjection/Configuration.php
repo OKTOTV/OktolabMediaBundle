@@ -81,6 +81,7 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('audio_codec')->defaultValue("aac")->end()
                             ->scalarNode('audio_sample_rate')->defaultValue("48000")->end()
                             ->scalarNode('audio_bitrate')->defaultValue("256000")->end()
+                            ->scalarNode('pix_fmt')->defaultValue("yuv420p")->end()
                             ->scalarNode('allow_lower_audio_bitrate')->defaultValue(0)->end()
                             ->scalarNode('container')->defaultValue('mov')->end()
                             ->booleanNode('public')->defaultTrue()->end()

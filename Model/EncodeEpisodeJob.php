@@ -101,7 +101,8 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
                                 $this->args['uniqID']
                             );
                             $cmd = sprintf(
-                                    '-movflags +faststart -c:v copy -c:a %s -ar %s -b:a %s -strict -2',
+                                    '-movflags +faststart -pix_fmt %s -c:v copy -c:a %s -ar %s -b:a %s -strict -2',
+                                    $resolution['pix_fmt'],
                                     $resolution['audio_codec'],
                                     $resolution['audio_sample_rate'],
                                     $resolution['audio_bitrate']
@@ -116,10 +117,11 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
                                 $this->args['uniqID']
                             );
                             $cmd = sprintf(
-                                    '-deinterlace -crf %s -s %sx%s -movflags +faststart -c:v %s -r %s -c:a copy -preset %s',
+                                    '-deinterlace -crf %s -s %sx%s -movflags +faststart -pix_fmt %s -c:v %s -r %s -c:a copy -preset %s',
                                     $resolution['crf_rate'],
                                     $resolution['video_width'],
                                     $resolution['video_height'],
+                                    $resolution['pix_fmt'],
                                     $resolution['video_codec'],
                                     $resolution['video_framerate'],
                                     $resolution['preset']
@@ -134,10 +136,11 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
                                 $this->args['uniqID']
                             );
                             $cmd = sprintf(
-                                    '-deinterlace -crf %s -s %sx%s -movflags +faststart -c:v %s -r %s -c:a %s -ar %s -b:a %s -strict -2 -preset %s',
+                                    '-deinterlace -crf %s -s %sx%s -movflags +faststart -pix_fmt %s -c:v %s -r %s -c:a %s -ar %s -b:a %s -strict -2 -preset %s',
                                     $resolution['crf_rate'],
                                     $resolution['video_width'],
                                     $resolution['video_height'],
+                                    $resolution['pix_fmt'],
                                     $resolution['video_codec'],
                                     $resolution['video_framerate'],
                                     $resolution['audio_codec'],
@@ -155,7 +158,8 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
                                 $this->args['uniqID']
                             );
                             $cmd = sprintf(
-                                    '-movflags +faststart -c:v copy -an'
+                                    '-movflags +faststart -pix_fmt %s -c:v copy -an',
+                                    $resolution['pix_fmt']
                                 );
                             break;
 
@@ -167,10 +171,11 @@ class EncodeEpisodeJob extends BprsContainerAwareJob {
                                 $this->args['uniqID']
                             );
                             $cmd = sprintf(
-                                    '-deinterlace -crf %s -s %sx%s -movflags +faststart -c:v %s -r %s -preset %s',
+                                    '-deinterlace -crf %s -s %sx%s -movflags +faststart -pix_fmt %s -c:v %s -r %s -preset %s',
                                     $resolution['crf_rate'],
                                     $resolution['video_width'],
                                     $resolution['video_height'],
+                                    $resolution['pix_fmt'],
                                     $resolution['video_codec'],
                                     $resolution['video_framerate'],
                                     $resolution['preset']
