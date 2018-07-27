@@ -124,7 +124,9 @@ class FFprobeService {
 
             $resolution['video_height'] == $metainfo['height'] &&
             // average bitrate is lower or same as in resolution
-            $resolution['video_bitrate'] >= $metainfo['bit_rate']
+            $resolution['video_bitrate'] >= $metainfo['bit_rate'] &&
+            // the color coding is the same (prores 422 -> 420)
+            $resolution['pix_fmt'] == $metainfo['pix_fmt']
         ;
     }
 
